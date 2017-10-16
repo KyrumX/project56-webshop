@@ -81,7 +81,7 @@ def register(request):
             email = EmailMessage(mail_subject, message, to=[to_email])
             email.send()
             # form.save()
-            return render(request, 'completeregistration.html')
+            return render(request, 'checkemail.html')
     else:
         form = RegistrationForm()
     args['form'] = form
@@ -174,7 +174,8 @@ def activate(request, uidb64, token):
         # return redirect('home')
         return render(request, 'completeregistration.html')
     else:
-        return HttpResponse('Activation link is invalid!')
+        return render(request, 'invalidLink.html')
+
 
 def contactRequestHandeld(request):
     return render(request, 'mailsend.html')
@@ -187,4 +188,4 @@ def results(request, query):
     prodPrice = getProdPrice()
     prodStock = getProdStock()
     prodAuthor = getProdAuthor()
-    return render(request, 'results.html')
+    return render(request, 'result.html')
