@@ -27,7 +27,6 @@ from .database.WishListOps import addToWishList, removeFromWishList
 def index(request):
     print("Session key: " + str(request.session.session_key))
     if request.method == 'POST':
-        print("Salty Ryan")
         if 'searchtext' in request.POST:
             return redirect("search/" + (str(request.POST.get('searchtext'))))
 
@@ -37,6 +36,8 @@ def contact(request):
     formClass = ContactForm
 
     if request.method == 'POST':
+        if 'searchtext' in request.POST:
+            return redirect("/search/" + (str(request.POST.get('searchtext'))))
         form = formClass(data=request.POST)
 
         if form.is_valid():
@@ -68,6 +69,8 @@ def contact(request):
 def register(request):
     args = {}
     if request.method == 'POST':
+        if 'searchtext' in request.POST:
+            return redirect("/search/" + (str(request.POST.get('searchtext'))))
         form = RegistrationForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
@@ -92,12 +95,21 @@ def register(request):
     return render(request, 'register.html', args)
 
 def faq(request):
+    if request.method == 'POST':
+        if 'searchtext' in request.POST:
+            return redirect("/search/" + (str(request.POST.get('searchtext'))))
     return render(request, 'faq.html')
 
 def about(request):
+    if request.method == 'POST':
+        if 'searchtext' in request.POST:
+            return redirect("/search/" + (str(request.POST.get('searchtext'))))
     return render(request, 'about.html')
 
 def product(request):
+    if request.method == 'POST':
+        if 'searchtext' in request.POST:
+            return redirect("/search/" + (str(request.POST.get('searchtext'))))
     return render(request, 'product.html')
 
 def product2(request, item):
@@ -112,6 +124,8 @@ def product2(request, item):
         elif "addtowishlistButton" in request.POST:
             addToWishList(request, item)
             return redirect('/verlanglijst/')
+        elif 'searchtext' in request.POST:
+            return redirect("/search/" + (str(request.POST.get('searchtext'))))
 
 
 
@@ -151,12 +165,19 @@ def product2(request, item):
     })
 
 def search(request, query):
+    if request.method == 'POST':
+        if 'searchtext' in request.POST:
+            return redirect("/search/" + (str(request.POST.get('searchtext'))))
+
     thequery = query
     return render(request, 'testing.html', {
         'query' : thequery,
     })
 
 def about(request):
+    if request.method == 'POST':
+        if 'searchtext' in request.POST:
+            return redirect("/search/" + (str(request.POST.get('searchtext'))))
     return render(request, 'about.html')
 
 def logoutview(request):
@@ -169,6 +190,8 @@ def logoutview(request):
 
 def loginview(request):
     if request.method == "POST":
+        if 'searchtext' in request.POST:
+            return redirect("/search/" + (str(request.POST.get('searchtext'))))
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(request, username=username, password=password)
@@ -181,6 +204,9 @@ def loginview(request):
         return render(request, 'login.html', {'form': LogginginForm})
 
 def registrationcomplete(request):
+    if request.method == 'POST':
+        if 'searchtext' in request.POST:
+            return redirect("/search/" + (str(request.POST.get('searchtext'))))
     return render(request, 'completeregistration.html')
 
 def activate(request, uidb64, token):
@@ -202,6 +228,7 @@ def contactRequestHandeld(request):
     return render(request, 'mailsend.html')
 
 def results(request, query):
+
     #returnPage(request.GET.get('searchtext'))
     object = getResult2(query)
     print(object)
@@ -219,6 +246,8 @@ def shoppingcart(request):
         elif "moveToWishListButton" in request.POST:
             addToWishList(request, int(request.POST.get('moveToWishListButton')))
             return redirect('/verlanglijst/')
+        elif 'searchtext' in request.POST:
+            return redirect("/search/" + (str(request.POST.get('searchtext'))))
     return render(request, 'shoppingcart.html')
 
 def wishlist(request):
@@ -229,6 +258,8 @@ def wishlist(request):
         if 'removeFromWishListButton' in request.POST:
             removeFromWishList(request, int(request.POST.get('removeFromWishListButton')))
             return redirect('/verlanglijst/')
+        elif 'searchtext' in request.POST:
+            return redirect("/search/" + (str(request.POST.get('searchtext'))))
     return render(request, 'wishlist.html')
 
 
