@@ -14,7 +14,7 @@
             <div class="aboutwrap">
                <form role='form' method='post' name='removeButtonForm'>
                    {% csrf_token %}
-                   {% autoescape off %}{% displayCart request.session.session_key %}{% endautoescape %}
+                   {% autoescape off %}{% displayCart request.session.session_key user.is_authenticated %}{% endautoescape %}
                </form>
                 <script>
                     $(function() {
