@@ -29,8 +29,6 @@ def updateCustomerInfo(request):
     updateInfo.telephone = request.POST.get('telephone', '')
     updateInfo.save()
 
-
-
 def getOrderAmount(request):
     object = Orders.objects.filter(customerID=Customers(request.user.id)).count()
     return object
@@ -39,6 +37,3 @@ def getOrders(request):
     if Orders.objects.filter(customerID=Customers(request.user.id)).exists():
         objects = Orders.objects.all().filter(customerID=Customers(request.user.id))
         return objects
-
-
-

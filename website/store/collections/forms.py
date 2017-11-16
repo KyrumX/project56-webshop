@@ -1,7 +1,7 @@
 # make sure this is at the top if it isn't already
 from django import forms
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.db.models import Max
 
 from ..models import Customers, Address
@@ -126,41 +126,23 @@ class AccountForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(AccountForm, self).__init__(*args, **kwargs)
         self.fields['address'].label = "Adres:"
-        self.fields['number'].label = "Huisnummer:"
-        self.fields['city'].label = "Stad:"
+        self.fields['number'].label = "huisnummer:"
+        self.fields['city'].label = "stad:"
         self.fields['postalcode'].label = "Postcode:"
 
-class CustomerInfoForm(forms.Form):
-
-    name = forms.CharField(required=True)
-    surname = forms.CharField(required=True)
-    telephone = forms.CharField(required=True)
+class CustomerInfoForm(forms.ModelForm):
 
     class Meta:
         model = Customers
         fields = (
             'name',
             'surname',
-            'telephone',
+            'telephone'
         )
 
     def __init__(self, *args, **kwargs):
         super(CustomerInfoForm, self).__init__(*args, **kwargs)
         self.fields['name'].label = "Voornaam:"
         self.fields['surname'].label = "Achternaam:"
-        self.fields['telephone'].label = "Telefoonnummer:"
+        self.fields['telephone'].label = "telefoonnummer:"
 
-
-class PasswordForm(PasswordChangeForm):
-
-    def __init__(self, *args, **kwargs):
-        super(PasswordForm, self).__init__(*args, **kwargs)
-        self.fields['old_password'].label = "Oud wachtwoord:"
-        self.fields['new_password1'].label = "Nieuw wachtwoord:"
-        self.fields['new_password2'].label = "Herhaal nieuw wachtwoord:"
-        self.fields[
-            'new_password1'].help_text = "Je wachtwoord moet 8 karakters of langer zijn. Gebruik niet alleen cijfers."
-        self.fields['new_password2'].help_text = "Herhaal het wachtwoord"
-        self.error_messages = {
-            'password_mismatch': ("Oeps! De twee opgegeven wachtwoorden kwamen niet overeen! Probeer het opnieuw!"),
-        }

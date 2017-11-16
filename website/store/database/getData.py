@@ -70,8 +70,10 @@ def getResult(query):
                                         " LIMIT 1")
   return object
 
-
 def getSearchResults(query, userAuth):
+    query = queryVerbeterFunctie(query)
+
+def getSearchResultsOud(query, userAuth):
     object = ProductDetails.objects.raw("SELECT * FROM store_products INNER JOIN store_productdetails on store_products.\"prodNum\" = store_productdetails.\"prodNum\" WHERE \"prodName\" like '%%" + query + "%%'")
     counter = len(list(object))
 
@@ -127,23 +129,36 @@ def queryVerbeterFunctie(query):
       query = query[1:]
       if query[1] != " ":
         query = query[0].upper() + query[1:]
-    ## Replace next letter with an uppercase after a space is found
-    if query[i-1:i] == " ":
-      query = (query[:i]) + (query[i:i+1].upper()) + (query[i+1:])
     ## Removes "the" from the query, since most comics don't use it anymore
     if query[i-1:i+2].lower() == "the" and i < len(query) - 2:
       if i == 1:
         query = (query[i+2:])
+        ## Make the function recursive because some parts won't work otherwise :')
+        query = queryVerbeterFunctie(query)
+        break
     ## If search starts with "the", remove it completely
       else:
         query = (query[:i]) + (query[i+2:])
+    ## Replace ironman with Iron Man
+    if query[i-1:i+6].lower() == "ironman":
+      query = "Iron Man"
+    ## Replace captainamerica with Captain America
+    if query[i-1:i+13].lower() == "captainamerica":
+      query = "Captain America"
+    else:
+      if query[i-1:i+2].lower() == "cpt":
+        query = "Captain"
+    ## Replace next letter with an uppercase after a space is found
+    if query[i-1:i] == " ":
+      query = (query[:i]) + (query[i:i+1].upper()) + (query[i+1:])
     ## Removes UNICODE except 32, 48-57, 65-90, 97-122, 192-214, 216-246, 248-328, 330-447
     ## bdfhjlnprtvxz
     while 0 <= ord(query[i-1:i]) <= 31 or 33 <= ord(query[i-1:i]) <= 47 or 58 <= ord(query[i-1:i]) <= 64 or 91 <= ord(query[i-1:i]) <= 96 or 123 <= ord(query[i-1:i]) <= 191 or 215 == ord(query[i-1:i]) or 247 == ord(query[i-1:i]) or 329 == ord(query[i-1:i]) or 448 <= ord(query[i-1:i]):
-    # if ord((query[i-1:i])) != 32 or not(48 <= ord((query[i-1:i])) <= 57 or 65 <= ord((query[i-1:i])) <= 90 or 97 <= ord((query[i-1:i])) <= 122 or 192 <= ord((query[i-1:i])) <= 214 or 216 <= ord((query[i-1:i])) <= 246 or 248 <= ord((query[i-1:i])) <= 328 or 330 <= 447):
-      print("origineel " + query)
-      query = query[:i-1] + query[i:]
-      print(query)
+      if ord((query[i-1:i])) != 32 or not(48 <= ord((query[i-1:i])) <= 57 or 65 <= ord((query[i-1:i])) <= 90 or 97 <= ord((query[i-1:i])) <= 122 or 192 <= ord((query[i-1:i])) <= 214 or 216 <= ord((query[i-1:i])) <= 246 or 248 <= ord((query[i-1:i])) <= 328 or 330 <= 447):
+        print("origineel " + query)
+        query = query[:i-1] + query[i:]
+        print(query)
+        ## for code in bytearray(mystr, 'ascii'):
     ## if query[i-1:i] != zooi doe andere zooi)
     i += 1
   # j = 0
