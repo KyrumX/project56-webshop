@@ -5,32 +5,43 @@
 {% load custom_tags %}
 {% load shoppingcart_tags %}
 {% block extrastyle %}
-<style type="text/css">
-</style>
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'emailstylesheet.css' %}" />
 {% endblock %}
 
     {% autoescape off %}
-    <p>Beste klant,</p>
+ <div class="logo"><img src="{% static 'images/comicfirelogo3.png' %}"></div><div class="mailwrap">
+	<div class="mail"><div class="mailbar"><p>Bestelling gelukt!</p></div>
+	<div class="mailtext"><p>Beste klant</p>
         <p></p>
-    <p>U heeft zojuist een bestelling geplaatst op onze website voor de volgende producten:</p>
+    <p>U heeft zojuist een bestelling geplaatst op onze website voor de volgende producten:</p></div>
 
-        <ul>
-        {% for e in order %}
-            <li><strong>Product: </strong>{{ e.productNum }} | <strong>Aantal: </strong>{{ e.amount }}</li>
+
+</div><div class="mail">
+        
+<div class="table1">
+		<table>
+		<tbody>
+		{% for e in order %}
+            <tr><td>{{ e.productNum }}</td><td>{{ e.amount }}</td></tr>
         {% endfor %}
-        </ul>
-
-    <p>Wij streven ernaar uw bestelling binnen 2 dagen tijd bij u te leveren.</p>
-    <p>Als u nog enige vragen heeft, wees dan niet bang ons te contacteren via onze online contact forum</p>
+		</tbody>
+		</table>
+</div>
+</div><div class="mail"><div class="mailbar"><p>Informatie</p></div><div class="mailtext"><p>Wij streven ernaar uw bestelling binnen 2 dagen tijd bij u te leveren.</p>
+    <p>Als u nog enige vragen heeft, wees dan niet bang ons te contacteren via onze online contact form</p>
     <p>http://comicfire.com/contact/</p>
         <p></p>
     <p>Wij hopen u hierbij genoeg van dienst geweest te zijn.</p>
         <p></p>
     <p>Met vriendelijke groeten,</p>
         <p></p>
-    <p><strong>Comicfire</strong></p>
-
+    <p><strong>Comicfire</strong></p></div></div>
+</div>
 <!--<img src="cid:img1.png">-->
+
+
+</body>
 {% endautoescape %}
 </body>
 </html>
