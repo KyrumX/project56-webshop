@@ -12,7 +12,7 @@
         <form name="searchForm" action="" method="post" id="srchform">
             {% csrf_token %}
             <input type="text" id="searchbar" name="searchtext" placeholder="Deadpool vs The Punisher">
-            <img src="https://cdn1.iconfinder.com/data/icons/hawcons/32/698627-icon-111-search-512.png" id="srchbutton">
+            <input type="image" id="srchbutton" name="searchtext" src="https://cdn1.iconfinder.com/data/icons/hawcons/32/698627-icon-111-search-512.png">
         </form>
         <div class="cart">
             <a href="/winkelwagentje/">
@@ -20,16 +20,19 @@
             </a>
         </div>
     </div>
-    <div class="usersection">
-        <div class="user">
+<div class="usersection">
+    <ul>
+        <li><div class="user">
 		<div class="userann">
-            <p>Welkom {{ user.first_name }}</p></div>
+            <p>Welkom Selim</p></div>
 			<div class="userlinks"><a href="/account/"><div class="userhalf"><i class="fa fa-user" aria-hidden="true"></i></div></a><a href="/verlanglijst/"><div class="wishlisthalf"><i class="fa fa-heart" aria-hidden="true"></i></div></a></div>
-        </div>
-        <div class="forlogin">
-            <p class="lgntext commoncolor"><i class="fa fa-sign-out" aria-hidden="true"></i><a class="logout" href="/logout">Logout</a></p>
-        </div>
-    </div>
+            </div></li>
+              <a href="/logout"><li>
+            <p class="lgntext commoncolor"> <i class="fa fa-sign-out" aria-hidden="true"></i>Uitloggen</p>
+        </li>
+		</a>
+        
+    </ul></div>
     {% else %}
     <div class="logowrap commoncolor">
         <div class="logo">
@@ -43,7 +46,7 @@
         <form name="searchForm" action="" method="post">
             {% csrf_token %}
             <input type="text" id="searchbar" name="searchtext" placeholder="Deadpool vs The Punisher">
-            <img src="https://cdn1.iconfinder.com/data/icons/hawcons/32/698627-icon-111-search-512.png" id="srchbutton">
+            <input type="image" id="srchbutton" name="searchtext" src="https://cdn1.iconfinder.com/data/icons/hawcons/32/698627-icon-111-search-512.png">
         </form>
         <div class="cart">
             <a href="/winkelwagentje/">
@@ -52,14 +55,17 @@
         </div>
     </div>
     <div class="register">
-        <a href="/register">
-            <p class="lgntext commoncolor"> <i class="fa fa-user-plus" aria-hidden="true"></i>Registreren </p>
-        </a>
-    </div>
-    <div class="forlogin1">
-        <a href="/login">
-            <p class="lgntext commoncolor"><i class="fa fa-sign-in" aria-hidden="true"></i> Inloggen </p>
-        </a>
+    <ul>    
+		<a href="/register">
+			<li>
+				<p class="lgntext commoncolor"> <i class="fa fa-user-plus" aria-hidden="true"></i>Registreren </p>
+			</li>
+		</a>
+            <a href="/login"><li>
+            <p class="lgntext commoncolor"> <i class="fa fa-sign-in" aria-hidden="true"></i>Inloggen </p>
+        </li>
+		</a>
+        </ul>
     </div>
     {% endif %}
 </div>
