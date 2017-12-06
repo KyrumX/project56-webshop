@@ -1544,10 +1544,23 @@ label{
 	/* padding: 5px 50px 50px 50px; */
 }
 
-.aboutwrap form{
+.aboutwrap form {
 	margin-bottom: 0;
 }
 
+.servicetext {
+	margin: auto;
+	width: 90%;
+}
+
+strong, b, .servicetext i{
+	color: #363232;
+	font-family: "Open Sans",Arial,Helvetica,sans-serif;
+}
+
+.servicetext i{
+	font-size: 12px;
+}
 
 .profilesection {
 	width: 100%;
@@ -2831,20 +2844,19 @@ textarea:focus{
 }
 
 .aboutmid .abouttext p {
-    background-color: rgba(213, 209, 209, 0.39);
-	position: relative;
-	/*width: 100%;*/
-	margin: 0;
-	display: block;
-	border: solid 1px rgba(0, 0, 0, 0.15);
-	border-radius: 5px;
-	margin-top: -5px;
-	z-index: 0;
-	position: relative;
-	font-size: 16px;
-	line-height: 22px;
-	padding-left: 5px;
-
+    /* background-color: rgba(213, 209, 209, 0.39); */
+    position: relative;
+    /*width: 100%;*/
+    margin: 0;
+    display: block;
+    /* border: solid 1px rgba(0, 0, 0, 0.15); */
+    border-radius: 5px;
+    margin-top: -5px;
+    z-index: 0;
+    position: relative;
+    font-size: 14px;
+    line-height: 22px;
+    padding-left: 5px;
 }
 
 .commontextbox input[type=textbox]:focus, .commontextbox input[type=password]:focus{

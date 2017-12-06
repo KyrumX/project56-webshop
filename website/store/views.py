@@ -111,6 +111,34 @@ def about(request):
 
     return render(request, 'about.html')
 
+def servicevoorwaarden (request):
+    if request.method == 'POST':
+        if 'searchtext' in request.POST:
+            return searchPost(request)
+
+    return render(request, 'servicevoorwaarden.html')
+
+def retourneren (request):
+    if request.method == 'POST':
+        if 'searchtext' in request.POST:
+            return searchPost(request)
+
+    return render(request, 'retourneren.html')
+
+def privacy(request):
+    if request.method == 'POST':
+        if 'searchtext' in request.POST:
+            return searchPost(request)
+
+    return render(request, 'privacy.html')
+
+def betaling(request):
+    if request.method == 'POST':
+        if 'searchtext' in request.POST:
+            return searchPost(request)
+
+    return render(request, 'betaling.html')
+
 def product(request, item):
     if request.method == 'POST':
         if 'searchtext' in request.POST:

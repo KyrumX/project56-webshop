@@ -8,8 +8,12 @@ urlpatterns = [
     url(r'^login/$', views.loginview, name='login'),
     url(r'^register/$', views.register, name="register"),
     url(r'^contact/$', views.contact, name='contact'), #url = ip/contact/ of ip/contact (de eerste / is niet nodig)
-    url(r'^faq$', views.faq, name='faq'),
-    url(r'^about$', views.about, name='about'),
+    url(r'^faq/$', views.faq, name='faq'),
+    url(r'^about/$', views.about, name='about'),
+    url(r'^servicevoorwaarden/$', views.servicevoorwaarden, name='servicevoorwaarden'),
+    url(r'^retourneren/$', views.retourneren, name='retourneren'),
+    url(r'^privacy/$', views.privacy, name='privacy'),
+    url(r'^betaling/$', views.betaling, name='betaling'),
     url(r'^product/(?P<item>\d+)$', views.product, name='product2'), #url = /product/{item}, \d+ betekent 1 nummer of meer
 	#url(r'^search/(?P<query>[\w|\W]+)/$', views.search, name='search'),
     url(r'^search/(?P<query>[\w|\W]+)/(?P<filter>[\w|\W]+)/$', views.search, name='search'),
