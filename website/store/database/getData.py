@@ -116,7 +116,15 @@ def getSearchResults(query, userAuth, filter=""):
             counter = counter + 1
     return txt
 
+def testDatabase(k):
+    while True:
+      print(getProdNum(k))
+      print(getProdName(k))
+      print()
+      k += 1
+
 def queryVerbeterFunctie(query):
+  #testDatabase(1)
   try :
     query = removeUnwanted(query)
     i = 1
@@ -145,6 +153,8 @@ def queryVerbeterFunctie(query):
       ## Replace ironman with Iron Man
       if query[i-1:i+6].lower() == "ironman":
         query = "Iron Man"
+      if query[i-1:i+6].lower() == "spider-man":
+        query = "Spiderman"
       ## Replace captainamerica with Captain America
       if query[i-1:i+13].lower() == "captainamerica":
         query = "Captain America"

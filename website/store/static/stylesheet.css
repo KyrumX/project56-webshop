@@ -999,12 +999,12 @@ input[type=submit], .logindiv button{
 	-webkit-transition: all 0.5s ease;
 	-moz-transition: all 0.5s ease;
 	-ms-transition: all 0.5s ease;
-	-o-transition: all 0.5s ease;
+	-o-tfont: 3vh Helvetica, Arial, sans-serif;ransition: all 0.5s ease;
 	transition: all 0.5s ease;
 	background: #ede9e9;
 	border: 1px solid rgb(209, 226, 233);
 	color: #777;
-	font: 3vh Helvetica, Arial, sans-serif;
+
 	/* left: 26.1%; */
 	top: 17%;
 	width: 85%;
@@ -1371,7 +1371,7 @@ label{
 	display: block;
 	padding-top: 20px;
 	padding-bottom: 10px;
-	font-family: "Open Sans",Arial,Helvetica,sans-serif;
+	font: 3vh Helvetica, Arial, sans-serif;
 	color: rgba(0, 0, 0, 0.71);
 }
 
@@ -2096,10 +2096,22 @@ button{
 	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 0px 0px 0 rgba(0, 0, 0, 0.19);
 }
 
+.FUCKINGFONT {
+    font-family: "Open Sans",Arial,Helvetica,sans-serif;
+    font: 18px Helvetica, Arial, sans-serif;
+}
+
+#FUCKINGFONT {
+    font-family: "Open Sans",Arial,Helvetica,sans-serif;
+    font: 18px Helvetica, Arial, sans-serif;
+}
+
 .contact {
 	margin: 0 auto;
 	width: 80%;
 	position: relative;
+    font: 18px Helvetica, Arial, sans-serif;
+    font-family: "Open Sans",Arial,Helvetica,sans-serif;
 }
 
 .about {
@@ -2786,7 +2798,7 @@ button{
 	min-width: 100%;
 	background-color: #ffffff;
 	max-width: 100%;
-	font-family: "Comic Sans",Arial,Helvetica,sans-serif;
+	/*font-family: "Comic Sans",Arial,Helvetica,sans-serif;*/
 }
 
 textarea:focus{
