@@ -35,17 +35,27 @@
                   </div>
                </div>
                <div class="buttons">
-               <form role="form" action="" method="post" name="addToCart">
+               <ul>
+			   {% if user.is_authenticated %}
+			   <li>
+			   {% else %}
+			   <li style="width: 100%;">
+			   {% endif %}
+			   <form role="form" action="" method="post" name="addToCart">
                    {% csrf_token %}
-                   <button type="submit" name="addToCartButton" class="addtocartButton"><i class="fa fa-plus" aria-hidden="true"></i><i class="fa fa-shopping-cart" aria-hidden="true"></i><p>Toevoegen aan winkelwagentje</p></button>
+                   <button type="submit" name="addToCartButton" class="addtocartButton"><i class="fa fa-plus" aria-hidden="true"></i><i class="fa fa-shopping-cart" aria-hidden="true"></i><p>Toevoegen winkelwagentje</p></button>
                </form>
+			   </li>
                {% if user.is_authenticated %}
-    		   <form role="form" action="" method="post" name="addToWishList">
+    		   <li>
+			   <form role="form" action="" method="post" name="addToWishList">
                    {% csrf_token %}
-                   <button type="submit" name="addtowishlistButton" class="addtowishlistButton"><i class="fa fa-heart" aria-hidden="true"></i><p>Toevoegen aan verlanglijstje</p></button>
-               </form>
+                   <button type="submit" name="addtowishlistButton" class="addtowishlistButton"><i class="fa fa-heart" aria-hidden="true"></i><p>Toevoegen verlanglijstje</p></button>
+			   </form>
+			   </li>
                {% else %}
                {% endif %}
+			   </ul>
                </div>
             </div>
             <div class="deliveryinfo">

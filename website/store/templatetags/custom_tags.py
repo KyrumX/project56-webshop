@@ -121,7 +121,7 @@ def suggesteditems(prod, type):
             linkarr.append(i.prodNum)
 
     for i in range(3):
-        txt += "<li><a href='/product/"+ str(linkarr[cnt]) +"'><img src='" + str(imgarr[cnt]) + "'></a><p>" + str(titlearr[cnt]) + "</p><p>€ " + str(pricearr[cnt]) + "</p></li>"
+        txt += "<li><div class='suggwrap'><a href='/product/"+ str(linkarr[cnt]) +"'><img src='" + str(imgarr[cnt]) + "'></a><p>" + str(titlearr[cnt]) + "</p><p>€ " + str(pricearr[cnt]) + "</p></div></li>"
         cnt += 1
     return txt
 
