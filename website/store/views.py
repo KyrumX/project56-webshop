@@ -45,6 +45,8 @@ def index(request):
             return redirect('/winkelwagentje/')
         elif 'moveToWishListButton' in request.POST:
             return addToWishListPost(request)
+        elif 'filter' in request.POST:
+            return searchPost(request)
 
     return render(request, 'index.html')
 

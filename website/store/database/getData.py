@@ -59,27 +59,26 @@ def getSearchResults(query, userAuth, filter=""):
     # filter = request.POST.get('filter')
     selected = ""
     print(filter)
+    resultsProductName = Products.objects.filter(prodName__icontains=query)
+    results = ProductDetails.objects.filter(Q(genre__icontains=query) | Q(type__icontains=query) | Q(publisher__icontains=query) | Q(language__icontains=query) | Q(author__icontains=query) | Q(desc__icontains=query) | Q(pubDatum__icontains=query) | Q(prodNum__in=resultsProductName))
     if filter == "asc":
-        filter = "ORDER BY \"prodName\" ASC"
+        filter = resultsProductName.order_by('prodName')
         selected = "asc"
     elif filter == "desc":
-        filter = "ORDER BY \"prodName\" DESC"
+        filter = resultsProductName.order_by('-prodName')
         selected = "desc"
     elif filter == "priceasc":
-        filter = "ORDER BY \"prodPrice\" ASC"
+        filter = resultsProductName.order_by('prodPrice')
         selected = "priceasc"
     elif filter == "pricedesc":
-        filter = "ORDER BY \"prodPrice\" DESC"
+        filter = resultsProductName.order_by('-prodPrice')
         selected = "pricedesc"
     else:
-        filter = ""
+        filter = results
 
     #TODO: Hall of Shame Code right here
     #qrytxt = "SELECT * FROM store_products INNER JOIN store_productdetails on store_products.\"prodNum\" = store_productdetails.\"prodNum\" WHERE \"prodName\" like '%%" + query + "%%' " + filter
     #object = ProductDetails.objects.raw("SELECT * FROM store_products INNER JOIN store_productdetails on store_products.\"prodNum\" = store_productdetails.\"prodNum\" WHERE \"prodName\" like '%%" + query + "%%' " + filter)
-
-    resultsProductName = Products.objects.filter(prodName__icontains=query).order_by("prodPrice")
-    results = ProductDetails.objects.filter(Q(genre__icontains=query) | Q(type__icontains=query) | Q(publisher__icontains=query) | Q(language__icontains=query) | Q(author__icontains=query) | Q(desc__icontains=query) | Q(pubDatum__icontains=query) | Q(prodNum__in=resultsProductName))
 
     txt = """<div class='sorton commoncolor' style='border-radius: 3px'>
          <p>Totale Resultaten: </p>
@@ -102,18 +101,33 @@ def getSearchResults(query, userAuth, filter=""):
 	 </div>"""
 
     counter = 0
-    for e in results:
-        if counter == 0:
-            txt += "<ul class='list'>"
-        txt = txt + "<li><div class='productwrap'><a href='/product/" + str(e.prodNum.prodNum) + "'><img src='" + e.imageLink + "' id='zoom_05' data-zoom-image='https://i.pinimg.com/736x/86/ff/e2/86ffe2b49daf0feed78a1c336753696d--black-panther-comic-digital-comics.jpg'></a><p class='author'>" + e.author + "</p><p class='name'>" + getProdName(e.prodNum.prodNum) + "</p><p><i class='fa fa-star' aria-hidden='true'></i><i class='fa fa-star' aria-hidden='true'></i><i class='fa fa-star' aria-hidden='true'></i><i class='fa fa-star' aria-hidden='true'></i><i class='fa fa-star' aria-hidden='true'></i></p><p class='price'>€ " + str(e.prodNum.prodPrice) + "</p><button name='addToCartItemBoxButton' value='" + str(e.prodNum.prodNum) + "'class='addtocart'><i class='fa fa-plus' aria-hidden='true'></i><i class='fa fa-shopping-cart' aria-hidden='true'></i></button>"
-        if userAuth:
-            txt = txt + "<button name='moveToWishListButton' value='" + str(e.prodNum.prodNum) + "' class='wishlist'><i class='fa fa-heart' aria-hidden='true'></i></button>"
-        txt = txt + "<p class='stock'>Voorraad: " + str(e.prodNum.prodStock) + "</p></div></li>"
-        if counter == 2:
-            txt += "</ul>"
-            counter = 0
-        else:
-            counter = counter + 1
+    if filter == results:
+        for e in filter:
+            if counter == 0:
+                txt += "<ul class='list'>"
+            txt = txt + "<li><div class='productwrap'><a href='/product/" + str(e.prodNum.prodNum) +"'><img src='" + e.imageLink + "' id='zoom_05' data-zoom-image='https://i.pinimg.com/736x/86/ff/e2/86ffe2b49daf0feed78a1c336753696d--black-panther-comic-digital-comics.jpg'></a><p class='author'>" + e.author + "</p><p class='name'>" + getProdName(e.prodNum.prodNum) + "</p><p><i class='fa fa-star' aria-hidden='true'></i><i class='fa fa-star' aria-hidden='true'></i><i class='fa fa-star' aria-hidden='true'></i><i class='fa fa-star' aria-hidden='true'></i><i class='fa fa-star' aria-hidden='true'></i></p><p class='price'>€ " + str(getProdPrice(e.prodNum.prodNum)) + "</p><button name='addToCartItemBoxButton' value='" + str(e.prodNum) + "'class='addtocart'><i class='fa fa-plus' aria-hidden='true'></i><i class='fa fa-shopping-cart' aria-hidden='true'></i></button>"
+            if userAuth:
+                txt = txt + "<button name='moveToWishListButton' value='" + str(e.prodNum.prodNum) + "' class='wishlist'><i class='fa fa-heart' aria-hidden='true'></i></button>"
+            txt = txt + "<p class='stock'>Voorraad: " + str(getProdStock(e.prodNum.prodNum)) + "</p></div></li>"
+            if counter == 2:
+                txt += "</ul>"
+                counter = 0
+            else:
+                counter = counter + 1
+    else:
+        for e in filter:
+            print(filter)
+            if counter == 0:
+                txt += "<ul class='list'>"
+            txt = txt + "<li><div class='productwrap'><a href='/product/" + str(e.prodNum) +"'><img src='" + getProdImage(e.prodNum) + "' id='zoom_05' data-zoom-image='https://i.pinimg.com/736x/86/ff/e2/86ffe2b49daf0feed78a1c336753696d--black-panther-comic-digital-comics.jpg'></a><p class='author'>" + getProdAuthor(e.prodNum) + "</p><p class='name'>" + e.prodName + "</p><p><i class='fa fa-star' aria-hidden='true'></i><i class='fa fa-star' aria-hidden='true'></i><i class='fa fa-star' aria-hidden='true'></i><i class='fa fa-star' aria-hidden='true'></i><i class='fa fa-star' aria-hidden='true'></i></p><p class='price'>€ " + str(e.prodPrice) + "</p><button name='addToCartItemBoxButton' value='" + str(e.prodNum) + "'class='addtocart'><i class='fa fa-plus' aria-hidden='true'></i><i class='fa fa-shopping-cart' aria-hidden='true'></i></button>"
+            if userAuth:
+                txt = txt + "<button name='moveToWishListButton' value='" + str(e.prodNum) + "' class='wishlist'><i class='fa fa-heart' aria-hidden='true'></i></button>"
+            txt = txt + "<p class='stock'>Voorraad: " + str(e.prodStock) + "</p></div></li>"
+            if counter == 2:
+                txt += "</ul>"
+                counter = 0
+            else:
+                counter = counter + 1
     return txt
 
 def queryVerbeterFunctie(query):

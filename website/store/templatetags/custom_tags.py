@@ -78,6 +78,11 @@ def listloop(userAuth):
 def searchList(query, userAuth, filter=""):
     object = getSearchResults(str(query), userAuth, filter)
     return object
+	
+@register.simple_tag()
+def indexsearchList(userAuth, query="", filter=""):
+    object = getSearchResults("hulk", userAuth, filter)
+    return object
 
 @register.simple_tag()
 def suggesteditems(prod, type):
