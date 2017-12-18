@@ -37,9 +37,12 @@ def product_validator(number):
     if number <= 0:
         raise ValidationError(_('Waarde kan niet lager dan 0 zijn!'))
 
-
-
-
-
-
-
+def string_validator(genre):
+    output = ""
+    i = 0
+    while (i < genre.length):
+      if (not(genre[i].isDigit())):
+        output += genre[i]
+    if output == "":
+      return "Not Provided"
+    return output

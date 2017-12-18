@@ -349,7 +349,7 @@ class EditUserForm(forms.Form):
     address = forms.CharField(required=False, max_length=100)
     number = forms.CharField(required=False, max_length=10)
     city = forms.CharField(required=False, max_length=25)
-    postalcode = forms.CharField(required=False)
+    postalcode = forms.CharField(required=False, max_length=10, min_length=6)
 
     class Meta:
         model = Customers

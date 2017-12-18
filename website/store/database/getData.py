@@ -117,7 +117,7 @@ def getSearchResults(query, userAuth, filter=""):
     return txt
 
 def queryVerbeterFunctie(query):
-  try :
+  try:
     query = removeUnwanted(query)
     i = 1
     query = ((query[:1].upper())+(query[1:].lower()))
@@ -158,11 +158,11 @@ def queryVerbeterFunctie(query):
       if query[i-1:i] == " ":
         query = (query[:i]) + (query[i:i+1].upper()) + (query[i+1:])
       ## Removes "the" from the query, since most comics don't use it anymore
-      if query[i-1:i+2].lower() == "the" and i < len(query) - 2:
+      if query[i-1:i+2].lower() == "the" and i < len(query) - 2 and not query[i-1:i+3].lower() == "they":
         if i == 1:
           query = (query[i+2:])
           ## Make the function recursive because some parts won't work otherwise :')
-          query = query[:i-1] + query[i+2:]
+          query = query[:i] + query[i+2:]
           i = 0;
       ## If search starts with "the", remove it completely
         else:
