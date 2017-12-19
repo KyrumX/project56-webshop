@@ -210,6 +210,12 @@ def search(request, query, filter=""):
             filters['pmax'] = request.GET['pmax']
             args['pmin'] = request.GET['pmin']
             args['pmax'] = request.GET['pmax']
+            if(request.GET['pmax'] == ''):
+                filters['pmax'] = 100
+                args['pmax'] = 100
+            if (request.GET['pmin'] == ''):
+                filters['pmin'] = 0
+                args['pmin'] = 0
     if request.method == 'POST':
         print(request.POST)
         if 'addToCartItemBoxButton' in request.POST:

@@ -71,7 +71,7 @@ def getProdImage(prNum):
     return object.imageLink
 
 
-def getSearchResults(query, userAuth, filteritems, filter="", sidefilter=""):
+def getSearchResults(query, userAuth, filteritems, sidefilter=""):
     # Structuur url: localhost:8000/search/Hulk/{smallfilter bvb 'asc'}/{sidefilter aka 'Dutch'}/
     # Voorbeeld beide filters url: localhost:8000/search/Hulk/priceasc/marvel/
 

@@ -85,14 +85,22 @@
             <ul>
                 <li>
                     <p>€</p>
-                    <input type="textbox" name="pmin" value={{ pmin }}>
+                    {% if pmin == null %}
+                        <input type="textbox" name="pmin" value={{ 0 }}>
+                    {% else %}
+                        <input type="textbox" name="pmin" value={{ pmin }}>
+                    {% endif %}
                 </li>
                 <li style="width: 10%;">
                     <p>tot</p>
                 </li>
                 <li>
                     <p>€</p>
-                    <input type="textbox" name="pmax" value={{ pmax }}>
+                    {% if pmax == null %}
+                        <input type="textbox" name="pmax" value='{{ 100 }}' size=1>
+                    {% else %}
+                        <input type="textbox" name="pmax" value='{{ pmax }}' size=1>
+                    {% endif %}
                 </li>
                 <li style="width: 20%; margin-left: 5px;">
                     <button><i class="fa fa-refresh" aria-hidden="true" id="addit"></i></button>
