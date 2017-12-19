@@ -98,9 +98,30 @@ def getSearchResults(query, userAuth, filteritems, filter="", sidefilter=""):
                 languages.append('Nederlands')
         results = results.filter(language__in=languages)
     if 'type' in filteritems and results.exists():
-        results = results.filter(type__icontains=filteritems['type'])
+        types = []
+        for type in filteritems['type']:
+            if type == 'comic':
+                types.append(type)
+                types.append('Comic')
+            elif type == 'manga':
+                types.append(type)
+                types.append('Manga')
+            elif type == 'manga':
+                types.append(type)
+                types.append('Manga')
+        results = results.filter(type__in=types)
     if 'publisher' in filteritems and results.exists():
-        results = results.filter(publisher__icontains=filteritems['publisher'])
+        publishers = []
+        for publisher in filteritems['publisher']:
+            if publisher == 'dc':
+                publishers.append(publisher)
+                publishers.append('DC')
+                publishers.append('DC Comics')
+            elif publisher == 'marvel':
+                publishers.append(publisher)
+                publishers.append('Marvel Comics')
+                publishers.append('Marvel')
+        results = results.filter(publisher__in=publishers)
     if 'score' in filteritems and results.exists():
         scores = []
         for score in filteritems['score']:

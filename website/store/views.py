@@ -200,13 +200,16 @@ def search(request, query, filter=""):
             filters['score'] = request.GET.getlist('score')
             args['scores'] = request.GET.getlist('score')
         if 'type' in request.GET:
-            filters['type'] = request.GET.getlist('type') #TODO: CONTINU HERE
+            filters['type'] = request.GET.getlist('type')
             args['types'] = request.GET.getlist('type')
         if 'publisher' in request.GET:
-            filters['publisher'] = request.GET['publisher']
+            filters['publisher'] = request.GET.getlist('publisher')
+            args['publishers'] = request.GET.getlist('publisher')
         if 'pmax' in request.GET and 'pmin' in request.GET:
             filters['pmin'] = request.GET['pmin']
             filters['pmax'] = request.GET['pmax']
+            args['pmin'] = request.GET['pmin']
+            args['pmax'] = request.GET['pmax']
     if request.method == 'POST':
         print(request.POST)
         if 'addToCartItemBoxButton' in request.POST:

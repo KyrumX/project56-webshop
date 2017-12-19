@@ -28,7 +28,7 @@
             <p>Type Boek<i class="fa fa-sort-desc" aria-hidden="true" id="sortdown"></i></p>
         </div>
         <div class="bartext">
-            {% if request.GET.type == 'manga' %}
+            {% if 'manga' in types %}
                 <input type="checkbox" onchange="this.form.submit()" name="type" value="manga" id="manga" checked>
             {% else %}
                 <input type="checkbox" onchange="this.form.submit()" name="type" value="manga" id="manga">
@@ -36,7 +36,7 @@
             <label for="manga"></label>
             <p>Manga</p>
             <br>
-            {% if request.GET.type == 'comic' %}
+            {% if 'comic' in types %}
                 <input type="checkbox" onchange="this.form.submit()" name="type" value="comic" id="comic" checked>
             {% else %}
                 <input type="checkbox" onchange="this.form.submit()" name="type" value="comic" id="comic">
@@ -44,7 +44,7 @@
             <label for="comic"></label>
             <p>Comic</p>
             <br>
-            {% if request.GET.type == 'shortstory' %}
+            {% if 'shortstory' in types %}
                 <input type="checkbox" onchange="this.form.submit()" name="type" value="shortstory" id="shortstory" checked>
             {% else %}
                 <input type="checkbox" onchange="this.form.submit()" name="type" value="shortstory" id="shortstory">
@@ -59,7 +59,7 @@
             <p>Uitgever<i class="fa fa-sort-desc" aria-hidden="true" id="sortdown"></i></p>
         </div>
         <div class="bartext">
-            {% if request.GET.publisher == 'marvel' %}
+            {% if 'marvel' in publishers %}
                 <input type="checkbox" onchange="this.form.submit()" value="marvel" name="publisher" id="marvel" checked>
             {% else %}
                 <input type="checkbox" onchange="this.form.submit()" value="marvel" name="publisher" id="marvel">
@@ -67,7 +67,7 @@
             <label for="marvel"></label>
             <p>Marvel</p>
             <br>
-            {% if request.GET.publisher == 'dc' %}
+            {% if 'dc' in publishers %}
                 <input type="checkbox" onchange="this.form.submit()" value="dc" name="publisher" id="dc" checked>
             {% else %}
                 <input type="checkbox" onchange="this.form.submit()" value="dc" name="publisher" id="dc">
@@ -85,14 +85,14 @@
             <ul>
                 <li>
                     <p>€</p>
-                    <input type="textbox" name="pmin" value="0">
+                    <input type="textbox" name="pmin" value={{ pmin }}>
                 </li>
                 <li style="width: 10%;">
                     <p>tot</p>
                 </li>
                 <li>
                     <p>€</p>
-                    <input type="textbox" name="pmax" value="100">
+                    <input type="textbox" name="pmax" value={{ pmax }}>
                 </li>
                 <li style="width: 20%; margin-left: 5px;">
                     <button><i class="fa fa-refresh" aria-hidden="true" id="addit"></i></button>
