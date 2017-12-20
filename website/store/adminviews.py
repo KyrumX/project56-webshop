@@ -129,7 +129,8 @@ class EditProduct(View):
             print(product_form)
             if product_form.is_valid():
                 editProduct(request, item)
-                return redirect('/admin/')
+                return render(request, 'admin/productedited.html', {
+                'item': item})
             return render(request, 'admin/editproduct.html', {'item': item, 'product_form': product_form})
 
 def createproduct(request):
@@ -145,7 +146,7 @@ def createproduct(request):
 class ProductGraphSelection(View):
     def get(self, request):
 
-        return render(request, 'admin/productdataselection.html', {})
+        return render(request, 'admin/dataselection.html', {})
 
 class ProductGraphMonth(View):
     def get(self, request, year, month):
@@ -177,6 +178,6 @@ class ProductGraphMonth(View):
                 'year' : int(year),
                 'month' : int(month),
             })
-        return render(request, 'admin/productdataselection.html', {
+        return render(request, 'admin/dataselection.html', {
             'warning' : "De combinatie van jaar en maand is niet geldig. Selecteer er één uit de onderstaande lijst."
         })
