@@ -240,15 +240,14 @@ def loginview(request):
         if 'searchtext' in request.POST:
             return searchPost(request)
         elif 'loginbutton' in request.POST:
-            form = LogginginForm(request.POST)
-            username = request.POST['username']
-            password = request.POST['password']
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect('/')
-
-
+            form = LogginginForm(data=request.POST)
+            if form.is_valid():
+                username = request.POST['username']
+                password = request.POST['password']
+                user = authenticate(request, username=username, password=password)
+                if user is not None:
+                    login(request, user)
+                    return redirect('/')
     else:
         form = LogginginForm()
     args['form'] = form

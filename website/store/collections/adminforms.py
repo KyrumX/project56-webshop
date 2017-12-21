@@ -167,3 +167,54 @@ class EditProductForm(forms.Form):
         products.desc = self.cleaned_data['desc']
         products.imageLink = self.cleaned_data['imageLink']
         products.pubDatum = self.cleaned_data['pubDatum']
+
+class EditUserForm(forms.Form):
+    name = forms.CharField(required=False, max_length=50)
+    surname = forms.CharField(required=False, max_length=50)
+    telephone = forms.CharField(required=False)
+    address = forms.CharField(required=False, max_length=100)
+    number = forms.CharField(required=False, max_length=10)
+    city = forms.CharField(required=False, max_length=25)
+    postalcode = forms.CharField(required=False, max_length=10, min_length=6)
+    isBlocked = forms.BooleanField()
+
+    class Meta:
+        model = Customers
+        fields = (
+            'name',
+            'surname',
+            'telephone',
+            'address',
+            'number',
+            'city',
+            'postalcode',
+            'isBlocked'
+        )
+
+    def clean_telephone(self):
+        telephoneIn = self.cleaned_data['telephone']
+        telephone_validator(telephoneIn)
+        return self.cleaned_data['telephone']
+
+    def clean_postalcode(self):
+        postalCodeIn = self.cleaned_data['postalcode']
+        postalcode_validator(postalCodeIn)
+        return self.cleaned_data['postalcode']
+
+    def __init__(self, *args, **kwargs):
+        super(EditUserForm, self).__init__(*args, **kwargs)
+        self.fields['name'].label = "Voornaam:"
+        self.fields['name'].widget.attrs.update({'placeholder': 'Clark'})
+        self.fields['surname'].label = "Achternaam:"
+        self.fields['surname'].widget.attrs.update({'placeholder': 'Kent'})
+        self.fields['telephone'].label = "Telefoonnummer:"
+        self.fields['telephone'].widget.attrs.update({'placeholder': '0611648394'})
+        self.fields['address'].label = "Adres:"
+        self.fields['address'].widget.attrs.update({'placeholder': 'Clinton Street'})
+        self.fields['number'].label = "Huisnummer:"
+        self.fields['number'].widget.attrs.update({'placeholder': '344'})
+        self.fields['city'].label = "Stad:"
+        self.fields['city'].widget.attrs.update({'placeholder': 'Smallville'})
+        self.fields['postalcode'].label = "Postcode:"
+        self.fields['postalcode'].widget.attrs.update({'placeholder': '3069 GG'})
+        self.fields['isBlocked'].label = "Is geblokkeerd:"

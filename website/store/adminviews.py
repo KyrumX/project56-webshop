@@ -1,7 +1,7 @@
 import datetime
 from django.db.models import Sum, Avg
 from django.shortcuts import render, redirect
-from store.collections.adminforms import AdminRegistrationForm, ProductsRegistrationForm, EditProductForm
+from store.collections.adminforms import AdminRegistrationForm, ProductsRegistrationForm, EditProductForm, EditUserForm
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from graphos.renderers import gchart
@@ -12,7 +12,7 @@ from django.contrib.auth.models import User
 from .models import OrderDetails
 #Admin index - comicfire.com/admin/
 from django.views import View
-from store.collections.forms import EditUserForm, LogginginForm
+from store.collections.forms import LogginginForm
 from .models import ProductDetails, Products
 from store.database.adminGetData import ifUserExists, ifProductExists
 from django.contrib.auth import login, logout, update_session_auth_hash
@@ -28,12 +28,13 @@ def admin(request):
         print(request.POST)
         if 'loginbutton' in request.POST:
             form = LogginginForm(request.POST)
-            username = request.POST['username']
-            password = request.POST['password']
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect('/admin')
+            if form.is_valid():
+                username = request.POST['username']
+                password = request.POST['password']
+                user = authenticate(request, username=username, password=password)
+                if user is not None:
+                    login(request, user)
+                    return redirect('/admin')
     else:
         form = LogginginForm()
     args['form'] = form
@@ -81,8 +82,10 @@ class EditUser(View):
     def get(self, request, userid):
         AddressData = Address.objects.get(customerID=userid)
         UserData = Customers.objects.get(customerID=userid)
-        Data = {'address' : AddressData.address, 'number' : AddressData.number, 'city' : AddressData.city, 'postalcode' : AddressData.postalcode, 'name': UserData.name, 'surname': UserData.surname, 'telephone': UserData.telephone}
+        Data = {'address' : AddressData.address, 'number' : AddressData.number, 'city' : AddressData.city, 'postalcode' : AddressData.postalcode, 'name': UserData.name, 'surname': UserData.surname, 'telephone': UserData.telephone, 'isBlocked' : UserData.isBlocked}
         user_form = EditUserForm(initial=Data)
+        if request.user.id == int(userid):
+            user_form.fields['isBlocked'].disabled = True
         return render(request, 'admin/edituser.html', {
             'userid': userid,
             'user_form': user_form,
@@ -96,7 +99,6 @@ class EditUser(View):
             })
         if 'edituser' in request.POST:
             user_form = EditUserForm(request.POST)
-            print(user_form)
             if user_form.is_valid():
                 editUser(request, userid)
                 return redirect('/admin/searchusers/')

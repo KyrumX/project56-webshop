@@ -4,6 +4,7 @@ from ...collections.tools import *
 from django.contrib.auth.models import User
 from ...database.adminGetData import *
 from django.shortcuts import *
+from ...collections.tools import TransBool
 
 register = template.Library()
 
@@ -28,7 +29,6 @@ def getUserRole(userid):
 @register.simple_tag()
 def displayUsers(query):
     #Deze functie convert alle gevonden users naar items in een table
-    print("HELLO")
     users = getUsers(query)
     value = query
     if value != "":
@@ -43,14 +43,17 @@ def displayUsers(query):
 					</div>
 				</form>""".format(value)
     rowcount = 0
-    resulthtml = "<div class='table1'><table><tr><th>ID</th><th>Naam</th><th>Achternaam</th><th>E-mail</th><th>Geregistreerd</th><th style='text-align: center;'>Edit</th></tr>"
+    resulthtml = "<div class='table1'><table><tr><th>ID</th><th>Naam</th><th>Achternaam</th><th>E-mail</th><th>Geregistreerd</th><th style='text-align: center;'>Geblokkeerd</th><th style='text-align: center;'>Edit</th></tr>"
     counthtml = ""
     for e in users:
         rowcount += 1
-        resulthtml += "<tr><td>" + str(e.customerID) + "</td><td>" + e.name + "</td><td>" + e.surname + "</td><td>" + e.email + "</td><td>" + str(e.isRegistered) + "</td>" \
-            "<td>"
+        isRegistered = TransBool(e.isRegistered)
+        resulthtml += "<tr><td>" + str(e.customerID) + "</td><td>" + e.name + "</td><td>" + e.surname + "</td><td>" + e.email + "</td><td>" + isRegistered + "</td>"
         if e.isRegistered:
-            resulthtml += "<form action='/admin/edit/user/" + str(e.customerID) +"'><button type='submit' value='Bewerken'/>Bewerken</button></form></td></tr>"
+            isBlocked = TransBool(e.isBlocked)
+            resulthtml += "<td>" + isBlocked + "</td><td><form action='/admin/edit/user/" + str(e.customerID) +"'><button type='submit' value='Bewerken'/>Bewerken</button></form></td></tr>"
+        else:
+            resulthtml += "<td>n.v.t.</td><td>n.v.t.</td>"
     resulthtml += "</table></div>"
     if query != "":
         counthtml += "<div class='aantal'><p>Aantal zoekresultaten voor '{0}': {1}</p></div>".format(query, str(rowcount))

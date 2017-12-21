@@ -720,3 +720,16 @@ canvas{
 	height: 100%;
 	width: 100%;
 }
+
+.errorlist {
+	padding: 15px;
+	background-color: #ff7d7d;
+	list-style-type: none;
+	font-size: 12px;
+	color: white;
+	border-radius: 5px;
+}
+
+.errorlist li{
+	width: 100%;
+}
