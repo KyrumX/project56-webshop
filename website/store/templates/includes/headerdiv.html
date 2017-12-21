@@ -1,3 +1,4 @@
+{% load custom_tags %}
 <div class="header">
     {% if user.is_authenticated %}
     <div class="logowrap commoncolor">
@@ -21,6 +22,7 @@
         </div>
     </div>
 	{% if not user.is_staff %}
+	{% incrementVisit true user.id %}
 <div class="usersection">
     <ul>
         <li><div class="user">
@@ -34,6 +36,7 @@
 		</a>
     </ul></div>
 	{% else %}
+	{% incrementVisit false user.id %}
 	<div class="usersection">
     <ul>
         <li><div class="user">
@@ -48,6 +51,7 @@
     </ul></div>
 	{% endif %}
     {% else %}
+	{% incrementVisit false %}
     <div class="logowrap commoncolor">
         <div class="logo">
             {% load static %}

@@ -1,10 +1,11 @@
 from django import template
-from ..models import Products, ProductDetails
+from ..models import Products, ProductDetails, UserVisits, Dates
 import urllib.request, json
-from ..database.getData import getProdImage, getProdName, getProdPublish, getProdPrice, getProdAuthor, getProdStock
+from ..database.getData import getProdImage, getProdName, getProdPublish, getProdPrice, getProdAuthor, getProdStock, getVisitsChart
 from ..database.getData import getProdName, getProdNum, getProdPrice, getProdStock, getProdGenre, getProdType, getProdAuthor, getProdDesc, getProdImage, getProdLanguage, getProdPublish, getProdRating, getProdTotalPages, getProdData
 from ..database.verifyData import verifyProdNum
 from ..database.getData import getSearchResults
+import datetime
 register = template.Library()
 
 @register.assignment_tag
@@ -140,3 +141,33 @@ def getOrder(order):
 def getOrderNum(order):
     string = str(order.first().orderNum.orderNum)
     return string
+
+@register.simple_tag()
+def incrementVisit(is_staff, cID=-1):
+    all = UserVisits.objects.all().filter(customerID=cID)
+    print("cID = ", cID)
+    print(all)
+    if not all:
+        print("none found")
+        if is_staff == "false":
+            print("Nothing found. Adding to db")
+            uservisit = UserVisits(customerID=cID, visits=1, is_staff=False)
+            uservisit.save()
+        else:
+            print("User is Staff. Adding to db")
+            uservisit = UserVisits(customerID=cID, visits=1, is_staff=True) 
+            uservisit.save()
+    else:
+        print("Already found. Incrementing...")
+        c = UserVisits.objects.all().filter(customerID=cID)
+
+        for e in c:
+            #amountvisits = e.visits + 1
+            UserVisits.objects.filter(customerID=cID).update(visits = e.visits + 1)
+        #UserVisits.objects.filter(customerID=cID).update(visits = visits)
+    lel = UserVisits.objects.get(customerID=cID)
+    date = Dates(customerID=lel)
+    date.save()
+
+def visitchart():
+    return getVisitsChart()

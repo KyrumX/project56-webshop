@@ -41,4 +41,5 @@ urlpatterns = [
     url(r'^admin/createproduct/$', adminviews.createproduct, name="createproduct"),
     url(r'^admin/data/products/$', adminviews.ProductGraphSelection.as_view(), name="productdata"),
     url(r'^admin/data/products/(?P<year>[0-9]{4})/(?P<month>[1-9]{1,2})/$', adminviews.ProductGraphMonth.as_view(), name="productdatamonth"),
+    url(r'^admin/data/visits/$', adminviews.Visits.as_view(), name="visits"),
 ]

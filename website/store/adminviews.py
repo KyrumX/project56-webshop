@@ -3,11 +3,11 @@ from django.db.models import Sum, Avg
 from django.shortcuts import render, redirect
 from graphos.renderers import gchart
 from graphos.sources.simple import SimpleDataSource
-
+from graphos.sources.model import ModelDataSource
 from store.collections.adminforms import AdminRegistrationForm, ProductsRegistrationForm
 from django.http import HttpResponse
 from django.contrib.auth.models import User
-from .models import OrderDetails
+from .models import OrderDetails, Dates
 
 #Admin index - comicfire.com/admin/
 from django.views import View
@@ -134,4 +134,29 @@ class ProductGraphMonth(View):
             })
         return render(request, 'admin/productdataselection.html', {
             'warning' : "De combinatie van jaar en maand is niet geldig. Selecteer er één uit de onderstaande lijst."
+        })
+
+class Visits(View):
+    def get(self, request):
+        queryset = Dates.objects.filter(date__year__icontains=int(2017), date__month=int(12))
+        print(queryset)
+        dataR = []
+
+        for e in queryset:
+            dataR.append([str(e['date']), e['customerID']])
+
+        data = [
+            ['date', 'customerID'],
+        ]
+
+        for e in dataR:
+            data.append(e)
+
+        data_source = SimpleDataSource(data)
+        chart = gchart.LineChart(data_source)
+
+        return render(request, 'admin/visits.html', {
+            'visitschart': chart,
+            'year': int(1),
+            'month': int(1),
         })

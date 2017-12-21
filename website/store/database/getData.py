@@ -1,4 +1,6 @@
 from ..models import Products, ProductDetails, Address, Customers
+from graphos.sources.model import ModelDataSource
+from graphos.renderers import gchart
 import math
 from django.db.models import Q
 
@@ -249,3 +251,9 @@ def getPostalcode(id):
     address = getCustomerAddress(id)
     object = address.postalcode
     return object
+
+def getVisitsChart():
+    queryset = Dates.objects.all()
+    data_source = ModelDataSource(queryset, fields=['date', 'customerID'])
+    chart = gchart.LineChart(data_source)
+    return chart
