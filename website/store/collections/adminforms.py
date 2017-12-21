@@ -91,15 +91,16 @@ class ProductsRegistrationForm(ModelForm):
         language_validator(LanguageIn)
         return self.cleaned_data['language']
 
-    def clean_type(self):
-        TypeIn = self.cleaned_data['type']
-        typeAndGenre_validator(TypeIn)
-        return self.cleaned_data['type']
+    #Todo: Fix these
+    # def clean_type(self):
+    #     TypeIn = self.cleaned_data['type']
+    #     typeAndGenre_validator(TypeIn)
+    #     return self.cleaned_data['type']
 
-    def clean_genre(self):
-        GenreIn = self.cleaned_data['genre']
-        typeAndGenre_validator(GenreIn)
-        return self.cleaned_data['genre']
+    # def clean_genre(self):
+    #     GenreIn = self.cleaned_data['genre']
+    #     typeAndGenre_validator(GenreIn)
+    #     return self.cleaned_data['genre']
 
     def save(self, commit=True):
         products = super(ProductsRegistrationForm, self).save(commit=False)
