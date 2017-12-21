@@ -9,8 +9,8 @@ from store.models import Customers, Address, Products, ProductDetails
 
 
 class AdminRegistrationForm(UserCreationForm):
-    firstname = forms.CharField(required=True, label="Voornaam:")
-    lastname = forms.CharField(required=True, label="Achternaam:")
+    firstname = forms.CharField(required=True, label="Voornaam:", min_length=2)
+    lastname = forms.CharField(required=True, label="Achternaam:", min_length=2)
     email = forms.EmailField(required=True, label="E-mail:")
     isstaff = forms.BooleanField(required=False, label='Is medewerker:')
 
@@ -82,6 +82,24 @@ class ProductsRegistrationForm(ModelForm):
     class Meta:
         model = Products
         fields = ("prodName", "prodPrice", "prodStock")
+
+    def clean_prodName(self):
+        pass
+
+    def clean_language(self):
+        LanguageIn = self.cleaned_data['language']
+        language_validator(LanguageIn)
+        return self.cleaned_data['language']
+
+    def clean_type(self):
+        TypeIn = self.cleaned_data['type']
+        typeAndGenre_validator(TypeIn)
+        return self.cleaned_data['type']
+
+    def clean_genre(self):
+        GenreIn = self.cleaned_data['genre']
+        typeAndGenre_validator(GenreIn)
+        return self.cleaned_data['genre']
 
     def save(self, commit=True):
         products = super(ProductsRegistrationForm, self).save(commit=False)

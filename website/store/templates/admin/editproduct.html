@@ -1,26 +1,29 @@
 {% extends "admin/frames/adminbase.html" %}
-{% load admin.adminproducttags %}
+{% load admin.adminusertags %}
 {% load static %}
 {% block content %}
 
     <div class="middle" style="border: none; background-color: #ebe9e9;">
 		<div class="edit">
-        {% productFound item as productFoundBool %}
-
-        {% if productFoundBool %}
-            <p id="editp">Editten van product {{ item }}:</p>
+        {% productFound item as productsFoundBool %}
+        {% isSameProduct request item as isSame %}
+        {% if productsFoundBool %}
+            <p id="editp">Bewerken van product {{ item }}:</p>
             <form method="POST" id="form1">
                 {% csrf_token %}
                 {{product_form.as_p}}
                 <input type="submit" id="editproductsubmit" name="editproduct">
             </form>
-             <form method="POST">
+            {% if not isSame %}
+                <form method="POST">
                     {% csrf_token %}
                     <button type="submit" name="deleteproduct" value='{{item}}' class="remove">
                         <i class="fa fa-trash" aria-hidden="true"></i>
                         Verwijder product
                     </button>
                 </form>
+            {% else %}
+            {% endif %}
         {% else %}
             <div>Er is geen product gevonden met dit id.</div>
         {% endif %}
