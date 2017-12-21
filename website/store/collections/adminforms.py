@@ -9,8 +9,8 @@ from store.models import Customers, Address, Products, ProductDetails
 
 
 class AdminRegistrationForm(UserCreationForm):
-    firstname = forms.CharField(required=True, label="Voornaam:")
-    lastname = forms.CharField(required=True, label="Achternaam:")
+    firstname = forms.CharField(required=True, label="Voornaam:", min_length=2)
+    lastname = forms.CharField(required=True, label="Achternaam:", min_length=2)
     email = forms.EmailField(required=True, label="E-mail:")
     isstaff = forms.BooleanField(required=False, label='Is medewerker:')
 
@@ -83,6 +83,24 @@ class ProductsRegistrationForm(ModelForm):
         model = Products
         fields = ("prodName", "prodPrice", "prodStock")
 
+    def clean_prodName(self):
+        pass
+
+    def clean_language(self):
+        LanguageIn = self.cleaned_data['language']
+        language_validator(LanguageIn)
+        return self.cleaned_data['language']
+
+    def clean_type(self):
+        TypeIn = self.cleaned_data['type']
+        typeAndGenre_validator(TypeIn)
+        return self.cleaned_data['type']
+
+    def clean_genre(self):
+        GenreIn = self.cleaned_data['genre']
+        typeAndGenre_validator(GenreIn)
+        return self.cleaned_data['genre']
+
     def save(self, commit=True):
         products = super(ProductsRegistrationForm, self).save(commit=False)
         maxID = Products.objects.all().aggregate(Max('prodNum'))
@@ -114,3 +132,38 @@ class ProductsRegistrationForm(ModelForm):
         newEntryProductDetails.save()
 
         return products
+
+class EditProductForm(forms.Form):
+    prodName = forms.CharField(required=True, label="Titel:", max_length=200)
+    prodPrice = forms.DecimalField(required=True, label="Prijs:", min_value=1)
+    prodStock = forms.IntegerField(required=True, label="Quantiteit:", min_value=1)
+    genre = forms.CharField(required=True, label='Genre:', max_length=50)
+    type = forms.CharField(required=True, label='Type:', max_length=50)
+    publisher = forms.CharField(required=True, label='Uitgever:', max_length=50)
+    totalPages = forms.IntegerField(required=True, label='Bladzijden:', min_value=1)
+    language = forms.CharField(required=False, label='Taal:', max_length=25)
+    rating = forms.IntegerField(required=False, label='Score:', min_value=1, max_value=5)
+    author = forms.CharField(required=True, label='Schrijver:', max_length=50)
+    desc = forms.CharField(required=True, label='Beschrijving:')
+    imageLink = forms.CharField(required=False, label='Foto link:', max_length=300)
+    pubDatum = forms.DateField(required=True, label='Uitgeefdatum (Y-M-D):')
+
+    class Meta:
+        model = Products
+
+
+    def save(self, commit=True):
+        products = super(EditProductForm, self).save(commit=False)
+        products.prodName = self.cleaned_data['prodName']
+        products.prodPrice = self.cleaned_data['prodPrice']
+        products.prodStock = self.cleaned_data['prodStock']
+        products.genre = self.cleaned_data['genre']
+        products.type = self.cleaned_data['type']
+        products.publisher = self.cleaned_data['publisher']
+        products.totalPages = self.cleaned_data['totalPages']
+        products.language = self.cleaned_data['language']
+        products.rating = self.cleaned_data['rating']
+        products.author = self.cleaned_data['author']
+        products.desc = self.cleaned_data['desc']
+        products.imageLink = self.cleaned_data['imageLink']
+        products.pubDatum = self.cleaned_data['pubDatum']

@@ -29,20 +29,19 @@ def creditcard_validator(cardnumber, length):
     else:
         if cardnumber <= 0:
             raise ValidationError(_('Kaartnummer is niet geldig!'))
-    #     for i in range(len(cardnumber)):
-    #         if not str(cardnumber[i]).isdigit():
-    #             raise ValidationError(_('kaarnummer is niet geldig!'))
 
 def product_validator(number):
     if number <= 0:
         raise ValidationError(_('Waarde kan niet lager dan 0 zijn!'))
 
-def string_validator(genre):
-    output = ""
-    i = 0
-    while (i < genre.length):
-      if (not(genre[i].isDigit())):
-        output += genre[i]
-    if output == "":
-      return "Not Provided"
-    return output
+def language_validator(language):
+    list = ["Engels", "Nederlands", "EN-US", "en-us", "NL", "EN"]
+    if language not in list:
+        raise ValidationError(_('Taal is ongeldig'))
+
+#TODO: Pls halp
+def typeAndGenre_validator(type):
+    # i = len(type)
+    for d in type:
+        if str(type[d]).isdigit():
+                raise ValidationError(_('Mogen geen cijfers in voorkomen.'))

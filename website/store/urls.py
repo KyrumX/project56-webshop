@@ -40,6 +40,7 @@ urlpatterns = [
     url(r'^admin/createuser$', adminviews.createuser, name="createuser"),
     url(r'^admin/edit/user/(?P<userid>\d+)/$', adminviews.EditUser.as_view(), name="edituser"),
     url(r'^admin/createproduct/$', adminviews.createproduct, name="createproduct"),
+    url(r'^admin/edit/product/(?P<item>\d+)/$', adminviews.EditProduct.as_view(), name="editproduct"),
     url(r'^admin/data/products/$', adminviews.ProductGraphSelection.as_view(), name="productdata"),
     url(r'^admin/data/products/(?P<year>[0-9]{4})/(?P<month>[1-9]{1,2})/$', adminviews.ProductGraphMonth.as_view(), name="productdatamonth"),
 ]

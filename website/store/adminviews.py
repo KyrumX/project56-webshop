@@ -1,22 +1,24 @@
 import datetime
 from django.db.models import Sum, Avg
 from django.shortcuts import render, redirect
+from store.collections.adminforms import AdminRegistrationForm, ProductsRegistrationForm, EditProductForm
+from django.http import HttpResponse
+from django.contrib.auth.models import User
 from graphos.renderers import gchart
 from graphos.sources.simple import SimpleDataSource
-
 from store.collections.adminforms import AdminRegistrationForm, ProductsRegistrationForm
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from .models import OrderDetails
-
 #Admin index - comicfire.com/admin/
 from django.views import View
-
-from store.database.adminGetData import ifUserExists
+from store.collections.forms import EditUserForm, LogginginForm
+from .models import ProductDetails, Products
+from store.database.adminGetData import ifUserExists, ifProductExists
 from django.contrib.auth import login, logout, update_session_auth_hash
 from .collections.tools import *
-from .collections.forms import *
 from .database.AccountOps import *
+from .database.ProductOps import editProduct, deleteProduct
 from .collections.posts import *
 from django.contrib.auth import authenticate
 
@@ -100,6 +102,37 @@ class EditUser(View):
                 return redirect('/admin/searchusers/')
             return render(request, 'admin/edituser.html', {'userid': userid, 'user_form': user_form})
 
+
+class EditProduct(View):
+    def get(self, request, item):
+        item = int(item)
+        ProductsData = Products.objects.get(prodNum=item)
+        ProductDetData = ProductDetails.objects.get(prodNum=Products(item))
+        Data = {'prodName': ProductsData.prodName, 'prodStock': ProductsData.prodStock, 'prodPrice': ProductsData.prodPrice,
+                'genre': ProductDetData.genre, 'type': ProductDetData.type, 'publisher': ProductDetData.publisher,
+                'totalPages': ProductDetData.totalPages, 'language': ProductDetData.language,  'rating': ProductDetData.rating,
+                'author': ProductDetData.author,  'desc': ProductDetData.desc, 'imageLink': ProductDetData.imageLink, 'pubDatum': ProductDetData.pubDatum }
+        product_form = EditProductForm(initial=Data)
+        return render(request, 'admin/editproduct.html', {
+            'item': item,
+            'product_form': product_form,
+        })
+
+    def post(self, request, item):
+        if 'deleteproduct' in request.POST:
+            deleteProduct(request)
+            return render(request, 'admin/productdeleted.html', {
+                'item': item,
+            })
+        if 'editproduct' in request.POST:
+            product_form = EditProductForm(request.POST)
+            print(product_form)
+            if product_form.is_valid():
+                editProduct(request, item)
+                return render(request, 'admin/productedited.html', {
+                'item': item})
+            return render(request, 'admin/editproduct.html', {'item': item, 'product_form': product_form})
+
 def createproduct(request):
     if request.method == 'POST':
         form = ProductsRegistrationForm(request.POST)
@@ -113,7 +146,7 @@ def createproduct(request):
 class ProductGraphSelection(View):
     def get(self, request):
 
-        return render(request, 'admin/productdataselection.html', {})
+        return render(request, 'admin/dataselection.html', {})
 
 class ProductGraphMonth(View):
     def get(self, request, year, month):
@@ -145,6 +178,6 @@ class ProductGraphMonth(View):
                 'year' : int(year),
                 'month' : int(month),
             })
-        return render(request, 'admin/productdataselection.html', {
+        return render(request, 'admin/dataselection.html', {
             'warning' : "De combinatie van jaar en maand is niet geldig. Selecteer er één uit de onderstaande lijst."
         })
