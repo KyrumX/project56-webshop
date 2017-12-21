@@ -35,7 +35,8 @@ def product_validator(number):
         raise ValidationError(_('Waarde kan niet lager dan 0 zijn!'))
 
 def language_validator(language):
-    if language != "Engels" or language != "Nederlands" or language != "EN-US" or language != "en-us" or language != "NL" or language != "EN":
+    list = ["Engels", "Nederlands", "EN-US", "en-us", "NL", "EN"]
+    if language not in list:
         raise ValidationError(_('Taal is ongeldig'))
 
 #TODO: Pls halp
