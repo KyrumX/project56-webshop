@@ -2265,6 +2265,18 @@ button{
 	margin: 0 auto;
 	width: 80%;
 	position: relative;
+	font-family: "Open Sans",Arial,Helvetica,sans-serif;
+    font: 18px Helvetica, Arial, sans-serif;
+}
+
+#contacttext {
+    font-family: "Open Sans",Arial,Helvetica,sans-serif;
+    font: 18px Helvetica, Arial, sans-serif;
+}
+
+.contacttext {
+    font-family: "Open Sans",Arial,Helvetica,sans-serif;
+    font: 18px Helvetica, Arial, sans-serif;
 }
 
 .about {
