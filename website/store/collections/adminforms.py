@@ -83,8 +83,8 @@ class ProductsRegistrationForm(ModelForm):
         model = Products
         fields = ("prodName", "prodPrice", "prodStock")
 
-    def clean_prodName(self):
-        pass
+    # def clean_prodName(self):
+    #     pass
 
     def clean_language(self):
         LanguageIn = self.cleaned_data['language']
@@ -113,13 +113,13 @@ class ProductsRegistrationForm(ModelForm):
         products.prodName = self.cleaned_data['prodName']
         products.prodPrice = self.cleaned_data['prodPrice']
         products.prodStock = self.cleaned_data['prodStock']
-        products.genre = string_validator(self.cleaned_data['genre'])
-        products.type = string_validator(self.cleaned_data['type'])
+        products.genre = self.cleaned_data['genre']
+        products.type = self.cleaned_data['type']
         products.publisher = self.cleaned_data['publisher']
         products.totalPages = self.cleaned_data['totalPages']
-        products.language = string_validator(self.cleaned_data['language'])
+        products.language = self.cleaned_data['language']
         products.rating = self.cleaned_data['rating']
-        products.author = string_validator(self.cleaned_data['author'])
+        products.author = self.cleaned_data['author']
         products.desc = self.cleaned_data['desc']
         products.imageLink = self.cleaned_data['imageLink']
         products.pubDatum = self.cleaned_data['pubDatum']
