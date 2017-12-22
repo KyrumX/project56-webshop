@@ -75,8 +75,13 @@ def listloop(userAuth):
     return txt
 
 @register.simple_tag()
-def searchList(query, userAuth, filter=""):
-    object = getSearchResults(str(query), userAuth, filter)
+def searchList(query, userAuth, filterlist, filter="", sidefilter=""):
+    object = getSearchResults(str(query), userAuth, filterlist, filter, sidefilter)
+    return object
+	
+@register.simple_tag()
+def indexsearchList(userAuth, query="", filter=""):
+    object = getSearchResults("hulk", userAuth, filter)
     return object
 
 @register.simple_tag()

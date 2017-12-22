@@ -45,6 +45,8 @@ def index(request):
             return redirect('/winkelwagentje/')
         elif 'moveToWishListButton' in request.POST:
             return addToWishListPost(request)
+        elif 'filter' in request.POST:
+            return searchPost(request)
 
     return render(request, 'index.html')
 
@@ -199,6 +201,24 @@ def product(request, item):
 
 
 def search(request, query, filter=""):
+    sidefilters = ['language', 'publisher', 'type', 'pmin', 'pmax', 'score']
+    args = {}
+    filters = {}
+    if request.method == 'GET':
+        if 'language' in request.GET:
+            filters['language'] = request.GET.getlist('language')
+            args['languages'] = request.GET.getlist('language')
+        if 'score' in request.GET:
+            filters['score'] = request.GET.getlist('score')
+            args['scores'] = request.GET.getlist('score')
+        if 'type' in request.GET:
+            filters['type'] = request.GET.getlist('type') #TODO: CONTINU HERE
+            args['types'] = request.GET.getlist('type')
+        if 'publisher' in request.GET:
+            filters['publisher'] = request.GET['publisher']
+        if 'pmax' in request.GET and 'pmin' in request.GET:
+            filters['pmin'] = request.GET['pmin']
+            filters['pmax'] = request.GET['pmax']
     if request.method == 'POST':
         print(request.POST)
         if 'addToCartItemBoxButton' in request.POST:
@@ -212,14 +232,15 @@ def search(request, query, filter=""):
             return searchPost(request)
         elif 'searchtext' in request.POST:
             return searchPost(request)
+        elif "sidefilter" in request.POST:
+            print("Found sidefilters")
+            return searchPost(request)
 
-    # filt = "{}".format(request.POST.get('filter'))
-    # print(filt)
-    thequery = query
-    thefilter = filter
-    return render(request, 'searchresults.html', {
-        'query' : thequery, 'filt' : thefilter,
-    })
+    args['query'] = query
+    args['filt'] = filter
+    args['filteritems'] = filters
+
+    return render(request, 'searchresults.html', args)
 
 
 def logoutview(request):

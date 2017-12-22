@@ -3,14 +3,18 @@
 {% load custom_tags %}
 <div class="content">
     <div class="bars sidecolors">
-        {% include 'includes/nieuwproduct.html' %}
+        {% include 'includes/filterbar.html' %}
     </div>
     <div class="mid">
         <div class="qrs">
+		<p>filt:  {{ filt }} </p>
+		<p>sidefilt: {{ sidefilt }} </p> 
+		<p>query:  {{ query }} </p>
                 <form role='form' method='post' name='productactions'>
 				<input type='hidden' name='searchtext' value={{ query }}>
+				<input type='hidden' name='sidefilt' value={{ sidefilt }}>
                     {% csrf_token %}
-                    {% autoescape off %}{% searchList query user.is_authenticated filt %}{% endautoescape %}
+                    {% autoescape off %}{% searchList query user.is_authenticated filteritems filt sidefilt %}{% endautoescape %}
                 </form>
         </div>
     </div>

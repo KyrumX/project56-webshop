@@ -1,0 +1,151 @@
+{% load custom_tags %}
+<form method="GET">
+    <div class="barwrap">
+        <div class="leftbar commoncolor">
+            <p>Taal<i class="fa fa-sort-desc" aria-hidden="true" id="sortdown"></i></p>
+        </div>
+        <div class="bartext">
+                {% if 'English' in languages %}
+                    <input type="checkbox" onchange="this.form.submit()" name="language" value="English" id="english" checked>
+                {% else %}
+                    <input type="checkbox" onchange="this.form.submit()" name="language" value="English" id="english">
+                {% endif %}
+                <label for="english"></label>
+                <p>Engels</p>
+                <br>
+                {% if 'Dutch' in languages %}
+                     <input type="checkbox" onchange="this.form.submit()" name="language" value="Dutch" id="dutch" checked>
+                {% else %}
+                    <input type="checkbox" onchange="this.form.submit()" name="language" value="Dutch" id="dutch">
+                {% endif %}
+            <label for="dutch"></label>
+            <p>Nederlands</p>
+            <br>
+        </div>
+    </div>
+    <div class="barwrap">
+        <div class="leftbar commoncolor">
+            <p>Type Boek<i class="fa fa-sort-desc" aria-hidden="true" id="sortdown"></i></p>
+        </div>
+        <div class="bartext">
+            {% if request.GET.type == 'manga' %}
+                <input type="checkbox" onchange="this.form.submit()" name="type" value="manga" id="manga" checked>
+            {% else %}
+                <input type="checkbox" onchange="this.form.submit()" name="type" value="manga" id="manga">
+            {% endif %}
+            <label for="manga"></label>
+            <p>Manga</p>
+            <br>
+            {% if request.GET.type == 'comic' %}
+                <input type="checkbox" onchange="this.form.submit()" name="type" value="comic" id="comic" checked>
+            {% else %}
+                <input type="checkbox" onchange="this.form.submit()" name="type" value="comic" id="comic">
+            {% endif %}
+            <label for="comic"></label>
+            <p>Comic</p>
+            <br>
+            {% if request.GET.type == 'shortstory' %}
+                <input type="checkbox" onchange="this.form.submit()" name="type" value="shortstory" id="shortstory" checked>
+            {% else %}
+                <input type="checkbox" onchange="this.form.submit()" name="type" value="shortstory" id="shortstory">
+            {% endif %}
+            <label for="shortstory"></label>
+            <p>Short Story</p>
+            <br>
+        </div>
+    </div>
+    <div class="barwrap">
+        <div class="leftbar commoncolor">
+            <p>Uitgever<i class="fa fa-sort-desc" aria-hidden="true" id="sortdown"></i></p>
+        </div>
+        <div class="bartext">
+            {% if request.GET.publisher == 'marvel' %}
+                <input type="checkbox" onchange="this.form.submit()" value="marvel" name="publisher" id="marvel" checked>
+            {% else %}
+                <input type="checkbox" onchange="this.form.submit()" value="marvel" name="publisher" id="marvel">
+            {% endif %}
+            <label for="marvel"></label>
+            <p>Marvel</p>
+            <br>
+            {% if request.GET.publisher == 'dc' %}
+                <input type="checkbox" onchange="this.form.submit()" value="dc" name="publisher" id="dc" checked>
+            {% else %}
+                <input type="checkbox" onchange="this.form.submit()" value="dc" name="publisher" id="dc">
+            {% endif %}
+            <label for="dc"></label>
+            <p>DC</p>
+            <br>
+        </div>
+    </div>
+    <div class="barwrap">
+        <div class="leftbar commoncolor">
+            <p>Prijs<i class="fa fa-sort-desc" aria-hidden="true" id="sortdown"></i></p>
+        </div>
+        <div class="bartext price center">
+            <ul>
+                <li>
+                    <p>€</p>
+                    <input type="textbox" name="pmin" value="0">
+                </li>
+                <li style="width: 10%;">
+                    <p>tot</p>
+                </li>
+                <li>
+                    <p>€</p>
+                    <input type="textbox" name="pmax" value="100">
+                </li>
+                <li style="width: 20%; margin-left: 5px;">
+                    <button><i class="fa fa-refresh" aria-hidden="true" id="addit"></i></button>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="barwrap">
+        <div class="leftbar commoncolor">
+            <p>Minimale Score<i class="fa fa-sort-desc" aria-hidden="true" id="sortdown"></i></p>
+        </div>
+        <div class="bartext">
+            {% if '1' in scores %}
+                <input type="checkbox" onchange="this.form.submit()" name="score" value="1" id="one" checked>
+            {% else %}
+                <input type="checkbox" onchange="this.form.submit()" name="score" value="1" id="one">
+            {% endif %}
+            <label for="one"></label>
+            <p><i class="fa fa-star" aria-hidden="true"></i></p>
+            <br>
+            {% if '2' in scores %}
+                <input type="checkbox" onchange="this.form.submit()" name="score" value="2" id="two" checked>
+            {% else %}
+                <input type="checkbox" onchange="this.form.submit()" name="score" value="2" id="two">
+            {% endif %}
+            <label for="two"></label>
+            <p><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i></p>
+            <br>
+            {% if '3' in scores %}
+                <input type="checkbox" onchange="this.form.submit()" name="score" value="3" id="three" checked>
+            {% else %}
+                <input type="checkbox" onchange="this.form.submit()" name="score" value="3" id="three">
+            {% endif %}
+            <label for="three"></label>
+            <p><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i></p>
+            <br>
+            {% if '4' in scores %}
+                <input type="checkbox" onchange="this.form.submit()" name="score" value="4" id="four" checked>
+            {% else %}
+                <input type="checkbox" onchange="this.form.submit()" name="score" value="4" id="four">
+            {% endif %}
+            <label for="four"></label>
+            <p><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i></p>
+            <br>
+            {% if '5' in scores %}
+                <input type="checkbox" onchange="this.form.submit()" name="score" value="5" id="five" checked>
+            {% else %}
+                <input type="checkbox" onchange="this.form.submit()" name="score" value="5" id="five">
+            {% endif %}
+            <label for="five"></label>
+            <p><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i></p>
+            <br>
+            <br>
+        </div>
+    </div>
+</form>
