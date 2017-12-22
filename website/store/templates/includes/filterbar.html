@@ -1,82 +1,9 @@
 {% load custom_tags %}
+{% load filter_tags %}
 <form method="GET">
-    <div class="barwrap">
-        <div class="leftbar commoncolor">
-            <p>Taal<i class="fa fa-sort-desc" aria-hidden="true" id="sortdown"></i></p>
-        </div>
-        <div class="bartext">
-                {% if 'English' in languages %}
-                    <input type="checkbox" onchange="this.form.submit()" name="language" value="English" id="english" checked>
-                {% else %}
-                    <input type="checkbox" onchange="this.form.submit()" name="language" value="English" id="english">
-                {% endif %}
-                <label for="english"></label>
-                <p>Engels</p>
-                <br>
-                {% if 'Dutch' in languages %}
-                     <input type="checkbox" onchange="this.form.submit()" name="language" value="Dutch" id="dutch" checked>
-                {% else %}
-                    <input type="checkbox" onchange="this.form.submit()" name="language" value="Dutch" id="dutch">
-                {% endif %}
-            <label for="dutch"></label>
-            <p>Nederlands</p>
-            <br>
-        </div>
-    </div>
-    <div class="barwrap">
-        <div class="leftbar commoncolor">
-            <p>Type Boek<i class="fa fa-sort-desc" aria-hidden="true" id="sortdown"></i></p>
-        </div>
-        <div class="bartext">
-            {% if 'manga' in types %}
-                <input type="checkbox" onchange="this.form.submit()" name="type" value="manga" id="manga" checked>
-            {% else %}
-                <input type="checkbox" onchange="this.form.submit()" name="type" value="manga" id="manga">
-            {% endif %}
-            <label for="manga"></label>
-            <p>Manga</p>
-            <br>
-            {% if 'comic' in types %}
-                <input type="checkbox" onchange="this.form.submit()" name="type" value="comic" id="comic" checked>
-            {% else %}
-                <input type="checkbox" onchange="this.form.submit()" name="type" value="comic" id="comic">
-            {% endif %}
-            <label for="comic"></label>
-            <p>Comic</p>
-            <br>
-            {% if 'shortstory' in types %}
-                <input type="checkbox" onchange="this.form.submit()" name="type" value="shortstory" id="shortstory" checked>
-            {% else %}
-                <input type="checkbox" onchange="this.form.submit()" name="type" value="shortstory" id="shortstory">
-            {% endif %}
-            <label for="shortstory"></label>
-            <p>Short Story</p>
-            <br>
-        </div>
-    </div>
-    <div class="barwrap">
-        <div class="leftbar commoncolor">
-            <p>Uitgever<i class="fa fa-sort-desc" aria-hidden="true" id="sortdown"></i></p>
-        </div>
-        <div class="bartext">
-            {% if 'marvel' in publishers %}
-                <input type="checkbox" onchange="this.form.submit()" value="marvel" name="publisher" id="marvel" checked>
-            {% else %}
-                <input type="checkbox" onchange="this.form.submit()" value="marvel" name="publisher" id="marvel">
-            {% endif %}
-            <label for="marvel"></label>
-            <p>Marvel</p>
-            <br>
-            {% if 'dc' in publishers %}
-                <input type="checkbox" onchange="this.form.submit()" value="dc" name="publisher" id="dc" checked>
-            {% else %}
-                <input type="checkbox" onchange="this.form.submit()" value="dc" name="publisher" id="dc">
-            {% endif %}
-            <label for="dc"></label>
-            <p>DC</p>
-            <br>
-        </div>
-    </div>
+    {% autoescape off %}{% languageFilter searchResults languages %}{% endautoescape %}
+    {% autoescape off %}{% typeFilter searchResults types %}{% endautoescape %}
+    {% autoescape off %}{% publisherFilter searchResults publishers %}{% endautoescape %}
     <div class="barwrap">
         <div class="leftbar commoncolor">
             <p>Prijs<i class="fa fa-sort-desc" aria-hidden="true" id="sortdown"></i></p>
