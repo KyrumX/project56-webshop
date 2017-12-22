@@ -1,4 +1,5 @@
 from ..models import Address, Customers, Orders
+from django.contrib.auth.models import User
 
 
 def saveAddress(request):
@@ -22,14 +23,32 @@ def updateAddress(request):
     updateEntry.postalcode= request.POST.get('postalcode', '')
     updateEntry.save()
 
+
 def updateCustomerInfo(request):
     updateInfo = Customers.objects.get(customerID=request.user.id)
     updateInfo.name = request.POST.get('name', '')
     updateInfo.surname = request.POST.get('surname', '')
     updateInfo.telephone = request.POST.get('telephone', '')
+    print(updateInfo.telephone)
     updateInfo.save()
 
-
+def editUser(request, userid):
+    updateUser = Customers.objects.get(customerID=userid)
+    updateAddress = Address.objects.get(customerID=Customers(userid))
+    updateUser.name = request.POST.get('name', '')
+    updateUser.surname = request.POST.get('surname', '')
+    updateUser.telephone = request.POST.get('telephone', '')
+    if request.POST.get('isBlocked') == 'on':
+        blockedStatus = True
+    else:
+        blockedStatus = False
+    updateUser.isBlocked = blockedStatus
+    updateAddress.address= request.POST.get('address', '')
+    updateAddress.number= request.POST.get('number', '')
+    updateAddress.city= request.POST.get('city', '')
+    updateAddress.postalcode= request.POST.get('postalcode', '')
+    updateAddress.save()
+    updateUser.save()
 
 def getOrderAmount(request):
     object = Orders.objects.filter(customerID=Customers(request.user.id)).count()
@@ -45,4 +64,24 @@ def checkOrder(request, prodnum):
         return True
     return False
 
+def checkIfCustomerExist(userid):
+    return Customers.objects.filter(customerID=userid).exists()
 
+def checkIfAuthUserExist(userid):
+    return User.objects.filter(id=userid).exists()
+
+def deleteUser(request):
+    userId = int(request.POST['deleteuser'])
+    if checkIfCustomerExist(userId):
+        #We do not have to delete the orders or address associated with this user, Django does this automatically :D
+        Customers.objects.filter(customerID=userId).delete()
+
+    if checkIfAuthUserExist(userId):
+        User.objects.filter(id=userId).delete()
+
+def getUserId(email):
+    return User.objects.get(email=email).id
+
+def isUserBlocked(userId):
+    customer = Customers.objects.get(customerID=userId)
+    return customer.isBlocked

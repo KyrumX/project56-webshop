@@ -2,7 +2,6 @@
 {% load custom_tags %}
 {% load static %}
 {% block content %}
-    <div class="left commoncolor"></div>
     <div class="middle" style="background-color: #ebe9e9; border: none;">
 	{% if user.is_authenticated %}
 	<div class="welcome">
@@ -23,5 +22,4 @@
 	</form>
 	{% endif %}
 	</div>
-		<div class="right commoncolor"></div>
 {% endblock %}

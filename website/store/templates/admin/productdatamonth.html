@@ -2,19 +2,18 @@
 {% load admin.adminusertags %}
 {% load static %}
 {% block content %}
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">google.load("visualization", "1", {packages:["corechart"]});</script>
 	{% if user.is_authenticated %}
 		{% if user.is_staff %}
 		<div class="middle">
-      {% userFound query as usersFoundBool %}
-      {% if usersFoundBool %}
-      {% autoescape off %}{% displayUsers query %}{% endautoescape %}
-      {% else %}
-      <div>Oeps, niets gevonden!</div>
-      {% endif %}
+            <p>De 10 best verkopende producten van {% getMonth month %} {{ year }}.</p>
+            {{ chart.as_html }}
+        </div>
 		{% else %}
 		<div class="middle" style="background-color: #ebe9e9; border: none;">
 				<div class="welcome">
-				  <p>Helaas bent u niet bevoegd.</p>
+				<p>Helaas bent u niet bevoegd.</p>
 				</div>
 		{% endif %}
 	{% else %}
