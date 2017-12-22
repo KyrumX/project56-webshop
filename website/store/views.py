@@ -1,10 +1,9 @@
 from django.core.exceptions import PermissionDenied
-from django.core.mail import EmailMessage
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 
-from store.models import Products, ProductDetails
+from store.models import ProductDetails
 from store.tokens import account_activation_token
 from .collections.mails import *
 from django.contrib.auth import login, logout, update_session_auth_hash
@@ -13,24 +12,14 @@ from .database.getData import getProdName, getProdPrice, getProdStock, getProdGe
 from .database.verifyData import verifyProdNum
 from .collections.forms import *
 from django.http import *
-from django.forms import ModelForm
-from django.contrib.auth import authenticate
-from .database.CartOps import addToCart, removeFromCart
-from .database.getData import queryVerbeterFunctie
-from django.shortcuts import render_to_response
-from django.template import RequestContext
 from django.contrib.auth import authenticate
 from .database.CartOps import addToCart, removeFromCart
 from .database.WishListOps import removeFromWishList
 from .collections.posts import *
 from .database.CheckoutOps import *
 from .database.AccountOps import *
-import os
-from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
-from email.mime.image import MIMEImage
 from .collections.tools import *
-
 
 from .database.CartOps import setAmount
 
@@ -203,7 +192,7 @@ def product(request, item):
     })
 
 
-def search(request, query, filter=""):
+def search(request, query, filter):
     sidefilters = ['language', 'publisher', 'type', 'pmin', 'pmax', 'score']
     args = {}
     filters = {}

@@ -79,7 +79,7 @@ def getDBResults(query):
 
     return results
 
-def getSearchResults(results, userAuth, filteritems, sidefilter=""):
+def getSearchResults(results, userAuth, filteritems, orderer):
     # Structuur url: localhost:8000/search/Hulk/{smallfilter bvb 'asc'}/{sidefilter aka 'Dutch'}/
     # Voorbeeld beide filters url: localhost:8000/search/Hulk/priceasc/marvel/
 
@@ -88,7 +88,11 @@ def getSearchResults(results, userAuth, filteritems, sidefilter=""):
     # geen sidefilter: localhost:8000/search/Hulk/asc/items/
     # helemaal geen filter localhost:8000/search/Hulk/items/items/
 
-    selected = filter
+    selected = orderer
+    #Does not work, will fix later...
+    if orderer == 'desc':
+        results.order_by('-prodNum')
+
 
     if 'language' in filteritems and results.exists():
         languages = []
@@ -134,10 +138,6 @@ def getSearchResults(results, userAuth, filteritems, sidefilter=""):
         results = results.filter(rating__in=scores)
     if 'pmax' in filteritems and 'pmin' in filteritems and results.exists():
         results = results.filter(prodNum__prodPrice__lte=filteritems['pmax'], prodNum__prodPrice__gte=filteritems['pmin'])
-
-    #Does not work, will fix later...
-    if filter == 'asc':
-        results.order_by('prodNum__prodName')
 
     txt = """<div class='sorton commoncolor' style='border-radius: 3px'>
          <p>Totale Resultaten: </p>

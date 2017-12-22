@@ -227,47 +227,6 @@ class CustomerDetails(forms.Form):
         self.fields['customer_city'].label = "Stad:"
         self.fields['customer_postalcode'].label = "Postcode:"
 
-class ProductDetails(forms.Form):
-    products_prodName = forms.CharField(required=True, max_length=200)
-    products_prodPrice = forms.DecimalField(required=True, max_digits=5, decimal_places=2, min_value=1)
-    products_prodStock = forms.IntegerField(required=True, max_value=5000, min_value=1)
-    products_genre = forms.CharField(required=True, max_length=15)
-    products_type = forms.CharField(required=False, max_length=15)
-    products_publisher = forms.CharField(required=True, max_length=30)
-    products_totalPages = forms.IntegerField(required=True, max_value=2000, min_value=1)
-    products_language = forms.CharField(required=False, max_length=25)
-    products_rating = forms.IntegerField(required=False, max_value=5, min_value=1)
-    products_author = forms.CharField(required=True, max_length=30)
-    products_desc = forms.CharField(required=True, max_length=2000)
-    products_imageLink = forms.CharField(required=True, max_length=300)
-    products_pubDatum = forms.DateField(required=True)
-
-    def __init__(self, *args, **kwargs):
-        super(ProductDetails, self).__init__(*args, **kwargs)
-        self.fields['products_prodName'].label = "Titel:"
-        self.fields['products_prodPrice'].label = "Prijs:"
-        self.fields['products_prodStock'].label = "Quantiteit:"
-        self.fields['products_genre'].label = "Genre:"
-        self.fields['products_type'].label = "Type:"
-        self.fields['products_publisher'].label = "Uitgever:"
-        self.fields['products_totalPages'].label = "Bladzijden:"
-        self.fields['products_language'].label = "Taal:"
-        self.fields['products_rating'].label = "Score:"
-        self.fields['products_author'].label = "Schrijver:"
-        self.fields['products_desc'].label = "Beschrijving:"
-        self.fields['products_imageLink'].label = "Foto:"
-        self.fields['products_pubDatum'].label = "Uitgeefdatum:"
-
-    def CheckPrice(self):
-        Price = self.cleaned_data['products_prodPrice']
-        product_validator(Price)
-        return self.cleaned_data['products_prodPrice']
-
-    def CheckQuantity(self):
-        Quantity = self.cleaned_data['products_prodStock']
-        product_validator(Quantity)
-        return self.cleaned_data['products_prodStock']
-
 class CheckoutForm(forms.Form):
 
     card_name = forms.CharField(required=True)
