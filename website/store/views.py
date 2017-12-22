@@ -3,10 +3,13 @@ from django.core.mail import EmailMessage
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+
+from store.models import Products, ProductDetails
 from store.tokens import account_activation_token
 from .collections.mails import *
 from django.contrib.auth import login, logout, update_session_auth_hash
-from .database.getData import getProdName, getProdPrice, getProdStock, getProdGenre, getProdType, getProdAuthor, getProdDesc, getProdImage, getProdLanguage, getProdPublish, getProdRating, getProdTotalPages, getProdData, getStreet, getHouseNumber, getCity, getPostalcode, getCustomerFName, getCustomerLName, getCustomerPhone
+from .database.getData import getProdName, getProdPrice, getProdStock, getProdGenre, getProdType, getProdAuthor, getProdDesc, getProdImage, getProdLanguage, getProdPublish, getProdRating, getProdTotalPages, getProdData, getStreet, getHouseNumber, getCity, getPostalcode, getCustomerFName, getCustomerLName, getCustomerPhone, \
+    getDBResults
 from .database.verifyData import verifyProdNum
 from .collections.forms import *
 from django.http import *
@@ -212,13 +215,22 @@ def search(request, query, filter=""):
             filters['score'] = request.GET.getlist('score')
             args['scores'] = request.GET.getlist('score')
         if 'type' in request.GET:
-            filters['type'] = request.GET.getlist('type') #TODO: CONTINU HERE
+            filters['type'] = request.GET.getlist('type')
             args['types'] = request.GET.getlist('type')
         if 'publisher' in request.GET:
-            filters['publisher'] = request.GET['publisher']
+            filters['publisher'] = request.GET.getlist('publisher')
+            args['publishers'] = request.GET.getlist('publisher')
         if 'pmax' in request.GET and 'pmin' in request.GET:
             filters['pmin'] = request.GET['pmin']
             filters['pmax'] = request.GET['pmax']
+            args['pmin'] = request.GET['pmin']
+            args['pmax'] = request.GET['pmax']
+            if(request.GET['pmax'] == ''):
+                filters['pmax'] = 100
+                args['pmax'] = 100
+            if (request.GET['pmin'] == ''):
+                filters['pmin'] = 0
+                args['pmin'] = 0
     if request.method == 'POST':
         print(request.POST)
         if 'addToCartItemBoxButton' in request.POST:
@@ -237,11 +249,61 @@ def search(request, query, filter=""):
             return searchPost(request)
 
     args['query'] = query
+    args['searchResults'] = getDBResults(query)
     args['filt'] = filter
     args['filteritems'] = filters
 
     return render(request, 'searchresults.html', args)
 
+def productsAll(request):
+    args = {}
+    filters = {}
+    if request.method == 'GET':
+        if 'language' in request.GET:
+            filters['language'] = request.GET.getlist('language')
+            args['languages'] = request.GET.getlist('language')
+        if 'score' in request.GET:
+            filters['score'] = request.GET.getlist('score')
+            args['scores'] = request.GET.getlist('score')
+        if 'type' in request.GET:
+            filters['type'] = request.GET.getlist('type')
+            args['types'] = request.GET.getlist('type')
+        if 'publisher' in request.GET:
+            filters['publisher'] = request.GET.getlist('publisher')
+            args['publishers'] = request.GET.getlist('publisher')
+        if 'pmax' in request.GET and 'pmin' in request.GET:
+            filters['pmin'] = request.GET['pmin']
+            filters['pmax'] = request.GET['pmax']
+            args['pmin'] = request.GET['pmin']
+            args['pmax'] = request.GET['pmax']
+            if (request.GET['pmax'] == ''):
+                filters['pmax'] = 100
+                args['pmax'] = 100
+            if (request.GET['pmin'] == ''):
+                filters['pmin'] = 0
+                args['pmin'] = 0
+    if request.method == 'POST':
+        print(request.POST)
+        if 'addToCartItemBoxButton' in request.POST:
+            if not request.session.exists(request.session.session_key):
+                request.session.create()
+            addToCart(request, int(request.POST.get('addToCartItemBoxButton')))
+            return redirect('/winkelwagentje/')
+        elif "moveToWishListButton" in request.POST:
+            return addToWishListPost(request)
+        elif 'filter' in request.POST:
+            return searchPost(request)
+        elif 'searchtext' in request.POST:
+            return searchPost(request)
+        elif "sidefilter" in request.POST:
+            print("Found sidefilters")
+            return searchPost(request)
+
+    args['searchResults'] = ProductDetails.objects.all()
+    args['filt'] = filter
+    args['filteritems'] = filters
+
+    return render(request, 'productsall.html', args)
 
 def logoutview(request):
     if request.method == 'POST':

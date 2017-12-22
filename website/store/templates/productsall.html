@@ -1,6 +1,6 @@
 {% extends 'frames/base.html' %}
-{% block content %}
 {% load custom_tags %}
+{% block content %}
 <div class="content">
     <div class="bars sidecolors">
         {% include 'includes/filterbar.html' %}
@@ -11,7 +11,7 @@
 				<input type='hidden' name='searchtext' value={{ query }}>
 				<input type='hidden' name='sidefilt' value={{ sidefilt }}>
                     {% csrf_token %}
-                    {% autoescape off %}{% searchList searchResults user.is_authenticated filteritems sidefilt %}{% endautoescape %}
+                    {% autoescape off %}{% getAllProducts user.is_authenticated filteritems %}{% endautoescape %}
                 </form>
         </div>
     </div>

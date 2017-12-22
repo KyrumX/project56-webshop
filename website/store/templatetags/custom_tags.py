@@ -1,4 +1,6 @@
 from django import template
+
+from store.collections.filter import filterObjects
 from ..models import Products, ProductDetails
 import urllib.request, json
 from ..database.getData import getProdImage, getProdName, getProdPublish, getProdPrice, getProdAuthor, getProdStock
@@ -75,8 +77,8 @@ def listloop(userAuth):
     return txt
 
 @register.simple_tag()
-def searchList(query, userAuth, filterlist, filter="", sidefilter=""):
-    object = getSearchResults(str(query), userAuth, filterlist, filter, sidefilter)
+def searchList(objects, userAuth, filterlist, sidefilter=""):
+    object = getSearchResults(objects, userAuth, filterlist, sidefilter)
     return object
 	
 @register.simple_tag()
@@ -145,3 +147,31 @@ def getOrder(order):
 def getOrderNum(order):
     string = str(order.first().orderNum.orderNum)
     return string
+
+@register.simple_tag()
+def getAllProducts(userAuth, filteritems):
+    results = filterObjects(ProductDetails.objects.all().order_by('prodNum'), filteritems)
+    txt = ""
+
+    txt = "<div class='sorton commoncolor' style='border-radius: 3px'> \
+         <p>Totale Resultaten: </p> \
+         <p id='fifteen'>{0}</p></div>".format(str(len(list(results))))
+
+
+    counter = 0
+    for e in results:
+        if counter == 0:
+            txt += "<ul class='list'>"
+        txt = txt + "<li><div class='productwrap'><a href='/product/" + str(e.prodNum.prodNum) + "'><img src='" + e.imageLink + "' id='zoom_05' data-zoom-image='https://i.pinimg.com/736x/86/ff/e2/86ffe2b49daf0feed78a1c336753696d--black-panther-comic-digital-comics.jpg'></a><p class='author'>" + e.author + "</p><p class='name'>" + getProdName(e.prodNum.prodNum) + "</p><p></p>"
+        for i in range(0, e.rating):
+            txt = txt + "<i class='fa fa-star' aria-hidden='true'></i>"
+        txt = txt + "<p class='price'>€ " + str(e.prodNum.prodPrice) + "</p><button name='addToCartItemBoxButton' value='" + str(e.prodNum.prodNum) + "'class='addtocart'><i class='fa fa-plus' aria-hidden='true'></i><i class='fa fa-shopping-cart' aria-hidden='true'></i></button>"
+        if userAuth:
+            txt = txt + "<button name='moveToWishListButton' value='" + str(e.prodNum.prodNum) + "' class='wishlist'><i class='fa fa-heart' aria-hidden='true'></i></button>"
+        txt = txt + "<p class='stock'>Voorraad: " + str(e.prodNum.prodStock) + "</p></div></li>"
+        if counter == 2:
+            txt += "</ul>"
+            counter = 0
+        else:
+            counter = counter + 1
+    return txt

@@ -70,7 +70,16 @@ def getProdImage(prNum):
     # print(object)
     return object.imageLink
 
-def getSearchResults(query, userAuth, filteritems, filter="", sidefilter=""):
+def getDBResults(query):
+    resultsProductName = Products.objects.filter(prodName__icontains=query)
+    results = ProductDetails.objects.filter(
+        Q(genre__icontains=query) | Q(type__icontains=query) | Q(publisher__icontains=query) | Q(
+            language__icontains=query) | Q(author__icontains=query) | Q(desc__icontains=query) | Q(
+            pubDatum__icontains=query) | Q(prodNum__in=resultsProductName))
+
+    return results
+
+def getSearchResults(results, userAuth, filteritems, sidefilter=""):
     # Structuur url: localhost:8000/search/Hulk/{smallfilter bvb 'asc'}/{sidefilter aka 'Dutch'}/
     # Voorbeeld beide filters url: localhost:8000/search/Hulk/priceasc/marvel/
 
@@ -80,9 +89,6 @@ def getSearchResults(query, userAuth, filteritems, filter="", sidefilter=""):
     # helemaal geen filter localhost:8000/search/Hulk/items/items/
 
     selected = filter
-
-    resultsProductName = Products.objects.filter(prodName__icontains=query)
-    results = ProductDetails.objects.filter(Q(genre__icontains=query) | Q(type__icontains=query) | Q(publisher__icontains=query) | Q(language__icontains=query) | Q(author__icontains=query) | Q(desc__icontains=query) | Q(pubDatum__icontains=query) | Q(prodNum__in=resultsProductName))
 
     if 'language' in filteritems and results.exists():
         languages = []
@@ -97,9 +103,30 @@ def getSearchResults(query, userAuth, filteritems, filter="", sidefilter=""):
                 languages.append('Nederlands')
         results = results.filter(language__in=languages)
     if 'type' in filteritems and results.exists():
-        results = results.filter(type__icontains=filteritems['type'])
+        types = []
+        for typex in filteritems['type']: #typex to prevent confusion with the function type()
+            if typex == 'comic':
+                types.append(typex)
+                types.append('Comic')
+            elif typex == 'manga':
+                types.append(typex)
+                types.append('Manga')
+            elif typex == 'manga':
+                types.append(typex)
+                types.append('Manga')
+        results = results.filter(type__in=types)
     if 'publisher' in filteritems and results.exists():
-        results = results.filter(publisher__icontains=filteritems['publisher'])
+        publishers = []
+        for publisher in filteritems['publisher']:
+            if publisher == 'dc':
+                publishers.append(publisher)
+                publishers.append('DC')
+                publishers.append('DC Comics')
+            elif publisher == 'marvel':
+                publishers.append(publisher)
+                publishers.append('Marvel Comics')
+                publishers.append('Marvel')
+        results = results.filter(publisher__in=publishers)
     if 'score' in filteritems and results.exists():
         scores = []
         for score in filteritems['score']:
