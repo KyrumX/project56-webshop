@@ -2,9 +2,13 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordChangeForm
+from django.forms import ModelForm
 from django.db.models import Max
 from ..validators.formvalidators import *
-from ..models import Customers, Address
+from ..models import Customers, Address, Products
+from ..database.AccountOps import getUserId, isUserBlocked
+
+from django.forms.fields import DateField
 
 #All forms are called in the views
 
@@ -25,26 +29,53 @@ class ContactForm(forms.Form):
         self.fields['content'].label = "Toelichting"
 
 
-class LogginginForm(forms.Form):
+class LogginginForm(AuthenticationForm):
     username = forms.CharField(required=True, label="E-mail")
     password = forms.CharField(required=True, label="Wachtwoord", widget=forms.PasswordInput(render_value=False))
 
     def __init__(self, *args, **kwargs):
-        super(LogginginForm, self).__init__(*args, **kwargs)
+        super().__init__(self, *args, **kwargs)
         self.fields['password'].label = "Wachtwoord:"
         self.fields['password'].widget.attrs.update({'placeholder': '**********'})
         self.fields['username'].widget.attrs.update({'placeholder': 'deadpool@comicfire.com'})
 
-    #Geef een error wanneer inloggegevens niet overeen komen
-    def clean(self):
-        username = self.cleaned_data['username']
-        password = self.cleaned_data['password']
-        try:
-            User.objects.get(username=username, password=password)
-        except User.DoesNotExist:
-            raise forms.ValidationError("Het email en wachtwoord komen niet overeen")
-        return self.cleaned_data
+    def confirm_login_allowed(self, user):
+        if isUserBlocked(user.id):
+            raise forms.ValidationError(
+                self.error_messages['blocked'],
+                code='blocked',
+            )
 
+    error_messages = {
+        'invalid_login': (
+            "De combinatie van e-mail en wachtwoord is niet correct. "
+            "Let erop dat zowel e-mail als het wachtwoord hoofdletter gevoelig is."
+        ),
+        'blocked': (
+            "Dit account is geblokkeerd. "
+            "Als u denkt dat dit een fout is, neem dan contact op via de contact pagina."
+        ),
+    }
+
+    # Geef een error wanneer inloggegevens niet overeen komen
+    # def clean(self):
+    #     print("Running...")
+    #     username = self.cleaned_data['username']
+    #     password = self.cleaned_data['password']
+    #     try:
+    #         User.objects.get(username=username, password=password)
+    #     except User.DoesNotExist:
+    #         raise forms.ValidationError("Het email en wachtwoord komen niet overeen")
+    #     return self.cleaned_data
+
+    # def clean_username(self):
+    #     print("HELLOOOOOOOOOOOOOOOOOOOOOOOOOOO")
+    #     username = self.cleaned_data['username']
+    #     print(isUserBlocked(getUserId(username)))
+    #     if isUserBlocked(getUserId(username)):
+    #         forms.ValidationError("ERROR")
+    #     else:
+    #         return self.cleaned_data
 
 #Regestratie form, we geven een django UserCreationForm mee als attribuut die we dan kunnen aanpassen
 class RegistrationForm(UserCreationForm):
@@ -79,13 +110,16 @@ class RegistrationForm(UserCreationForm):
             user.id = 1
         else:
             user.id = maxID.get('customerID__max') + 1
+
         user.first_name = self.cleaned_data['firstname']
         user.last_name = self.cleaned_data['lastname']
         user.email = self.cleaned_data['email']
         user.username = self.cleaned_data['email']
 
+
         #Maak voor elke AUTH ook een customer aan met het zelfde ID
-        customerEntry = Customers(customerID=user.id, email=user.email, name=user.first_name, surname=user.last_name, telephone='nvt', isRegistered=True)
+        customerEntry = Customers(customerID=user.id, email=user.email, name=user.first_name, surname=user.last_name,
+                                  telephone='nvt', isRegistered=True)
         customerEntry.save()
 
         #Maak voor elke Customer ook een default address
@@ -97,6 +131,67 @@ class RegistrationForm(UserCreationForm):
             user.save()
 
         return user
+
+
+#Regestratie form voor producten, we geven een django ModelForm mee als attribuut die we dan kunnen aanpassen
+class PRegistrationForm(ModelForm):
+    prodName = forms.CharField(required=True, label="Titel:")
+    prodPrice = forms.DecimalField(required=True, label="Prijs:")
+    prodStock = forms.IntegerField(required=True, label="Quantiteit:")
+    genre = forms.CharField(required=True, label='Genre:')
+    type = forms.CharField(required=True, label='Type:')
+    publisher = forms.CharField(required=True, label='Uitgever:')
+    totalPages = forms.IntegerField(required=True, label='Bladzijden:')
+    language = forms.CharField(required=False, label='Taal:')
+    rating = forms.IntegerField(required=False, label='Score:')
+    author = forms.CharField(required=True, label='Schrijver:')
+    desc = forms.CharField(required=True, label='Beschrijving:')
+    imageLink = forms.FileField(required=False, label='Foto:')
+    pubDatum = forms.DateField(required=True, label='Uitgeefdatum:')
+
+    class Meta:
+        model = Products
+        fields = ("prodName", "prodPrice", "prodStock")
+
+    def save(self, commit=True):
+        products = super(PRegistrationForm, self).save(commit=False)
+        maxID = products.objects.all().aggregate(Max('prodNum'))
+        if maxID.get('prodNum__max') == None:
+            products.id = 1
+        else:
+            products.id = maxID.get('prodNum__max') + 1
+
+        products.prodName = self.cleaned_data['prodName']
+        products.prodPrice = self.cleaned_data['prodPrice']
+        products.prodStock = self.cleaned_data['prodStock']
+        products.genre = self.cleaned_data['genre']
+        products.type = self.cleaned_data['type']
+        products.publisher = self.cleaned_data['publisher']
+        products.totalPages = self.cleaned_data['totalPages']
+        products.language = self.cleaned_data['language']
+        products.rating = self.cleaned_data['rating']
+        products.author = self.cleaned_data['author']
+        products.desc = self.cleaned_data['desc']
+        products.imageLink = self.cleaned_data['imageLink']
+        products.pubDatum = self.cleaned_data['pubDatum']
+
+        # Data wordt ingevoerd voor het product
+        ProductsEntry = Products(prodNum=products.id, prodName=products.prodName, prodPrice=products.prodPrice,
+                                    prodStock=products.prodStock)
+        ProductsEntry.save()
+
+        # Extra data wordt ingevoerd voor het product
+        ProdData = ProductDetails(prodNum=products(prodNum=products.id), genre=products.genre,
+                                                type=products.type, publisher=products.publisher,
+                                                totalPages=products.totalPages, language=products.language,
+                                                rating=products.rating, author=products.author, desc=products.desc,
+                                                imageLink=products.imageLink, pubDatum=products.pubDatum)
+        ProdData.save()
+
+        if commit:
+            products.save()
+
+        return products
 
 class CustomerDetails(forms.Form):
     customer_fname = forms.CharField(required=True, max_length=50)
@@ -132,14 +227,50 @@ class CustomerDetails(forms.Form):
         self.fields['customer_city'].label = "Stad:"
         self.fields['customer_postalcode'].label = "Postcode:"
 
+class ProductDetails(forms.Form):
+    products_prodName = forms.CharField(required=True, max_length=200)
+    products_prodPrice = forms.DecimalField(required=True, max_digits=5, decimal_places=2, min_value=1)
+    products_prodStock = forms.IntegerField(required=True, max_value=5000, min_value=1)
+    products_genre = forms.CharField(required=True, max_length=15)
+    products_type = forms.CharField(required=False, max_length=15)
+    products_publisher = forms.CharField(required=True, max_length=30)
+    products_totalPages = forms.IntegerField(required=True, max_value=2000, min_value=1)
+    products_language = forms.CharField(required=False, max_length=25)
+    products_rating = forms.IntegerField(required=False, max_value=5, min_value=1)
+    products_author = forms.CharField(required=True, max_length=30)
+    products_desc = forms.CharField(required=True, max_length=2000)
+    products_imageLink = forms.CharField(required=True, max_length=300)
+    products_pubDatum = forms.DateField(required=True)
+
+    def __init__(self, *args, **kwargs):
+        super(ProductDetails, self).__init__(*args, **kwargs)
+        self.fields['products_prodName'].label = "Titel:"
+        self.fields['products_prodPrice'].label = "Prijs:"
+        self.fields['products_prodStock'].label = "Quantiteit:"
+        self.fields['products_genre'].label = "Genre:"
+        self.fields['products_type'].label = "Type:"
+        self.fields['products_publisher'].label = "Uitgever:"
+        self.fields['products_totalPages'].label = "Bladzijden:"
+        self.fields['products_language'].label = "Taal:"
+        self.fields['products_rating'].label = "Score:"
+        self.fields['products_author'].label = "Schrijver:"
+        self.fields['products_desc'].label = "Beschrijving:"
+        self.fields['products_imageLink'].label = "Foto:"
+        self.fields['products_pubDatum'].label = "Uitgeefdatum:"
+
+    def CheckPrice(self):
+        Price = self.cleaned_data['products_prodPrice']
+        product_validator(Price)
+        return self.cleaned_data['products_prodPrice']
+
+    def CheckQuantity(self):
+        Quantity = self.cleaned_data['products_prodStock']
+        product_validator(Quantity)
+        return self.cleaned_data['products_prodStock']
+
 class CheckoutForm(forms.Form):
 
     card_name = forms.CharField(required=True)
-    card_number = forms.IntegerField(required=True, max_value=9999999999999999, min_value=1000000000000000)
-    card_edm = forms.IntegerField(required=True, max_value=2018, min_value=1800)
-    card_edy = forms.IntegerField(required=True, max_value=12, min_value=1)
-    card_CVC = forms.IntegerField(required=True, max_value=999, min_value=100)
-
     card_number = forms.IntegerField(required=True)
     card_edm = forms.IntegerField(required=True, max_value=12, min_value=1)
     card_edy = forms.IntegerField(required=True, max_value=2030, min_value=2017)
@@ -195,6 +326,7 @@ class AccountForm(forms.ModelForm):
         self.fields['number'].label = "Huisnummer:"
         self.fields['city'].label = "Stad:"
         self.fields['postalcode'].label = "Postcode:"
+
 
 class CustomerInfoForm(forms.Form):
 

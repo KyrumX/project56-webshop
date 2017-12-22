@@ -4,3 +4,8 @@ def RepresentInt(object):
         return True
     except ValueError:
         return False
+
+def TransBool(bool):
+    if bool == True:
+        return "Ja"
+    return "Nee"

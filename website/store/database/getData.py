@@ -70,7 +70,6 @@ def getProdImage(prNum):
     # print(object)
     return object.imageLink
 
-
 def getSearchResults(query, userAuth, filteritems, filter="", sidefilter=""):
     # Structuur url: localhost:8000/search/Hulk/{smallfilter bvb 'asc'}/{sidefilter aka 'Dutch'}/
     # Voorbeeld beide filters url: localhost:8000/search/Hulk/priceasc/marvel/
@@ -159,64 +158,63 @@ def getSearchResults(query, userAuth, filteritems, filter="", sidefilter=""):
 
 
 def queryVerbeterFunctie(query):
-    try:
-        query = removeUnwanted(query)
-        i = 1
-        query = ((query[:1].upper()) + (query[1:].lower()))
-        query = (query.translate("!@#$%^~`&*()_+=-{[]}\|\"\';:?/>.<,"))
-        while i <= len(query):
-            # Remove unwanted characters.
-            if 33 <= ord(query[i - 1:i]) <= 47:
-                query = queryVerbeterFunctie(query[:i - 1] + query[i:])
-                print("Removed")
-            if 58 <= ord(query[i - 1:i]) <= 64:
-                query = queryVerbeterFunctie(query[:i - 1] + query[i:])
-                print("Removed")
-            if 91 <= ord(query[i - 1:i]) <= 96:
-                query = queryVerbeterFunctie(query[:i - 1] + query[i:])
-                print("Removed")
-            if 122 <= ord(query[i - 1:i]):
-                query = queryVerbeterFunctie(query[:i - 1] + query[i:])
-                print("Removed")
-            ## If first char is a space, remove it.
-            if query[0].isspace():
-                if query.__len__() > 0:
-                    query = queryVerbeterFunctie(query[1:])
-                else:
-                    query = "Empty Query"
-            ## Replace ironman with Iron Man
-            if query[i - 1:i + 6].lower() == "ironman":
-                query = "Iron Man"
-            ## Replace captainamerica with Captain America
-            if query[i - 1:i + 13].lower() == "captainamerica":
-                query = "Captain America"
-            else:
-                if query[i - 1:i + 2].lower() == "cpt":
-                    query = "Captain"
-            ## Replace next letter with an uppercase after a space is found
-            if query[i - 1:i] == " ":
-                query = (query[:i]) + (query[i:i + 1].upper()) + (query[i + 1:])
-            ## Removes "the" from the query, since most comics don't use it anymore
-            if query[i - 1:i + 2].lower() == "the" and i < len(query) - 2:
-                if i == 1:
-                    query = (query[i + 2:])
-                    ## Make the function recursive because some parts won't work otherwise :')
-                    query = query[:i - 1] + query[i + 2:]
-                    i = 0;
-                    ## If search starts with "the", remove it completely
-                else:
-                    query = (query[:i]) + (query[i + 2:])
-            i += 1
-        # j = 0
-        # while j < 26:
-        #   print(chr(j + 97))
-        #   j += 1
-        print(query)
-        return query
-    except:
-        print("Je moeder Aaron.")
-        return query
+  try:
+    query = removeUnwanted(query)
+    i = 1
+    query = ((query[:1].upper())+(query[1:].lower()))
+    query = (query.translate("!@#$%^~`&*()_+=-{[]}\|\"\';:?/>.<,"))
+    while i <= len(query):
+      # Remove unwanted characters.
+      if 33 <= ord(query[i-1:i]) <= 47:
+        query = queryVerbeterFunctie(query[:i-1] + query[i:])
+        print("Removed")
+      if 58 <= ord(query[i-1:i]) <= 64:
+        query = queryVerbeterFunctie(query[:i-1] + query[i:])
+        print("Removed")
+      if 91 <= ord(query[i-1:i]) <= 96:
+        query = queryVerbeterFunctie(query[:i-1] + query[i:])
+        print("Removed")
+      if 122 <= ord(query[i-1:i]):
+        query = queryVerbeterFunctie(query[:i-1] + query[i:])
+        print("Removed")
+      ## If first char is a space, remove it.
+      if query[0].isspace():
+        if query.__len__() > 0:
+          query = queryVerbeterFunctie(query[1:])
+        else:
+          query = "Empty Query"
+      ## Replace spider-man with Spiderman
+      if query[i-1:i+6].lower() == "spiderman":
+          query = "Spider-man"
+      ## Replace ironman with Iron Man
+      if query[i-1:i+6].lower() == "ironman":
+        query = "Iron Man"
+      ## Replace captainamerica with Captain America
+      if query[i-1:i+13].lower() == "captainamerica":
+        query = "Captain America"
+      else:
+        if query[i-1:i+2].lower() == "cpt":
+          query = "Captain"
+      ## Replace next letter with an uppercase after a space is found
+      if query[i-1:i] == " ":
+        query = (query[:i]) + (query[i:i+1].upper()) + (query[i+1:])
+      ## Removes "the" from the query, since most comics don't use it anymore
+      if query[i-1:i+2].lower() == "the" and i < len(query) - 2 and not query[i-1:i+3].lower() == "they":
+        if i == 1:
+          query = (query[i+2:])
+          ## Make the function recursive because some parts won't work otherwise :')
+          query = query[:i] + query[i+2:]
+          i = 0;
+      ## If search starts with "the", remove it completely
+        else:
+          query = (query[:i]) + (query[i+2:])
+      i += 1
 
+    print(query)
+    return query
+  except :
+    print("Stop Jasper.")
+    return query
 
 def removeUnwanted(query):
     # Resolves empty query errors

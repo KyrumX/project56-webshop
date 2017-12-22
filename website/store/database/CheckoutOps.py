@@ -76,3 +76,22 @@ def updateAddress(request, custID):
         existingEntry.city=request.session['customer_city']
         existingEntry.postalcode=request.session['customer_postalcode']
         existingEntry.save()
+
+def createProduct(request):
+    productEntry = Products(prodNum=getNewProductNum(), prodName=request.session['products_prodName'], prodPrice=request.session['products_prodPrice'], prodStock=request.session['products_prodStock'])
+    productEntry.save()
+    return productEntry.prodNum
+
+def getNewProductNum():
+    maxP = Products.objects.all().aggregate(Max('prodNum'))
+    if maxP.get('prodNum__max') == None:
+        return 1
+    else:
+        return maxP.get('prodNum__max') + 1
+
+# def createProductDetails(request, custID):
+#     if request.user.is_authenticated:
+#         updateAddress(request, custID)
+#     else:
+#         addressEntry = Address(address=request.session['customer_address'], number=request.session['customer_adressnum'], city=request.session['customer_city'], postalcode=request.session['customer_postalcode'], customerID=Customers(customerID=custID))
+#         addressEntry.save()

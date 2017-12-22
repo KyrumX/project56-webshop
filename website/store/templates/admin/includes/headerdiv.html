@@ -1,14 +1,18 @@
+{% load admin.adminusertags %}
+
 <div class="header">
+<div id="particles">
+</div>
 {% if user.is_authenticated %}
 <div class="userdiv">
 	{% if user.is_staff %}
 	<div class="userbox">
 		<ul>
-			<a href='/account/'><li><p><i class="fa fa-user" aria-hidden="true"></i>{{ user.first_name }}</p><p id="status">Administrateur</p></li></a>
-			<a href='/logout'><li><p><i class="fa fa-sign-out" aria-hidden="true"></i>Uitloggen</p></li></a>  
+			<a href='/account/'><li><p><i class="fa fa-user" aria-hidden="true"></i>{{ user.first_name }}</p><p id="status">{% getUserRole user.id %}</p></li></a>
+			<a href='/logout'><li><p><i class="fa fa-sign-out" aria-hidden="true"></i>Uitloggen</p></li></a>
 		</ul>
 	{% else %}
-	<div class="userbox" style="width: 12vh;">
+	<div class="userbox" style="width: 18vh;">
 		<ul>
 			<a href='/account/' style="width: 100%; cursor: pointer;"><li style="width: 100%;"><p><i class="fa fa-user" aria-hidden="true"></i>{{ user.first_name }}</p><p id="status">Klant</p></li></a>
 		</ul>
@@ -16,5 +20,5 @@
 	</div>
 </div>
 {% endif %}
-<div class="logodiv"><span><h1>Comicfire Admin Paneel</h1></span></div>
+<div class="logodiv"><div class="logowrap"><span><img src="/static/images/comicfirelogo3.png"><p>Admin Paneel</p></span></div></div>
 </div>

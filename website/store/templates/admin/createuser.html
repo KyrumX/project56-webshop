@@ -1,0 +1,13 @@
+{% extends "admin/frames/adminbase.html" %}
+{% block content %}
+	<div class="middle" style="background-color: #ebe9e9; border: none;">
+	<div class="edit">
+  <h2 id="editp">Maak een account aan</h2>
+  <form method="post" id="form1">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div class="checkbox"><button type="submit" id="opslaan" >Opslaan</button></div>
+  </form>
+  </div>
+  </div>
+{% endblock %}

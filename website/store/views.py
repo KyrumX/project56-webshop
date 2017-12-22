@@ -10,6 +10,7 @@ from .database.getData import getProdName, getProdPrice, getProdStock, getProdGe
 from .database.verifyData import verifyProdNum
 from .collections.forms import *
 from django.http import *
+from django.forms import ModelForm
 from django.contrib.auth import authenticate
 from .database.CartOps import addToCart, removeFromCart
 from .database.getData import queryVerbeterFunctie
@@ -32,6 +33,7 @@ from .database.CartOps import setAmount
 
 # Create your views here.
 
+
 def index(request):
     if request.method == 'POST':
         if 'searchtext' in request.POST:
@@ -48,10 +50,11 @@ def index(request):
 
     return render(request, 'index.html')
 
+
 def emailstyle(request):
     return render(request, 'emailstyle.html')
 
-	
+
 def contact(request):
     if request.user.is_authenticated:
         formClass = ContactForm(initial={'contact_name': str(request.user.first_name + " " + request.user.last_name), 'contact_email': request.user.email})
@@ -69,6 +72,7 @@ def contact(request):
                 return redirect('messagesend')
 
     return render(request, 'contact.html', {'contact_form':formClass, })
+
 
 def register(request):
     args = {}
@@ -99,12 +103,14 @@ def register(request):
     args['form'] = form
     return render(request, 'register.html', args)
 
+
 def faq(request):
     if request.method == 'POST':
         if 'searchtext' in request.POST:
             return searchPost(request)
 
     return render(request, 'faq.html')
+
 
 def about(request):
     if request.method == 'POST':
@@ -113,12 +119,14 @@ def about(request):
 
     return render(request, 'about.html')
 
+
 def servicevoorwaarden (request):
     if request.method == 'POST':
         if 'searchtext' in request.POST:
             return searchPost(request)
 
     return render(request, 'servicevoorwaarden.html')
+
 
 def retourneren (request):
     if request.method == 'POST':
@@ -127,6 +135,7 @@ def retourneren (request):
 
     return render(request, 'retourneren.html')
 
+
 def privacy(request):
     if request.method == 'POST':
         if 'searchtext' in request.POST:
@@ -134,12 +143,14 @@ def privacy(request):
 
     return render(request, 'privacy.html')
 
+
 def betaling(request):
     if request.method == 'POST':
         if 'searchtext' in request.POST:
             return searchPost(request)
 
     return render(request, 'betaling.html')
+
 
 def product(request, item):
     if request.method == 'POST':
@@ -187,6 +198,7 @@ def product(request, item):
         'prodImage' : prodImage,
         'prodDate' : prodDate,
     })
+
 
 def search(request, query, filter=""):
     sidefilters = ['language', 'publisher', 'type', 'pmin', 'pmax', 'score']
@@ -242,7 +254,6 @@ def logoutview(request):
         return redirect('/')
 
 
-
 def loginview(request):
     args = {}
     if request.method == "POST":
@@ -250,25 +261,26 @@ def loginview(request):
         if 'searchtext' in request.POST:
             return searchPost(request)
         elif 'loginbutton' in request.POST:
-            form = LogginginForm(request.POST)
-            username = request.POST['username']
-            password = request.POST['password']
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                login(request, user)
-                return redirect('/')
-
-
+            form = LogginginForm(data=request.POST)
+            if form.is_valid():
+                username = request.POST['username']
+                password = request.POST['password']
+                user = authenticate(request, username=username, password=password)
+                if user is not None:
+                    login(request, user)
+                    return redirect('/')
     else:
         form = LogginginForm()
     args['form'] = form
     return render(request, 'login.html', args)
+
 
 def registrationcomplete(request):
     if request.method == "POST":
         if 'searchtext' in request.POST:
             return searchPost(request)
     return render(request, 'accountconfirmed.html')
+
 
 def activate(request, uidb64, token):
     if request.method == 'POST':
@@ -288,21 +300,14 @@ def activate(request, uidb64, token):
     else:
         return HttpResponse('Activation link is invalid!')
 
+
 def contactRequestHandeld(request):
     if request.method == "POST":
         if 'searchtext' in request.POST:
             return searchPost(request)
     return render(request, 'mailsend.html')
-#
-# def results(request, query):
-#     #returnPage(request.GET.get('searchtext'))
-#     object = getResult2(query)
-#     print(object)
-# #    prodName = getProdName()
-#  #   prodPrice = getProdPrice()
-#   #  prodStock = getProdStock()
-#    # prodAuthor = getProdAuthor()
-#     return render(request, 'searchresults.html')
+
+
 
 def shoppingcart(request):
     if request.method == 'POST':
@@ -321,6 +326,7 @@ def shoppingcart(request):
 
     return render(request, 'shoppingcart.html')
 
+
 def wishlist(request):
     if not request.user.is_authenticated:
         return redirect('/')
@@ -335,6 +341,7 @@ def wishlist(request):
             addToCart(request, int(request.POST.get('addToCartButton')))
             return redirect('/winkelwagentje/')
     return render(request, 'wishlist.html')
+
 
 def processOrder(request):
     if not request.META.get('HTTP_REFERER') is None:
@@ -363,6 +370,7 @@ def processOrder(request):
                 return render(request, 'processorder.html', args)
     else:
         return redirect('/')
+
 
 def customerdetails(request):
     args = {}
@@ -395,6 +403,7 @@ def customerdetails(request):
             return redirect('/')
     return redirect('/')
 
+
 def checkout(request):
     args = {}
     if not request.META.get('HTTP_REFERER') is None:
@@ -409,80 +418,6 @@ def checkout(request):
 
                         createOrder(request)
                         return render(request, 'completeorder.html')
-
-                        # for f in ['img1.png', 'img2.png']:
-                        #     fp = open(os.path.join(os.path.dirname(__file__), f), 'rb')
-                        #     email_img = MIMEImage(fp.read())
-                        #     fp.close()
-                        #     email_img.add_header('Content-ID', '<{}>'.format(f))
-                        #     email.attach(email_img)
-
-
-                        # template = get_template('mail/order_complete_email.txt')
-                        # context = {
-                        #     'contact_name': contact_name,
-                        #     'contact_email': contact_email,
-                        #     'contact_content': contact_content,
-                        # }
-
-                        # content = template.render(context)
-
-
-
-                        # email = EmailMessage(
-                        #     "Your order details",
-                        #     content,
-                        #     'noreply@comicfire.com',
-                        #     [c],
-                        #     headers={'Reply-to': contact_email}
-                        # )
-
-
-
-
-                        # subject, from_email, to = 'Your order details', 'noreply@comicfire.com', c
-                        # text_content = 'This is an important message.'
-                        # html_content = '<p>This is an <strong>important</strong> message.</p>'
-                        # msg = EmailMultiAlternatives(subject, text_content, from_email, [to])
-                        # msg.attach_alternative(html_content, "text/html")
-                        # # msg.attach_file('/images/comicfirelogo2.png')
-                        # msg.send()
-                        #
-                        # print("WUT WUT IN THE BUTT")
-                        # html_content = render_to_string('mail/order_complete_email.html')
-                        # text_content = render_to_string('mail/order_complete_email.txt')
-                        # print("Test1")
-                        # subject, sender, to_mail = 'Your order details', 'noreply@comicfire.com', c
-                        # print("Test2")
-                        # msg = EmailMultiAlternatives(subject, text_content,
-                        #                              sender, [to_mail])
-                        # print("Test3")
-                        # msg.attach_alternative(html_content, "text/html")
-                        # print("Test4")
-                        # msg.mixed_subtype = 'related'
-                        # print("Test5")
-                        # for f in ['img1.png', 'img2.png']:
-                        #     fp = open(os.path.join(os.path.dirname(__file__), f), 'rb')
-                        #     msg_img = MIMEImage(fp.read())
-                        #     fp.close()
-                        #     msg_img.add_header('Content-ID', '<{}>'.format(f))
-                        #     msg.attach(msg_img)
-
-                        # msg.send()
-                        # user = form.save(commit=False)
-                        # user.is_active = False
-                        # user.save()
-                        # current_site = get_current_site(request)
-                        # message = render_to_string('mail/order_complete_email.html', {
-                        #     'user': user,
-                        #     'domain': current_site.domain,
-                        #     'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                        #     # 'token': account_activation_token.make_token(user),
-                        # })
-                        # mail_subject = 'Your order details'
-                        # to_email = form.cleaned_data.get('email')
-                        # email = EmailMessage(mail_subject, message, to=[to_email])
-                        # email.send()
 
             else:
 
@@ -502,6 +437,7 @@ def account(request):
         return redirect('/')
     else:
         return render(request, 'account.html')
+
 
 def accountedit(request):
     if not request.user.is_authenticated:
@@ -526,7 +462,7 @@ def accountedit(request):
 
         return render(request, 'accountedit.html', {
             'account_form': account_form, 'accountinfo_form' : accountinfo_form,
-    })
+        })
 
 
 def changepassword(request):

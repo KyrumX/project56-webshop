@@ -57,6 +57,7 @@ def prodStockTag(prodNum):
 @register.simple_tag()
 def listloop(userAuth):
     cnt = 1
+    mod = 1
     txt = ""
     for i in range(4):
         txt += "<ul class='list'>"
@@ -66,7 +67,10 @@ def listloop(userAuth):
             if userAuth:
                 txt = txt + "<button name='moveToWishListButton' value='" + str(cnt) +"' class='wishlist'><i class='fa fa-heart' aria-hidden='true'></i></button>"
             txt = txt + "<p class='stock'>Voorraad: " + str(prodStockTag(cnt)) + "</p></div></li>"
-            cnt += 1
+            cnt += 10
+            if cnt >= 60:
+                mod += 1
+                cnt = mod
         txt += "</ul>"
     return txt
 

@@ -5,27 +5,27 @@
 
     <div class="middle" style="border: none; background-color: #ebe9e9;">
 		<div class="edit">
-        {% userFound userid as usersFoundBool %}
-        {% isSameUser request userid as isSame %}
-        {% if usersFoundBool %}
-            <p id="editp">Bewerken van gebruiker {{ userid }}:</p>
+        {% productFound item as productsFoundBool %}
+        {% isSameProduct request item as isSame %}
+        {% if productsFoundBool %}
+            <p id="editp">Bewerken van product {{ item }}:</p>
             <form method="POST" id="form1">
                 {% csrf_token %}
-                {{user_form.as_p}}
-                <input type="submit" id="editusersubmit" name="edituser">
+                {{product_form.as_p}}
+                <input type="submit" id="editproductsubmit" name="editproduct">
             </form>
             {% if not isSame %}
                 <form method="POST">
                     {% csrf_token %}
-                    <button type="submit" name="deleteuser" value='{{userid}}' class="remove">
+                    <button type="submit" name="deleteproduct" value='{{item}}' class="remove">
                         <i class="fa fa-trash" aria-hidden="true"></i>
-                        Verwijder gebruiker
+                        Verwijder product
                     </button>
                 </form>
             {% else %}
             {% endif %}
         {% else %}
-            <div>Er is geen gebruiker gevonden met dit id.</div>
+            <div>Er is geen product gevonden met dit id.</div>
         {% endif %}
 
         </div>
