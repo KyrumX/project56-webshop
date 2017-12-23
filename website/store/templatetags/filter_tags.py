@@ -1,25 +1,26 @@
 from django import template
 
+from store.collections.filter import isCategoryRelevant
+
 register = template.Library()
 
 @register.simple_tag()
-def languageFilter(objects, languages):
+def languageFilter(relevantItems, selectedFilters):
     html = ""
-    categories = isCategoryRelevant(objects, 'language')
-    if categories != None:
+    if relevantItems != None:
         html +=  "<div class='barwrap'>" \
                  "<div class='leftbar commoncolor'>" \
                  "<p>Taal<i class='fa fa-sort-desc' aria-hidden='true' id='sortdown'></i></p></div>" \
                  "<div class='bartext'>"
-        for e in categories:
+        for e in relevantItems:
             if e == 'Engels':
-                if 'English' in languages:
+                if 'English' in selectedFilters:
                     html += "<input type='checkbox' onchange='this.form.submit()' name='language' value='English' id='english' checked>"
                 else:
                     html += "<input type='checkbox' onchange='this.form.submit()' name='language' value='English' id='english'>"
                 html += "<label for='english'></label><p>Engels</p><br>"
             elif e == 'Nederlands':
-                if 'Dutch' in languages:
+                if 'Dutch' in selectedFilters:
                     html += "<input type='checkbox' onchange='this.form.submit()' name='language' value='Dutch' id='dutch' checked>"
                 else:
                     html += "<input type='checkbox' onchange='this.form.submit()' name='language' value='Dutch' id='dutch'>"
@@ -29,23 +30,22 @@ def languageFilter(objects, languages):
     return ""
 
 @register.simple_tag()
-def typeFilter(objects, types):
+def typeFilter(relevantItems, selectedFilters):
     html = ""
-    categories = isCategoryRelevant(objects, 'type')
-    if categories != None:
+    if relevantItems != None:
         html += "<div class='barwrap'><div class='leftbar commoncolor'>" \
                 "<p>Type Boek<i class='fa fa-sort-desc' aria-hidden='true' id='sortdown'></i></p>" \
                 "</div>" \
                 "<div class='bartext'>"
-        for e in categories:
+        for e in relevantItems:
             if e == 'Manga':
-                if 'manga' in types:
+                if 'manga' in selectedFilters:
                     html += "<input type='checkbox' onchange='this.form.submit()' name='type' value='manga' id='manga' checked>"
                 else:
                     html += "<input type='checkbox' onchange='this.form.submit()' name='type' value='manga' id='manga'>"
                 html += "<label for='manga'></label><p>Manga</p><br>"
             elif e == 'Comic':
-                if 'comic' in types:
+                if 'comic' in selectedFilters:
                     html += "<input type='checkbox' onchange='this.form.submit()' name='type' value='comic' id='comic' checked>"
                 else:
                     html += "<input type='checkbox' onchange='this.form.submit()' name='type' value='comic' id='comic'>"
@@ -55,16 +55,15 @@ def typeFilter(objects, types):
     return ""
 
 @register.simple_tag()
-def publisherFilter(objects, publishers):
+def publisherFilter(relevantItems, selectedFilters):
     html = ""
-    categories = isCategoryRelevant(objects, 'publisher')
-    if categories != None:
+    if relevantItems != None:
         html += "<div class='barwrap'><div class='leftbar commoncolor'>" \
                 "<p>Type Boek<i class='fa fa-sort-desc' aria-hidden='true' id='sortdown'></i></p>" \
                 "</div>" \
                 "<div class='bartext'>"
-        for e in categories:
-            if e in publishers:
+        for e in relevantItems:
+            if e in selectedFilters:
                 html += "<input type='checkbox' onchange='this.form.submit()' value='" + e + "' name='publisher' id='" + e +"' checked>"
             else:
                 html += "<input type='checkbox' onchange='this.form.submit()' value='" + e + "' name='publisher' id='" + e +"'>"
@@ -73,27 +72,3 @@ def publisherFilter(objects, publishers):
         return html
     return ""
 
-def isCategoryRelevant(objects, field):
-    categories = []
-    found = objects.distinct(field)
-    for e in found:
-        if field == 'language':
-            if len(categories) >= 2:
-                break
-            if (e.language == 'English' or e.language == 'en-us' or e.language == 'Engels') and 'Engels' not in categories:
-                categories.append('Engels')
-            elif (e.language == 'Dutch' or e.language == 'nl-nl' or e.language == 'Nederlands') and 'Nederlands' not in categories:
-                categories.append('Nederlands')
-        elif field == 'type':
-            if len(categories) >= 2:
-                break
-            if (e.type == 'Manga' or e.type == 'manga') and 'Manga' not in categories:
-                categories.append('Manga')
-            elif (e.type == 'Comic' or e.type == 'comic') and 'Comic' not in categories:
-                categories.append('Comic')
-        elif field == 'publisher':
-            categories.append(e.publisher)
-    if len(categories) >= 2:
-        return categories
-    else:
-        return None

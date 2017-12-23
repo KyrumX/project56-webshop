@@ -1,9 +1,9 @@
 {% load custom_tags %}
 {% load filter_tags %}
 <form method="GET">
-    {% autoescape off %}{% languageFilter searchResults languages %}{% endautoescape %}
-    {% autoescape off %}{% typeFilter searchResults types %}{% endautoescape %}
-    {% autoescape off %}{% publisherFilter searchResults publishers %}{% endautoescape %}
+    {% autoescape off %}{% languageFilter languageFilterItems languages %}{% endautoescape %}
+    {% autoescape off %}{% typeFilter typeFilterItems types %}{% endautoescape %}
+    {% autoescape off %}{% publisherFilter publisherFilterItems publishers %}{% endautoescape %}
     <div class="barwrap">
         <div class="leftbar commoncolor">
             <p>Prijs<i class="fa fa-sort-desc" aria-hidden="true" id="sortdown"></i></p>

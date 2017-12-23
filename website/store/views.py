@@ -3,6 +3,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 
+from store.collections.filter import isCategoryRelevant, orderResults
 from store.models import ProductDetails
 from store.tokens import account_activation_token
 from .collections.mails import *
@@ -192,8 +193,7 @@ def product(request, item):
     })
 
 
-def search(request, query, filter):
-    sidefilters = ['language', 'publisher', 'type', 'pmin', 'pmax', 'score']
+def search(request, query, order):
     args = {}
     filters = {}
     if request.method == 'GET':
@@ -238,9 +238,13 @@ def search(request, query, filter):
             return searchPost(request)
 
     args['query'] = query
-    args['searchResults'] = getDBResults(query)
-    args['filt'] = filter
+    args['order'] = order
     args['filteritems'] = filters
+    searchResults = getDBResults(query)
+    args['languageFilterItems'] = isCategoryRelevant(searchResults, 'language')
+    args['typeFilterItems'] = isCategoryRelevant(searchResults, 'type')
+    args['publisherFilterItems'] = isCategoryRelevant(searchResults, 'publisher')
+    args['objects'] = orderResults(searchResults, order)
 
     return render(request, 'searchresults.html', args)
 
@@ -288,9 +292,12 @@ def productsAll(request):
             print("Found sidefilters")
             return searchPost(request)
 
-    args['searchResults'] = ProductDetails.objects.all()
-    args['filt'] = filter
     args['filteritems'] = filters
+    allProducts = ProductDetails.objects.all()
+    args['languageFilterItems'] = isCategoryRelevant(allProducts, 'language')
+    args['typeFilterItems'] = isCategoryRelevant(allProducts, 'type')
+    args['publisherFilterItems'] = isCategoryRelevant(allProducts, 'publisher')
+    args['objects'] = allProducts.order_by('prodNum__prodName')
 
     return render(request, 'productsall.html', args)
 

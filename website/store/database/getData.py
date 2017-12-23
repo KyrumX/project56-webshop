@@ -76,10 +76,9 @@ def getDBResults(query):
         Q(genre__icontains=query) | Q(type__icontains=query) | Q(publisher__icontains=query) | Q(
             language__icontains=query) | Q(author__icontains=query) | Q(desc__icontains=query) | Q(
             pubDatum__icontains=query) | Q(prodNum__in=resultsProductName))
-
     return results
 
-def getSearchResults(results, userAuth, filteritems, orderer):
+def getSearchResults(results, userAuth, filteritems, order):
     # Structuur url: localhost:8000/search/Hulk/{smallfilter bvb 'asc'}/{sidefilter aka 'Dutch'}/
     # Voorbeeld beide filters url: localhost:8000/search/Hulk/priceasc/marvel/
 
@@ -87,12 +86,6 @@ def getSearchResults(results, userAuth, filteritems, orderer):
     # geen smallfilter: localhost:8000/search/Hulk/items/English
     # geen sidefilter: localhost:8000/search/Hulk/asc/items/
     # helemaal geen filter localhost:8000/search/Hulk/items/items/
-
-    selected = orderer
-    #Does not work, will fix later...
-    if orderer == 'desc':
-        results.order_by('-prodNum')
-
 
     if 'language' in filteritems and results.exists():
         languages = []
@@ -146,13 +139,13 @@ def getSearchResults(results, userAuth, filteritems, orderer):
          <select name='filter' onchange='this.form.submit()'>""".format(str(len(list(results))))
 
 
-    if selected == "asc":
+    if order == "asc":
         txt += "<option>Relevantie</option><option value='asc' selected>Naam: A - Z</option><option value='desc'>Naam: Z - A</option><option value='priceasc' name='filterasc'>Prijs: Oplopend</option><option value='pricedesc' name='filterdesc'>Prijs: Aflopend</option>"
-    elif selected == "desc":
+    elif order == "desc":
         txt += "<option>Relevantie</option><option value='asc' name='filterasc'>Naam: A - Z</option><option value='desc' name='filterdesc' selected>Naam: Z - A</option><option value='priceasc' name='filterasc'>Prijs: Oplopend</option><option value='pricedesc' name='filterdesc'>Prijs: Aflopend</option>"
-    elif selected == "priceasc":
+    elif order == "priceasc":
         txt += "<option>Relevantie</option><option value='asc'>Naam: A - Z</option><option value='desc'>Naam: Z - A</option><option value='priceasc' name='filterasc' selected>Prijs: Oplopend</option><option value='pricedesc' name='filterdesc'>Prijs: Aflopend</option>"
-    elif selected == "pricedesc":
+    elif order == "pricedesc":
         txt += "<option>Relevantie</option><option value='asc'>Naam: A - Z</option><option value='desc'>Naam: Z - A</option><option value='priceasc' name='filterasc'>Prijs: Oplopend</option><option value='pricedesc' name='filterdesc' selected>Prijs: Aflopend</option>"
     else:
         txt += "<option selected>Relevantie</option><option value='asc'>Naam: A - Z</option><option value='desc'>Naam: Z - A</option><option value='priceasc' name='filterasc'>Prijs: Oplopend</option><option value='pricedesc' name='filterdesc'>Prijs: Aflopend</option>"

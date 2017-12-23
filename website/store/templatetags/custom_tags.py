@@ -1,4 +1,5 @@
 from django import template
+from django.db.models import Q
 
 from store.collections.filter import filterObjects
 from ..models import Products, ProductDetails
@@ -77,8 +78,8 @@ def listloop(userAuth):
     return txt
 
 @register.simple_tag()
-def searchList(objects, userAuth, filterlist, sidefilter=""):
-    object = getSearchResults(objects, userAuth, filterlist, sidefilter)
+def searchList(query, userAuth, filterlist, order):
+    object = getSearchResults(query, userAuth, filterlist, order)
     return object
 	
 @register.simple_tag()
@@ -149,17 +150,15 @@ def getOrderNum(order):
     return string
 
 @register.simple_tag()
-def getAllProducts(userAuth, filteritems):
-    results = filterObjects(ProductDetails.objects.all().order_by('prodNum'), filteritems)
-    txt = ""
+def getAllProducts(userAuth, objects, filteritems):
+    resuls = filterObjects(objects, filteritems)
 
     txt = "<div class='sorton commoncolor' style='border-radius: 3px'> \
          <p>Totale Resultaten: </p> \
-         <p id='fifteen'>{0}</p></div>".format(str(len(list(results))))
-
+         <p id='fifteen'>{0}</p></div>".format(str(len(list(resuls))))
 
     counter = 0
-    for e in results:
+    for e in resuls:
         if counter == 0:
             txt += "<ul class='list'>"
         txt = txt + "<li><div class='productwrap'><a href='/product/" + str(e.prodNum.prodNum) + "'><img src='" + e.imageLink + "' id='zoom_05' data-zoom-image='https://i.pinimg.com/736x/86/ff/e2/86ffe2b49daf0feed78a1c336753696d--black-panther-comic-digital-comics.jpg'></a><p class='author'>" + e.author + "</p><p class='name'>" + getProdName(e.prodNum.prodNum) + "</p><p></p>"
@@ -175,3 +174,12 @@ def getAllProducts(userAuth, filteritems):
         else:
             counter = counter + 1
     return txt
+
+@register.simple_tag()
+def getDBResults(query):
+    resultsProductName = Products.objects.filter(prodName__icontains=query)
+    results = ProductDetails.objects.filter(
+        Q(genre__icontains=query) | Q(type__icontains=query) | Q(publisher__icontains=query) | Q(
+            language__icontains=query) | Q(author__icontains=query) | Q(desc__icontains=query) | Q(
+            pubDatum__icontains=query) | Q(prodNum__in=resultsProductName))
+    return results

@@ -11,7 +11,7 @@
 				<input type='hidden' name='searchtext' value={{ query }}>
 				<input type='hidden' name='sidefilt' value={{ sidefilt }}>
                     {% csrf_token %}
-                    {% autoescape off %}{% getAllProducts user.is_authenticated filteritems %}{% endautoescape %}
+                    {% autoescape off %}{% getAllProducts user.is_authenticated objects filteritems %}{% endautoescape %}
                 </form>
         </div>
     </div>
