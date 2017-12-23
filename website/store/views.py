@@ -193,35 +193,39 @@ def product(request, item):
     })
 
 
-def search(request, query, order):
+def search(request, query):
     args = {}
     filters = {}
-    if request.method == 'GET':
-        if 'language' in request.GET:
-            filters['language'] = request.GET.getlist('language')
-            args['languages'] = request.GET.getlist('language')
-        if 'score' in request.GET:
-            filters['score'] = request.GET.getlist('score')
-            args['scores'] = request.GET.getlist('score')
-        if 'type' in request.GET:
-            filters['type'] = request.GET.getlist('type')
-            args['types'] = request.GET.getlist('type')
-        if 'publisher' in request.GET:
-            filters['publisher'] = request.GET.getlist('publisher')
-            args['publishers'] = request.GET.getlist('publisher')
-        if 'pmax' in request.GET and 'pmin' in request.GET:
-            filters['pmin'] = request.GET['pmin']
-            filters['pmax'] = request.GET['pmax']
-            args['pmin'] = request.GET['pmin']
-            args['pmax'] = request.GET['pmax']
-            if(request.GET['pmax'] == ''):
-                filters['pmax'] = 100
-                args['pmax'] = 100
-            if (request.GET['pmin'] == ''):
-                filters['pmin'] = 0
-                args['pmin'] = 0
+    try:
+        order = request.GET['order_infilt']
+    except:
+        order = 'relevancy'
+    if 'language' in request.GET:
+        filters['language'] = request.GET.getlist('language')
+        args['languages'] = request.GET.getlist('language')
+    if 'score' in request.GET:
+        filters['score'] = request.GET.getlist('score')
+        args['scores'] = request.GET.getlist('score')
+    if 'type' in request.GET:
+        filters['type'] = request.GET.getlist('type')
+        args['types'] = request.GET.getlist('type')
+    if 'publisher' in request.GET:
+        filters['publisher'] = request.GET.getlist('publisher')
+        args['publishers'] = request.GET.getlist('publisher')
+    if 'pmax' in request.GET and 'pmin' in request.GET:
+        filters['pmin'] = request.GET['pmin']
+        filters['pmax'] = request.GET['pmax']
+        args['pmin'] = request.GET['pmin']
+        args['pmax'] = request.GET['pmax']
+        if (request.GET['pmax'] == ''):
+            filters['pmax'] = 100
+            args['pmax'] = 100
+        if (request.GET['pmin'] == ''):
+            filters['pmin'] = 0
+            args['pmin'] = 0
     if request.method == 'POST':
-        print(request.POST)
+        if 'orderby' in request.POST:
+            order = request.POST['orderby']
         if 'addToCartItemBoxButton' in request.POST:
             if not request.session.exists(request.session.session_key):
                 request.session.create()
@@ -238,12 +242,13 @@ def search(request, query, order):
             return searchPost(request)
 
     args['query'] = query
-    args['order'] = order
     args['filteritems'] = filters
+    args['order'] = order
     searchResults = getDBResults(query)
     args['languageFilterItems'] = isCategoryRelevant(searchResults, 'language')
     args['typeFilterItems'] = isCategoryRelevant(searchResults, 'type')
     args['publisherFilterItems'] = isCategoryRelevant(searchResults, 'publisher')
+    args['size'] = len(searchResults)
     args['objects'] = orderResults(searchResults, order)
 
     return render(request, 'searchresults.html', args)
@@ -251,32 +256,36 @@ def search(request, query, order):
 def productsAll(request):
     args = {}
     filters = {}
-    if request.method == 'GET':
-        if 'language' in request.GET:
-            filters['language'] = request.GET.getlist('language')
-            args['languages'] = request.GET.getlist('language')
-        if 'score' in request.GET:
-            filters['score'] = request.GET.getlist('score')
-            args['scores'] = request.GET.getlist('score')
-        if 'type' in request.GET:
-            filters['type'] = request.GET.getlist('type')
-            args['types'] = request.GET.getlist('type')
-        if 'publisher' in request.GET:
-            filters['publisher'] = request.GET.getlist('publisher')
-            args['publishers'] = request.GET.getlist('publisher')
-        if 'pmax' in request.GET and 'pmin' in request.GET:
-            filters['pmin'] = request.GET['pmin']
-            filters['pmax'] = request.GET['pmax']
-            args['pmin'] = request.GET['pmin']
-            args['pmax'] = request.GET['pmax']
-            if (request.GET['pmax'] == ''):
-                filters['pmax'] = 100
-                args['pmax'] = 100
-            if (request.GET['pmin'] == ''):
-                filters['pmin'] = 0
-                args['pmin'] = 0
+    try:
+        order = request.GET['order_infilt']
+    except:
+        order = 'relevancy'
+    if 'language' in request.GET:
+        filters['language'] = request.GET.getlist('language')
+        args['languages'] = request.GET.getlist('language')
+    if 'score' in request.GET:
+        filters['score'] = request.GET.getlist('score')
+        args['scores'] = request.GET.getlist('score')
+    if 'type' in request.GET:
+        filters['type'] = request.GET.getlist('type')
+        args['types'] = request.GET.getlist('type')
+    if 'publisher' in request.GET:
+        filters['publisher'] = request.GET.getlist('publisher')
+        args['publishers'] = request.GET.getlist('publisher')
+    if 'pmax' in request.GET and 'pmin' in request.GET:
+        filters['pmin'] = request.GET['pmin']
+        filters['pmax'] = request.GET['pmax']
+        args['pmin'] = request.GET['pmin']
+        args['pmax'] = request.GET['pmax']
+        if (request.GET['pmax'] == ''):
+            filters['pmax'] = 100
+            args['pmax'] = 100
+        if (request.GET['pmin'] == ''):
+            filters['pmin'] = 0
+            args['pmin'] = 0
     if request.method == 'POST':
-        print(request.POST)
+        if 'orderby' in request.POST:
+            order = request.POST['orderby']
         if 'addToCartItemBoxButton' in request.POST:
             if not request.session.exists(request.session.session_key):
                 request.session.create()
@@ -293,11 +302,13 @@ def productsAll(request):
             return searchPost(request)
 
     args['filteritems'] = filters
-    allProducts = ProductDetails.objects.all()
-    args['languageFilterItems'] = isCategoryRelevant(allProducts, 'language')
-    args['typeFilterItems'] = isCategoryRelevant(allProducts, 'type')
-    args['publisherFilterItems'] = isCategoryRelevant(allProducts, 'publisher')
-    args['objects'] = allProducts.order_by('prodNum__prodName')
+    args['order'] = order
+    objects = ProductDetails.objects.all()
+    args['languageFilterItems'] = isCategoryRelevant(objects, 'language')
+    args['typeFilterItems'] = isCategoryRelevant(objects, 'type')
+    args['publisherFilterItems'] = isCategoryRelevant(objects, 'publisher')
+    args['size'] = len(objects)
+    args['objects'] = orderResults(objects, order)
 
     return render(request, 'productsall.html', args)
 

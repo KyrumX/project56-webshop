@@ -72,7 +72,6 @@ def isCategoryRelevant(objects, field):
         return None
 
 def orderResults(objects, orderType):
-    print(orderType)
     if orderType == 'asc':
         return objects.order_by('prodNum__prodName')
     elif orderType == 'desc':

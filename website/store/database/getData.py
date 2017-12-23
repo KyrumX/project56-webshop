@@ -78,7 +78,8 @@ def getDBResults(query):
             pubDatum__icontains=query) | Q(prodNum__in=resultsProductName))
     return results
 
-def getSearchResults(results, userAuth, filteritems, order):
+def getSearchResults(results, userAuth, filteritems):
+    print(results)
     # Structuur url: localhost:8000/search/Hulk/{smallfilter bvb 'asc'}/{sidefilter aka 'Dutch'}/
     # Voorbeeld beide filters url: localhost:8000/search/Hulk/priceasc/marvel/
 
@@ -132,27 +133,7 @@ def getSearchResults(results, userAuth, filteritems, order):
     if 'pmax' in filteritems and 'pmin' in filteritems and results.exists():
         results = results.filter(prodNum__prodPrice__lte=filteritems['pmax'], prodNum__prodPrice__gte=filteritems['pmin'])
 
-    txt = """<div class='sorton commoncolor' style='border-radius: 3px'>
-         <p>Totale Resultaten: </p>
-         <p id='fifteen'>{0}</p>
-         <p></p>
-         <select name='filter' onchange='this.form.submit()'>""".format(str(len(list(results))))
-
-
-    if order == "asc":
-        txt += "<option>Relevantie</option><option value='asc' selected>Naam: A - Z</option><option value='desc'>Naam: Z - A</option><option value='priceasc' name='filterasc'>Prijs: Oplopend</option><option value='pricedesc' name='filterdesc'>Prijs: Aflopend</option>"
-    elif order == "desc":
-        txt += "<option>Relevantie</option><option value='asc' name='filterasc'>Naam: A - Z</option><option value='desc' name='filterdesc' selected>Naam: Z - A</option><option value='priceasc' name='filterasc'>Prijs: Oplopend</option><option value='pricedesc' name='filterdesc'>Prijs: Aflopend</option>"
-    elif order == "priceasc":
-        txt += "<option>Relevantie</option><option value='asc'>Naam: A - Z</option><option value='desc'>Naam: Z - A</option><option value='priceasc' name='filterasc' selected>Prijs: Oplopend</option><option value='pricedesc' name='filterdesc'>Prijs: Aflopend</option>"
-    elif order == "pricedesc":
-        txt += "<option>Relevantie</option><option value='asc'>Naam: A - Z</option><option value='desc'>Naam: Z - A</option><option value='priceasc' name='filterasc'>Prijs: Oplopend</option><option value='pricedesc' name='filterdesc' selected>Prijs: Aflopend</option>"
-    else:
-        txt += "<option selected>Relevantie</option><option value='asc'>Naam: A - Z</option><option value='desc'>Naam: Z - A</option><option value='priceasc' name='filterasc'>Prijs: Oplopend</option><option value='pricedesc' name='filterdesc'>Prijs: Aflopend</option>"
-    txt += """</select>
-    	 <p id='sortp'>Sorteren op: </p>
-    	 </div>"""
-
+    txt = ""
 
     # TODO: Hall of Shame Code right here
     # qrytxt = "SELECT * FROM store_products INNER JOIN store_productdetails on store_products.\"prodNum\" = store_productdetails.\"prodNum\" WHERE \"prodName\" like '%%" + query + "%%' " + filter

@@ -78,8 +78,8 @@ def listloop(userAuth):
     return txt
 
 @register.simple_tag()
-def searchList(query, userAuth, filterlist, order):
-    object = getSearchResults(query, userAuth, filterlist, order)
+def searchList(query, userAuth, filterlist):
+    object = getSearchResults(query, userAuth, filterlist)
     return object
 	
 @register.simple_tag()
@@ -153,10 +153,7 @@ def getOrderNum(order):
 def getAllProducts(userAuth, objects, filteritems):
     resuls = filterObjects(objects, filteritems)
 
-    txt = "<div class='sorton commoncolor' style='border-radius: 3px'> \
-         <p>Totale Resultaten: </p> \
-         <p id='fifteen'>{0}</p></div>".format(str(len(list(resuls))))
-
+    txt = ""
     counter = 0
     for e in resuls:
         if counter == 0:

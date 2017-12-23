@@ -1,17 +1,22 @@
 {% extends 'frames/base.html' %}
 {% block content %}
 {% load custom_tags %}
+{% load filter_tags %}
 <div class="content">
     <div class="bars sidecolors">
         {% include 'includes/filterbar.html' %}
     </div>
     <div class="mid">
         <div class="qrs">
+        <form method="post">
+            {% csrf_token %}
+            {% autoescape off %}{% orderbyForm order size %}{% endautoescape %}
+        </form>
                 <form role='form' method='post' name='productactions'>
 				<input type='hidden' name='searchtext' value={{ query }}>
 				<input type='hidden' name='sidefilt' value={{ sidefilt }}>
                     {% csrf_token %}
-                    {% autoescape off %}{% searchList objects user.is_authenticated filteritems order %}{% endautoescape %}
+                    {% autoescape off %}{% searchList objects user.is_authenticated filteritems size %}{% endautoescape %}
                 </form>
         </div>
     </div>
