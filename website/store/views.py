@@ -196,33 +196,37 @@ def product(request, item):
 def search(request, query):
     args = {}
     filters = {}
-    try:
-        order = request.GET['order_infilt']
-    except:
-        order = 'relevancy'
-    if 'language' in request.GET:
-        filters['language'] = request.GET.getlist('language')
-        args['languages'] = request.GET.getlist('language')
-    if 'score' in request.GET:
-        filters['score'] = request.GET.getlist('score')
-        args['scores'] = request.GET.getlist('score')
-    if 'type' in request.GET:
-        filters['type'] = request.GET.getlist('type')
-        args['types'] = request.GET.getlist('type')
-    if 'publisher' in request.GET:
-        filters['publisher'] = request.GET.getlist('publisher')
-        args['publishers'] = request.GET.getlist('publisher')
-    if 'pmax' in request.GET and 'pmin' in request.GET:
-        filters['pmin'] = request.GET['pmin']
-        filters['pmax'] = request.GET['pmax']
-        args['pmin'] = request.GET['pmin']
-        args['pmax'] = request.GET['pmax']
-        if (request.GET['pmax'] == ''):
-            filters['pmax'] = 100
-            args['pmax'] = 100
-        if (request.GET['pmin'] == ''):
-            filters['pmin'] = 0
-            args['pmin'] = 0
+    # try:
+    #     order = request.GET['order_infilt']
+    # except:
+    #     order = 'relevancy'
+    order = 'relevancy'
+    if request.method == "GET":
+        if 'orderby' in request.GET:
+            order = request.GET['orderby']
+        if 'language' in request.GET:
+            filters['language'] = request.GET.getlist('language')
+            args['languages'] = request.GET.getlist('language')
+        if 'score' in request.GET:
+            filters['score'] = request.GET.getlist('score')
+            args['scores'] = request.GET.getlist('score')
+        if 'type' in request.GET:
+            filters['type'] = request.GET.getlist('type')
+            args['types'] = request.GET.getlist('type')
+        if 'publisher' in request.GET:
+            filters['publisher'] = request.GET.getlist('publisher')
+            args['publishers'] = request.GET.getlist('publisher')
+        if 'pmax' in request.GET and 'pmin' in request.GET:
+            filters['pmin'] = request.GET['pmin']
+            filters['pmax'] = request.GET['pmax']
+            args['pmin'] = request.GET['pmin']
+            args['pmax'] = request.GET['pmax']
+            if (request.GET['pmax'] == ''):
+                filters['pmax'] = 100
+                args['pmax'] = 100
+            if (request.GET['pmin'] == ''):
+                filters['pmin'] = 0
+                args['pmin'] = 0
     if request.method == 'POST':
         if 'orderby' in request.POST:
             order = request.POST['orderby']
@@ -256,36 +260,38 @@ def search(request, query):
 def productsAll(request):
     args = {}
     filters = {}
-    try:
-        order = request.GET['order_infilt']
-    except:
-        order = 'relevancy'
-    if 'language' in request.GET:
-        filters['language'] = request.GET.getlist('language')
-        args['languages'] = request.GET.getlist('language')
-    if 'score' in request.GET:
-        filters['score'] = request.GET.getlist('score')
-        args['scores'] = request.GET.getlist('score')
-    if 'type' in request.GET:
-        filters['type'] = request.GET.getlist('type')
-        args['types'] = request.GET.getlist('type')
-    if 'publisher' in request.GET:
-        filters['publisher'] = request.GET.getlist('publisher')
-        args['publishers'] = request.GET.getlist('publisher')
-    if 'pmax' in request.GET and 'pmin' in request.GET:
-        filters['pmin'] = request.GET['pmin']
-        filters['pmax'] = request.GET['pmax']
-        args['pmin'] = request.GET['pmin']
-        args['pmax'] = request.GET['pmax']
-        if (request.GET['pmax'] == ''):
-            filters['pmax'] = 100
-            args['pmax'] = 100
-        if (request.GET['pmin'] == ''):
-            filters['pmin'] = 0
-            args['pmin'] = 0
+    order = 'relevancy'
+    # try:
+    #     order = request.GET['order_infilt']
+    # except:
+    #     order = 'relevancy'
+    if request.method == "GET":
+        if 'orderby' in request.GET:
+            order = request.GET['orderby']
+        if 'language' in request.GET:
+            filters['language'] = request.GET.getlist('language')
+            args['languages'] = request.GET.getlist('language')
+        if 'score' in request.GET:
+            filters['score'] = request.GET.getlist('score')
+            args['scores'] = request.GET.getlist('score')
+        if 'type' in request.GET:
+            filters['type'] = request.GET.getlist('type')
+            args['types'] = request.GET.getlist('type')
+        if 'publisher' in request.GET:
+            filters['publisher'] = request.GET.getlist('publisher')
+            args['publishers'] = request.GET.getlist('publisher')
+        if 'pmax' in request.GET and 'pmin' in request.GET:
+            filters['pmin'] = request.GET['pmin']
+            filters['pmax'] = request.GET['pmax']
+            args['pmin'] = request.GET['pmin']
+            args['pmax'] = request.GET['pmax']
+            if (request.GET['pmax'] == ''):
+                filters['pmax'] = 100
+                args['pmax'] = 100
+            if (request.GET['pmin'] == ''):
+                filters['pmin'] = 0
+                args['pmin'] = 0
     if request.method == 'POST':
-        if 'orderby' in request.POST:
-            order = request.POST['orderby']
         if 'addToCartItemBoxButton' in request.POST:
             if not request.session.exists(request.session.session_key):
                 request.session.create()

@@ -79,7 +79,7 @@ def orderbyForm(order, size):
          <p>Totale Resultaten: </p>
          <p id='fifteen'>{0}</p>
          <p></p>
-         <select name='orderby' onchange='this.form.submit()'>""".format(str(size))
+         <select name='orderby' onchange='combineForms()'>""".format(str(size))
 
     if order == "asc":
         txt += "<option>Relevantie</option><option value='asc' selected>Naam: A - Z</option><option value='desc'>Naam: Z - A</option><option value='priceasc' name='filterasc'>Prijs: Oplopend</option><option value='pricedesc' name='filterdesc'>Prijs: Aflopend</option>"

@@ -1,6 +1,6 @@
 {% load custom_tags %}
 {% load filter_tags %}
-<form method="GET">
+<form method="GET" name="filterform">
     {% autoescape off %}{% languageFilter languageFilterItems languages %}{% endautoescape %}
     {% autoescape off %}{% typeFilter typeFilterItems types %}{% endautoescape %}
     {% autoescape off %}{% publisherFilter publisherFilterItems publishers %}{% endautoescape %}
@@ -41,9 +41,9 @@
         </div>
         <div class="bartext">
             {% if '1' in scores %}
-                <input type="checkbox" onchange="this.form.submit()" name="score" value="1" id="one" checked>
+                <input type="checkbox" onchange='combineForms()' name="score" value="1" id="one" checked>
             {% else %}
-                <input type="checkbox" onchange="this.form.submit()" name="score" value="1" id="one">
+                <input type="checkbox" onchange='combineForms()' name="score" value="1" id="one">
             {% endif %}
             <label for="one"></label>
             <p><i class="fa fa-star" aria-hidden="true"></i></p>
@@ -83,5 +83,5 @@
             <br>
         </div>
     </div>
-    <input type='hidden' name='order_infilt' value={{ order }}>
+{#    <input type='hidden' name='order_infilt' value={{ order }}>#}
 </form>
