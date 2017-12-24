@@ -3,7 +3,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 
-from store.collections.filter import isCategoryRelevant, orderResults
+from store.collections.filter import isCategoryRelevant, orderResults, filterObjects
 from store.models import ProductDetails
 from store.tokens import account_activation_token
 from .collections.mails import *
@@ -196,10 +196,6 @@ def product(request, item):
 def search(request, query):
     args = {}
     filters = {}
-    # try:
-    #     order = request.GET['order_infilt']
-    # except:
-    #     order = 'relevancy'
     order = 'relevancy'
     if request.method == "GET":
         if 'orderby' in request.GET:
@@ -246,14 +242,14 @@ def search(request, query):
             return searchPost(request)
 
     args['query'] = query
-    args['filteritems'] = filters
     args['order'] = order
     searchResults = getDBResults(query)
     args['languageFilterItems'] = isCategoryRelevant(searchResults, 'language')
     args['typeFilterItems'] = isCategoryRelevant(searchResults, 'type')
     args['publisherFilterItems'] = isCategoryRelevant(searchResults, 'publisher')
-    args['size'] = len(searchResults)
-    args['objects'] = orderResults(searchResults, order)
+    filtered = filterObjects(searchResults, filters)
+    args['size'] = len(filtered)
+    args['objects'] = orderResults(filtered, order)
 
     return render(request, 'searchresults.html', args)
 
@@ -261,10 +257,6 @@ def productsAll(request):
     args = {}
     filters = {}
     order = 'relevancy'
-    # try:
-    #     order = request.GET['order_infilt']
-    # except:
-    #     order = 'relevancy'
     if request.method == "GET":
         if 'orderby' in request.GET:
             order = request.GET['orderby']
@@ -307,14 +299,14 @@ def productsAll(request):
             print("Found sidefilters")
             return searchPost(request)
 
-    args['filteritems'] = filters
     args['order'] = order
     objects = ProductDetails.objects.all()
     args['languageFilterItems'] = isCategoryRelevant(objects, 'language')
     args['typeFilterItems'] = isCategoryRelevant(objects, 'type')
     args['publisherFilterItems'] = isCategoryRelevant(objects, 'publisher')
-    args['size'] = len(objects)
-    args['objects'] = orderResults(objects, order)
+    filtered = filterObjects(objects, filters)
+    args['size'] = len(filtered)
+    args['objects'] = orderResults(filtered, order)
 
     return render(request, 'productsall.html', args)
 

@@ -4,7 +4,6 @@
 {% load filter_tags %}
 <div class="content">
 {% load static %}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript" src="{% static 'js/jquery.combineforms.js' %}"></script>
     <div class="bars sidecolors">
         {% include 'includes/filterbar.html' %}
@@ -18,7 +17,7 @@
 				<input type='hidden' name='searchtext' value={{ query }}>
 				<input type='hidden' name='sidefilt' value={{ sidefilt }}>
                     {% csrf_token %}
-                    {% autoescape off %}{% searchList objects user.is_authenticated filteritems size %}{% endautoescape %}
+                    {% autoescape off %}{% searchList objects user.is_authenticated %}{% endautoescape %}
                 </form>
         </div>
     </div>

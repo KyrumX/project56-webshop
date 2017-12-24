@@ -4,7 +4,6 @@
 #                                                           #
 #############################################################
 
-
 def filterObjects(entries, filteritems):
     if 'language' in filteritems and entries.exists():
         languages = []

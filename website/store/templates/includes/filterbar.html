@@ -13,9 +13,9 @@
                 <li>
                     <p>€</p>
                     {% if pmin == null %}
-                        <input type="textbox" name="pmin" value={{ 0 }}>
+                        <input type="text" name="pmin" value='{{ 0 }}'>
                     {% else %}
-                        <input type="textbox" name="pmin" value={{ pmin }}>
+                        <input type="text" name="pmin" value='{{ pmin }}'>
                     {% endif %}
                 </li>
                 <li style="width: 10%;">
@@ -24,13 +24,13 @@
                 <li>
                     <p>€</p>
                     {% if pmax == null %}
-                        <input type="textbox" name="pmax" value='{{ 100 }}' size=1>
+                        <input type="text" name="pmax" value='{{ 100 }}' size=1>
                     {% else %}
-                        <input type="textbox" name="pmax" value='{{ pmax }}' size=1>
+                        <input type="text" name="pmax" value='{{ pmax }}' size=1>
                     {% endif %}
                 </li>
                 <li style="width: 20%; margin-left: 5px;">
-                    <button><i class="fa fa-refresh" aria-hidden="true" id="addit"></i></button>
+                    <button formmethod="get" onclick="combineForms()"><i class="fa fa-refresh" aria-hidden="true" id="addit"></i></button>
                 </li>
             </ul>
         </div>
@@ -49,33 +49,33 @@
             <p><i class="fa fa-star" aria-hidden="true"></i></p>
             <br>
             {% if '2' in scores %}
-                <input type="checkbox" onchange="this.form.submit()" name="score" value="2" id="two" checked>
+                <input type="checkbox" onchange='combineForms()' name="score" value="2" id="two" checked>
             {% else %}
-                <input type="checkbox" onchange="this.form.submit()" name="score" value="2" id="two">
+                <input type="checkbox" onchange='combineForms()' name="score" value="2" id="two">
             {% endif %}
             <label for="two"></label>
             <p><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i></p>
             <br>
             {% if '3' in scores %}
-                <input type="checkbox" onchange="this.form.submit()" name="score" value="3" id="three" checked>
+                <input type="checkbox" onchange='combineForms()' name="score" value="3" id="three" checked>
             {% else %}
-                <input type="checkbox" onchange="this.form.submit()" name="score" value="3" id="three">
+                <input type="checkbox" onchange='combineForms()' name="score" value="3" id="three">
             {% endif %}
             <label for="three"></label>
             <p><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i></p>
             <br>
             {% if '4' in scores %}
-                <input type="checkbox" onchange="this.form.submit()" name="score" value="4" id="four" checked>
+                <input type="checkbox" onchange='combineForms()' name="score" value="4" id="four" checked>
             {% else %}
-                <input type="checkbox" onchange="this.form.submit()" name="score" value="4" id="four">
+                <input type="checkbox" onchange='combineForms()' name="score" value="4" id="four">
             {% endif %}
             <label for="four"></label>
             <p><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i></p>
             <br>
             {% if '5' in scores %}
-                <input type="checkbox" onchange="this.form.submit()" name="score" value="5" id="five" checked>
+                <input type="checkbox" onchange='combineForms()' name="score" value="5" id="five" checked>
             {% else %}
-                <input type="checkbox" onchange="this.form.submit()" name="score" value="5" id="five">
+                <input type="checkbox" onchange='combineForms()' name="score" value="5" id="five">
             {% endif %}
             <label for="five"></label>
             <p><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i></p>
