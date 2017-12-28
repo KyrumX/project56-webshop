@@ -18,6 +18,7 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admindjango/', admin.site.urls),
+    url(r'^chatbot/', include('chatbot.urls')),
     url(r'', include('store.urls')),
 
 ]

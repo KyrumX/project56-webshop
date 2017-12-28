@@ -1,0 +1,45 @@
+#chatbotwrap {
+	background-color: rgba(213, 209, 209, 0.39);
+	position: relative;
+	width: 100%;
+	display: block;
+	border: solid 0.1vh rgba(0, 0, 0, 0.15);
+	border-radius: 5px;
+	margin-top: -1px;
+	z-index: 0;
+    height: 50vh;
+    overflow-y: scroll;;
+}
+
+.chatbot-left {
+    float: left;
+    width: 51%;
+}
+
+.chatbot-right {
+    float: right;
+    width: 51%;
+}
+
+#chatbotdiv {
+    position: relative;
+    height: auto;
+}
+
+#chatbotinputdiv {
+    position: relative;
+    width: 100%;
+}
+
+#chatbottable{
+    position: relative;
+    width: 100%;
+}
+
+#chatbottable tr{
+    width: 100%;
+}
+
+#chatbottable td{
+    width: 50%;
+}
