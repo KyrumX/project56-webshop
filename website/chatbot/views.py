@@ -11,6 +11,10 @@ class ChatboxView(View):
         return render(request, 'chatbot.html', {})
 
 def GetBotResponse(request):
+    if request.user.is_authenticated:
+        print("Hello, I'm logged in")
+    else:
+        print("Not logged in")
     response = chatbot.get_type_input(request.GET['message'], request.GET['questioncase'])
 
 
