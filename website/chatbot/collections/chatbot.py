@@ -88,7 +88,11 @@ def get_question_response(usermessage, case):
     if case == 11:
         return [DELIVERY_QUESTION, "1"]
     elif case == -1:
-        return [THANKS_RESPONSE, "0"]
+        for string in NEGATIVE_ANSWERS:
+            if string in usermessage:
+                return [DELIVERY_QUESTION, "1"]
+            else:
+                return get_question_category(usermessage, case)
     else:
         return [DEFAULT_AFTER, "0"]
 
