@@ -1,10 +1,12 @@
 from django import template
+from django.db.models import Q
+
+from store.collections.filter import filterObjects
 from ..models import Products, ProductDetails
 import urllib.request, json
 from ..database.getData import getProdImage, getProdName, getProdPublish, getProdPrice, getProdAuthor, getProdStock
 from ..database.getData import getProdName, getProdNum, getProdPrice, getProdStock, getProdGenre, getProdType, getProdAuthor, getProdDesc, getProdImage, getProdLanguage, getProdPublish, getProdRating, getProdTotalPages, getProdData
 from ..database.verifyData import verifyProdNum
-from ..database.getData import getSearchResults
 register = template.Library()
 
 @register.assignment_tag
@@ -73,11 +75,6 @@ def listloop(userAuth):
                 cnt = mod
         txt += "</ul>"
     return txt
-
-@register.simple_tag()
-def searchList(query, userAuth, filter=""):
-    object = getSearchResults(str(query), userAuth, filter)
-    return object
 
 @register.simple_tag()
 def suggesteditems(prod, type):

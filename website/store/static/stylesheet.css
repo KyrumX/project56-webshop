@@ -709,6 +709,11 @@ input[type=submit], .logindiv button{
 	width: 20%;
 }
 
+#logo {
+	height: 100%;
+	
+}
+
 #logoimg{
 	margin-top: 3%;
 	left: 5%;
@@ -791,7 +796,7 @@ input[type=submit], .logindiv button{
 	float: left;
 	display: table;
 	height: 100%;
-	width: 33.333333334%;
+	width: 25%;
 	text-align: center;
 	vertical-align: middle;
 }
@@ -2156,7 +2161,23 @@ button{
 	cursor: pointer;
 }
 
+.bartext button{
+	width: 100%;
+	vertical-align: middle;
+	text-align: center;
+	display: table-cell;
+	background-color: #4f9373;
+	border: none;
+	border: solid 1px #837a7a54;
+	color: white;
+	border-radius: 3px;
+	height: 25px;
+}
 
+#addit{
+	color: white;
+	text-shadow: none;
+}
 
 .loginbutton{
 	margin-top: 16px;
@@ -2591,7 +2612,25 @@ button{
 	margin: 0 auto;
 	display: block;
 	/* text-align: center; */
-	width: 180px;
+	/* width: 180px; */
+}
+
+.bartext ul{
+	display: table;
+	list-style-type: none;
+	margin: 0;
+	padding: 0px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	width: 100%;
+}
+
+.bartext li{
+	display: table-cell;
+	width: 33%;
+	float: left;
+	text-align: center;
+	vertical-align: middle;
 }
 
 
@@ -2908,7 +2947,7 @@ button{
 }
 
 
-.bartext input[type=textbox] {
+.bartext input[type=text] {
 		-webkit-border-radius: 3px;
 		-moz-border-radius: 3px;
 		-ms-border-radius: 3px;
@@ -2928,9 +2967,9 @@ button{
 		border: 1px solid rgb(200, 200, 200);
 		color: #777;
 		font: 18px Helvetica, Arial, sans-serif;
-		display: inline-block;
-		width: 50px;
-		margin-left: 5px;
+		display: inline;
+		width: 8vh;
+		/* margin-left: 5px; */
 		padding-left: 5px;
 }
 .bartext input[type=textbox]:focus{
@@ -2946,9 +2985,14 @@ button{
 }
 
 .bartext p {
-	display: inline-block;
-	margin-left: 5px;
+	display: inline;
+	 */
 	font-size: 1.5vh;
+	vertical-align: top;
+	line-height: 30px;
+	margin: 0px;
+	margin-left: 5px;
+	font-size: 2vh;
 }
 
 .barwrap {
@@ -3125,7 +3169,6 @@ h1{
 p{
 	font-family: "Open Sans",Arial,Helvetica,sans-serif;
 	font-size: 13px;
-	margin-left: 13px;
 	line-height: 25px;
 }
 

@@ -1,33 +1,26 @@
 from django.core.exceptions import PermissionDenied
-from django.core.mail import EmailMessage
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+
+from store.collections.filter import isCategoryRelevant, orderResults, filterObjects
+from store.models import ProductDetails
 from store.tokens import account_activation_token
 from .collections.mails import *
 from django.contrib.auth import login, logout, update_session_auth_hash
-from .database.getData import getProdName, getProdPrice, getProdStock, getProdGenre, getProdType, getProdAuthor, getProdDesc, getProdImage, getProdLanguage, getProdPublish, getProdRating, getProdTotalPages, getProdData, getStreet, getHouseNumber, getCity, getPostalcode, getCustomerFName, getCustomerLName, getCustomerPhone
+from .database.getData import getProdName, getProdPrice, getProdStock, getProdGenre, getProdType, getProdAuthor, getProdDesc, getProdImage, getProdLanguage, getProdPublish, getProdRating, getProdTotalPages, getProdData, getStreet, getHouseNumber, getCity, getPostalcode, getCustomerFName, getCustomerLName, getCustomerPhone, \
+    getDBResults
 from .database.verifyData import verifyProdNum
 from .collections.forms import *
 from django.http import *
-from django.forms import ModelForm
-from django.contrib.auth import authenticate
-from .database.CartOps import addToCart, removeFromCart
-from .database.getData import queryVerbeterFunctie
-from django.shortcuts import render_to_response
-from django.template import RequestContext
 from django.contrib.auth import authenticate
 from .database.CartOps import addToCart, removeFromCart
 from .database.WishListOps import removeFromWishList
 from .collections.posts import *
 from .database.CheckoutOps import *
 from .database.AccountOps import *
-import os
-from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
-from email.mime.image import MIMEImage
 from .collections.tools import *
-
 
 from .database.CartOps import setAmount
 
@@ -45,6 +38,8 @@ def index(request):
             return redirect('/winkelwagentje/')
         elif 'moveToWishListButton' in request.POST:
             return addToWishListPost(request)
+        elif 'filter' in request.POST:
+            return searchPost(request)
 
     return render(request, 'index.html')
 
@@ -198,9 +193,37 @@ def product(request, item):
     })
 
 
-def search(request, query, filter=""):
+def search(request, query):
+    args = {}
+    filters = {}
+    order = 'relevancy'
+    if request.method == "GET":
+        if 'orderby' in request.GET:
+            order = request.GET['orderby']
+        if 'language' in request.GET:
+            filters['language'] = request.GET.getlist('language')
+            args['languages'] = request.GET.getlist('language')
+        if 'score' in request.GET:
+            filters['score'] = request.GET.getlist('score')
+            args['scores'] = request.GET.getlist('score')
+        if 'type' in request.GET:
+            filters['type'] = request.GET.getlist('type')
+            args['types'] = request.GET.getlist('type')
+        if 'publisher' in request.GET:
+            filters['publisher'] = request.GET.getlist('publisher')
+            args['publishers'] = request.GET.getlist('publisher')
+        if 'pmax' in request.GET and 'pmin' in request.GET:
+            filters['pmin'] = request.GET['pmin']
+            filters['pmax'] = request.GET['pmax']
+            args['pmin'] = request.GET['pmin']
+            args['pmax'] = request.GET['pmax']
+            if (request.GET['pmax'] == ''):
+                filters['pmax'] = 100
+                args['pmax'] = 100
+            if (request.GET['pmin'] == ''):
+                filters['pmin'] = 0
+                args['pmin'] = 0
     if request.method == 'POST':
-        print(request.POST)
         if 'addToCartItemBoxButton' in request.POST:
             if not request.session.exists(request.session.session_key):
                 request.session.create()
@@ -212,15 +235,78 @@ def search(request, query, filter=""):
             return searchPost(request)
         elif 'searchtext' in request.POST:
             return searchPost(request)
+        elif "sidefilter" in request.POST:
+            print("Found sidefilters")
+            return searchPost(request)
 
-    # filt = "{}".format(request.POST.get('filter'))
-    # print(filt)
-    thequery = query
-    thefilter = filter
-    return render(request, 'searchresults.html', {
-        'query' : thequery, 'filt' : thefilter,
-    })
+    args['query'] = query
+    args['order'] = order
+    searchResults = getDBResults(query)
+    args['languageFilterItems'] = isCategoryRelevant(searchResults, 'language')
+    args['typeFilterItems'] = isCategoryRelevant(searchResults, 'type')
+    args['publisherFilterItems'] = isCategoryRelevant(searchResults, 'publisher')
+    filtered = filterObjects(searchResults, filters)
+    args['size'] = len(filtered)
+    args['objects'] = orderResults(filtered, order)
 
+    return render(request, 'searchresults.html', args)
+
+def productsAll(request):
+    args = {}
+    filters = {}
+    order = 'relevancy'
+    if request.method == "GET":
+        if 'orderby' in request.GET:
+            order = request.GET['orderby']
+        if 'language' in request.GET:
+            filters['language'] = request.GET.getlist('language')
+            args['languages'] = request.GET.getlist('language')
+        if 'score' in request.GET:
+            filters['score'] = request.GET.getlist('score')
+            args['scores'] = request.GET.getlist('score')
+        if 'type' in request.GET:
+            filters['type'] = request.GET.getlist('type')
+            args['types'] = request.GET.getlist('type')
+        if 'publisher' in request.GET:
+            filters['publisher'] = request.GET.getlist('publisher')
+            args['publishers'] = request.GET.getlist('publisher')
+        if 'pmax' in request.GET and 'pmin' in request.GET:
+            filters['pmin'] = request.GET['pmin']
+            filters['pmax'] = request.GET['pmax']
+            args['pmin'] = request.GET['pmin']
+            args['pmax'] = request.GET['pmax']
+            if (request.GET['pmax'] == ''):
+                filters['pmax'] = 100
+                args['pmax'] = 100
+            if (request.GET['pmin'] == ''):
+                filters['pmin'] = 0
+                args['pmin'] = 0
+    if request.method == 'POST':
+        if 'addToCartItemBoxButton' in request.POST:
+            if not request.session.exists(request.session.session_key):
+                request.session.create()
+            addToCart(request, int(request.POST.get('addToCartItemBoxButton')))
+            return redirect('/winkelwagentje/')
+        elif "moveToWishListButton" in request.POST:
+            return addToWishListPost(request)
+        elif 'filter' in request.POST:
+            return searchPost(request)
+        elif 'searchtext' in request.POST:
+            return searchPost(request)
+        elif "sidefilter" in request.POST:
+            print("Found sidefilters")
+            return searchPost(request)
+
+    args['order'] = order
+    objects = ProductDetails.objects.all()
+    args['languageFilterItems'] = isCategoryRelevant(objects, 'language')
+    args['typeFilterItems'] = isCategoryRelevant(objects, 'type')
+    args['publisherFilterItems'] = isCategoryRelevant(objects, 'publisher')
+    filtered = filterObjects(objects, filters)
+    args['size'] = len(filtered)
+    args['objects'] = orderResults(filtered, order)
+
+    return render(request, 'productsall.html', args)
 
 def logoutview(request):
     if request.method == 'POST':

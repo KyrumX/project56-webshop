@@ -14,9 +14,12 @@ urlpatterns = [
     url(r'^retourneren/$', views.retourneren, name='retourneren'),
     url(r'^privacy/$', views.privacy, name='privacy'),
     url(r'^betaling/$', views.betaling, name='betaling'),
-    url(r'^product/(?P<item>\d+)$', views.product, name='product2'), #url = /product/{item}, \d+ betekent 1 nummer of meer
+    url(r'^product/(?P<item>\d+)$', views.product, name='productPage'), #url = /product/{item}, \d+ betekent 1 nummer of meer
+    url(r'^product/all/$', views.productsAll, name='allProducts'),
 	#url(r'^search/(?P<query>[\w|\W]+)/$', views.search, name='search'),
-    url(r'^search/(?P<query>[\w|\W]+)/(?P<filter>[\w|\W]+)/$', views.search, name='search'),
+    #url(r'^search/(?P<query>[\w|\W]+)/(?P<filter>[\w|\W]+)/$', views.search, name='search'),
+	#url(r'^search/(?P<query>[\w|\W]+)/(?P<filter>[\w|\W]+)/(?P<sidefilter>[\w|\W]+)/$', views.search, name='search'),
+    url(r'^search/(?P<query>[\w|\W]+)/?/$', views.search, name='search'),
     #url(r'^testing$', views.testing, name='testing'),
     url(r'^logout/$', views.logoutview, name='logout'),
     url(r'^registrationcomplete/$', views.registrationcomplete, name='regdone'),

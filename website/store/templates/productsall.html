@@ -1,6 +1,6 @@
 {% extends 'frames/base.html' %}
-{% block content %}
 {% load custom_tags %}
+{% block content %}
 {% load filter_tags %}
 <div class="content">
 {% load static %}
@@ -10,14 +10,14 @@
     </div>
     <div class="mid">
         <div class="qrs">
-        <form method="get" name="orderform">
-            {% autoescape off %}{% orderbyForm order size %}{% endautoescape %}
-        </form>
+            <form method="get" name="orderform">
+                {% autoescape off %}{% orderbyForm order size %}{% endautoescape %}
+            </form>
                 <form role='form' method='post' name='productactions'>
 				<input type='hidden' name='searchtext' value={{ query }}>
 				<input type='hidden' name='sidefilt' value={{ sidefilt }}>
                     {% csrf_token %}
-                    {% autoescape off %}{% searchList objects user.is_authenticated %}{% endautoescape %}
+                    {% autoescape off %}{% getAllProducts objects user.is_authenticated %}{% endautoescape %}
                 </form>
         </div>
     </div>
