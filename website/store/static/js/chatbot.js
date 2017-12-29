@@ -3,15 +3,15 @@ $(document).ready(function() {
                 e.preventDefault(e);
                 var usermessage = $('input[name="usermessage"]').val();
                 var questioncase = $('input[name="case"]').val();
+                $('#chatbottable').find('tbody:last-child').append(
+                    '<tr><td></td><td>' + usermessage +'</td></tr>'
+                );
                 botResponse(usermessage, questioncase);
                 $('input[name="usermessage"]').val("");
             });
         });
 
 function sendBotMessage(usermessage, botmessage, question_case) {
-    $('#chatbottable').find('tbody:last-child').append(
-        '<tr><td></td><td>' + usermessage +'</td></tr>'
-    )
     $('#chatbottable').find('tbody:last-child').append(
         '<tr><td>' + botmessage + '</td><td></td></tr>'
     );

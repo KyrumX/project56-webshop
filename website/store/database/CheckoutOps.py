@@ -9,7 +9,7 @@ from ..models import  OrderDetails
 
 def createOrder(request):
     date = timezone.now().date()
-    status = "Processed"
+    status = "Verwerkt"
 
     if not request.user.is_authenticated:
         custID = createCustomer(request)

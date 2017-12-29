@@ -14,17 +14,21 @@ NOT_FOUND = "Ik heb uw vraag niet goed begrepen. Probeer vooral steekwoorden te 
 DELIVERY_RESPONSE = "Wanneer alle producten van een bestelling op voorraad zijn worden deze, mits voor 4 uur 's middags" \
                     " besteld, binnen 2 dagen door onze pakketbezorger bij u aangeboden. Wanneer een product niet op" \
                     " voorraad is wordt uw bestelling pas verzonden wanneer het missende product bij ons binnen is." \
-                    " Als u een schatting wilt van de levertijd neem dan contact op met een medewerker via ons contactform."
+                    " Als u een schatting wilt van de levertijd neem dan contact op met een medewerker via ons" \
+                    " <a href='/contact/'>contactform</a>."
 STATUS_RESPONSE = "Na het plaatsen van een bestelling kan deze op een willekeurig moment een tal van statussen hebben. " \
                   "De status 'Verwerkt' betekent dat uw bestelling in goede orde is ontvagen maar nog niet is" \
                   " aangeboden bij onze pakketbezorger. De status 'In wacht' betekent dat er een product van uw" \
                   " bestelling niet op voorraad was en dat wij wachten tot we deze binnenkrijgen van onze leverancier." \
                   " Een andere status duidt meestal op een probleem, u heeft een mail van de klantenservice ontvangen" \
-                  " over hoe nu verder, als u verder nog vragen heeft neem dan contact met ons op via ons contactform."
+                  " over hoe nu verder, als u verder nog vragen heeft neem dan contact met ons op via ons" \
+                  " <a href='/contact/'>contactform</a>."
 PRODUCT_RESPONSE = "Helaas heb ik niet genoeg kennis over specifieke producten. Neem contact op met onze klantenservice" \
-                   " via ons contactform. Een medewerker zal binnen 2 werkdagen een antwoord geven op uw vraag."
+                   " via ons <a href='/contact/'>contactform</a>. Een medewerker zal binnen 2 werkdagen een" \
+                   " antwoord geven op uw vraag."
 INTERNATIONAL_RESPONSE = "Wij leveren onze producten niet internationaal. We zijn wel bereid uw individuele situatie" \
-                         " te bekijken. Neem contact op met onze klantenservice via ons contactform en we zullen" \
+                         " te bekijken. Neem contact op met onze klantenservice via ons" \
+                         " <a href='/contact/'>contactform</a> en we zullen" \
                          " kijken of we iets voor u kunnen regelen!"
 RETURN_RESPONSE = "Bent u niet tevreden met een product? Voldoet het product niet aan uw verwachtingen?" \
                   " Deze dingen gebeuren nou eenmaal, ruilen of retourneren doen we niet moeilijk over" \
@@ -37,11 +41,12 @@ RETURN_RESPONSE = "Bent u niet tevreden met een product? Voldoet het product nie
                   " verzendkosten zult u in eerste instatie zelf moeten betalen. Wanneer wij het pakket in goede" \
                   " orde hebben ontvangen zullen we de verzendkosten terugbetalen. Wanneer u voor retourneren heeft" \
                   " gekozen zullen we de aankoopkosten terugbetalen." \
-                  " Als u verder nog vragen heeft kun u contact opnemen met onze klantenservice."
+                  " Als u verder nog vragen heeft kun u contact opnemen met onze klantenservice <a href='/contact/'>hier</a>."
 PAYMENT_RESPONSE = "Bij het plaatsen van uw bestelling kunt u alleen gebruik maken van paypal of de door paypal" \
                    " toegestaande creditkaarten. U kunt niet achteraf betalen."
-
+CONTACT_RESPONSE = "Als u een vraag heeft kun u deze proberen aan mij te stellen. Weet ik het antwoord niet? Neem dan" \
+                   " contact op met onze klantenservice via ons <a href='/contact/'>contactform</a>."
 
 THANKS_RESPONSE = "Ik hoop dat uw vragen zijn beantwoord. Is dit niet het geval? Neem dan contact op met onze" \
-                  " klantenservice via ons contactform. <br/>" \
+                  " klantenservice via ons <a href='/contact/'>contactform</a>. <br/>" \
                   "Nog een fijne dag!"
