@@ -224,8 +224,6 @@ def search(request, query):
                 filters['pmin'] = 0
                 args['pmin'] = 0
     if request.method == 'POST':
-        if 'orderby' in request.POST:
-            order = request.POST['orderby']
         if 'addToCartItemBoxButton' in request.POST:
             if not request.session.exists(request.session.session_key):
                 request.session.create()

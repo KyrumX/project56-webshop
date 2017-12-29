@@ -59,7 +59,7 @@ def publisherFilter(relevantItems, selectedFilters):
     html = ""
     if relevantItems != None:
         html += "<div class='barwrap'><div class='leftbar commoncolor'>" \
-                "<p>Type Boek<i class='fa fa-sort-desc' aria-hidden='true' id='sortdown'></i></p>" \
+                "<p>Uitgever<i class='fa fa-sort-desc' aria-hidden='true' id='sortdown'></i></p>" \
                 "</div>" \
                 "<div class='bartext'>"
         for e in relevantItems:
