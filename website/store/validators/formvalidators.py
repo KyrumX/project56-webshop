@@ -40,8 +40,7 @@ def language_validator(language):
         raise ValidationError(_('Taal is ongeldig'))
 
 #TODO: Pls halp
-def typeAndGenre_validator(type):
-    # i = len(type)
-    for d in type:
-        if str(type[d]).isdigit():
-                raise ValidationError(_('Mogen geen cijfers in voorkomen.'))
+def string_validator(input):
+    for i in input:
+        if str(input[i]).isdigit():
+            raise ValidationError(_('Mogen geen cijfers in voorkomen.'))

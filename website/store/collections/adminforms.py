@@ -83,24 +83,21 @@ class ProductsRegistrationForm(ModelForm):
         model = Products
         fields = ("prodName", "prodPrice", "prodStock")
 
-    # def clean_prodName(self):
-    #     pass
 
     def clean_language(self):
         LanguageIn = self.cleaned_data['language']
         language_validator(LanguageIn)
         return self.cleaned_data['language']
 
-    #Todo: Fix these
-    # def clean_type(self):
-    #     TypeIn = self.cleaned_data['type']
-    #     typeAndGenre_validator(TypeIn)
-    #     return self.cleaned_data['type']
+    def clean_type(self):
+        TypeIn = self.cleaned_data['type']
+        string_validator(TypeIn)
+        return self.cleaned_data['type']
 
-    # def clean_genre(self):
-    #     GenreIn = self.cleaned_data['genre']
-    #     typeAndGenre_validator(GenreIn)
-    #     return self.cleaned_data['genre']
+    def clean_genre(self):
+        GenreIn = self.cleaned_data['genre']
+        string_validator(GenreIn)
+        return self.cleaned_data['genre']
 
     def save(self, commit=True):
         products = super(ProductsRegistrationForm, self).save(commit=False)
@@ -152,6 +149,21 @@ class EditProductForm(forms.Form):
     class Meta:
         model = Products
 
+    def clean_language(self):
+        LanguageIn = self.cleaned_data['language']
+        language_validator(LanguageIn)
+        return self.cleaned_data['language']
+
+    def clean_type(self):
+        TypeIn = self.cleaned_data['type']
+        string_validator(TypeIn)
+        return self.cleaned_data['type']
+
+    def clean_genre(self):
+        GenreIn = self.cleaned_data['genre']
+        string_validator(GenreIn)
+        return self.cleaned_data['genre']
+
 
     def save(self, commit=True):
         products = super(EditProductForm, self).save(commit=False)
@@ -201,6 +213,17 @@ class EditUserForm(forms.Form):
         postalCodeIn = self.cleaned_data['postalcode']
         postalcode_validator(postalCodeIn)
         return self.cleaned_data['postalcode']
+
+    def clean_city(self):
+        AddressIn = self.cleaned_data['address']
+        string_validator(AddressIn)
+        return self.cleaned_data['address']
+
+    def clean_address(self):
+        postalCodeIn = self.cleaned_data['postalcode']
+        string_validator(postalCodeIn)
+        return self.cleaned_data['postalcode']
+
 
     def __init__(self, *args, **kwargs):
         super(EditUserForm, self).__init__(*args, **kwargs)
