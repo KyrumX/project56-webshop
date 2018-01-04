@@ -215,6 +215,16 @@ class CustomerDetails(forms.Form):
         telephone_validator(CustomertelephoneIn)
         return self.cleaned_data['customer_phone']
 
+    def clean_customer_city(self):
+        CustomerCityIn = self.cleaned_data['customer_city']
+        string_validator(CustomerCityIn)
+        return self.cleaned_data['customer_city']
+
+    def clean_customer_address(self):
+        CustomerAddressIn = self.cleaned_data['customer_address']
+        string_validator(CustomerAddressIn)
+        return self.cleaned_data['customer_address']
+
 
     def __init__(self, *args, **kwargs):
         super(CustomerDetails, self).__init__(*args, **kwargs)
@@ -268,6 +278,16 @@ class AccountForm(forms.ModelForm):
     def clean_postalcode(self):
         postalCodeIn = self.cleaned_data['postalcode']
         postalcode_validator(postalCodeIn)
+        return self.cleaned_data['postalcode']
+
+    def clean_city(self):
+        AddressIn = self.cleaned_data['address']
+        string_validator(AddressIn)
+        return self.cleaned_data['address']
+
+    def clean_address(self):
+        postalCodeIn = self.cleaned_data['postalcode']
+        string_validator(postalCodeIn)
         return self.cleaned_data['postalcode']
 
     class Meta:
