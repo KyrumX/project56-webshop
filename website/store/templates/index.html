@@ -2,15 +2,10 @@
 {% load custom_tags %}
 {% block content %}
 <div class="bars sidecolors">
-   <div class="barwrap">
-
+      {% include 'includes/nieuwproduct.html' %}
    </div>
-</div>
 <div class="mid">
    <div class="qrs">
-      <div class="sorton commoncolor" style="border-radius: 3px">
-      </div>
-
       <form role='form' method='post' name='productactions'>
         {% csrf_token %}
         {% autoescape off %}{% listloop user.is_authenticated %}{% endautoescape %}

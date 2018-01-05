@@ -972,7 +972,108 @@ input[type=submit], .logindiv button{
 	margin-top: 30px;
 }
 
-.sorton{
+.itemoftheday{
+	position: absolute;
+	background-color: #41454347;
+	border-bottom-left-radius: 3px;
+	text-align: center;
+	width: 28vh;
+	height: 4vh;
+	vertical-align: middle;
+	right: 0;
+	display: table;
+}
+
+.itempart1{
+	text-align: center;
+	display: table-cell;
+	width: 70%;
+	vertical-align: middle;
+	border-right: solid 0.1vh #b173739c;
+}
+
+.itempart2{
+	text-align: center;
+	display: table-cell;
+	width: 30%;
+	vertical-align: middle;
+}
+
+.itemoftheday p{
+	font-size: 1.5vh;
+}
+
+.startwrap {
+	width: 100%;
+	/* margin-left: -1; */
+	display: table;
+	left: 0;
+	background-color: #b17373;
+	color: white;
+	height: 35vh;
+	border: solid 0.1vh rgba(0, 0, 0, 0.11);
+	position: relative;
+	margin-top: 4%;
+	/* margin: 0 auto; */
+	z-index: 400;
+	border-radius: 5px;
+}
+
+.leftstart, .rightstart {
+	display: table-cell;
+}
+
+.leftstart {
+	width: 30%;
+	text-align: center;
+	vertical-align: middle;
+	border-right: solid 1px #885555b0;
+}
+
+.rightstart {
+	padding: 30px;
+	width: 70%;
+	vertical-align: middle;
+}
+
+.rightstart ul{
+	list-style-type: none;
+	padding: 0;
+	/* margin: 0; */
+	font-family: "Open Sans",Arial,Helvetica,sans-serif;
+	font-size: 13px;
+	line-height: 2.5vh;
+}
+
+#leesmeer {
+	color: #91dab8;
+	text-decoration: underline;
+}
+
+#leesmeer i{
+	margin-right: 10px;
+}
+
+.rightstart p{
+	font-size: 1.5vh;
+}
+
+.rightstart h1{
+	color: #ffffff;
+	font-size: 5vh;
+	margin-top: 5%;
+}
+
+.leftstart img{
+	height: 31vh;
+	vertical-align: middle;
+	position: relative;
+	margin: 0 auto;
+	display: inline;
+	border: solid 1px #0000002e;
+}
+
+.sorton {
 	width: 100%;
 	/* margin-left: -1; */
 	display: block;
@@ -1222,6 +1323,19 @@ input[type=submit], .logindiv button{
 	max-width: 80%;
 	width: 85%;
 }
+
+#sadbatman{
+		margin: 0 auto;
+		display: block;
+		border: solid 1px #d8d8d8;
+		border-radius: 3px;
+}
+
+#geenproduct {
+	text-align: center;
+	font-size: 2vh;
+}
+
 
 .contact h1 {
 	font-size: 30px;
@@ -1859,7 +1973,7 @@ table{
 .table1 table tr:hover td {
 	background: #f2f2f2;
 	background: -webkit-gradient(linear, left top, left bottom, from(#f2f2f2), to(#f0f0f0));
-	background: -moz-linear-gradient(top,  #f2f2f2,  #f0f0f0);	
+	background: -moz-linear-gradient(top,  #f2f2f2,  #f0f0f0);
 }
 
 .cartwrap {list-style-type: none;list-style-position: inside;padding: 0;margin: 0;-webkit-padding-start: 0;-webkit-padding-end: 0;-webkit-margin-before: 0;-webkit-margin-after: 0;display: block;width: 100%;}
@@ -2357,7 +2471,7 @@ button{
 }
 
 .adresform input[type=text]{
-	
+
 }
 
 .loginsection2 {
@@ -2605,6 +2719,23 @@ button{
 	border-right: solid 1px rgba(0, 0, 0, 0.17);
 	border-color: #cacaca;
 }
+
+.insidebar1 {
+	/* padding: 20px; */
+	/* width: 140px; */
+	padding: 0;
+	display: table;
+	margin: 0 auto;
+}
+
+.insidebar {
+	padding-top: 20px;
+	padding-bottom: 20px;
+	display: table;
+	min-width: 100px;
+	margin: 0 auto;
+}
+
 
 .bartext {
 	color: black;
@@ -2909,10 +3040,10 @@ button{
   height: 20px;
   cursor: pointer;
   margin-top: 5px;
-  margin-left: 20px;
+  /* margin-left: 20px; */
   position: relative;
   display: inline-block;
-  margin-left: 15;
+  /* margin-left: 15; */
   background: #000000;
   background: -webkit-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
   background: linear-gradient(to bottom, #9f8f8f 0%, #45484d 100%);
@@ -2992,7 +3123,13 @@ button{
 	line-height: 30px;
 	margin: 0px;
 	margin-left: 5px;
-	font-size: 2vh;
+	padding-top: 30px;
+	font-size: 1.5vh;
+}
+
+
+#longtext {
+	font-size: 1.3vh;
 }
 
 .barwrap {
@@ -3169,7 +3306,7 @@ h1{
 p{
 	font-family: "Open Sans",Arial,Helvetica,sans-serif;
 	font-size: 13px;
-	line-height: 25px;
+	line-height: 2.5vh;
 }
 
 .name {

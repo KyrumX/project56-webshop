@@ -9,6 +9,7 @@
             <p>Prijs<i class="fa fa-sort-desc" aria-hidden="true" id="sortdown"></i></p>
         </div>
         <div class="bartext price center">
+        <div class="ïnsidebar">
             <ul>
                 <li>
                     <p>€</p>
@@ -34,12 +35,14 @@
                 </li>
             </ul>
         </div>
+        </div>
     </div>
     <div class="barwrap">
         <div class="leftbar commoncolor">
             <p>Minimale Score<i class="fa fa-sort-desc" aria-hidden="true" id="sortdown"></i></p>
         </div>
         <div class="bartext">
+        <div class="insidebar">
             {% if '1' in scores %}
                 <input type="checkbox" onchange='combineForms()' name="score" value="1" id="one" checked>
             {% else %}
@@ -81,6 +84,7 @@
             <p><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i></p>
             <br>
             <br>
+        </div>
         </div>
     </div>
 {#    <input type='hidden' name='order_infilt' value={{ order }}>#}

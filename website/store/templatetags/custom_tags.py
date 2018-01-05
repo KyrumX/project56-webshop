@@ -7,6 +7,7 @@ import urllib.request, json
 from ..database.getData import getProdImage, getProdName, getProdPublish, getProdPrice, getProdAuthor, getProdStock
 from ..database.getData import getProdName, getProdNum, getProdPrice, getProdStock, getProdGenre, getProdType, getProdAuthor, getProdDesc, getProdImage, getProdLanguage, getProdPublish, getProdRating, getProdTotalPages, getProdData
 from ..database.verifyData import verifyProdNum
+from random import randint
 register = template.Library()
 
 @register.assignment_tag
@@ -56,23 +57,65 @@ def prodAuthorTag(prodNum):
 def prodStockTag(prodNum):
     return getProdStock(prodNum)
 
+# Text shortener gemaak door Selim :D. Pakt helft van de text en zet daar puntjes achter (bij het eerst volgende spatie teken)
+
+@register.simple_tag()
+def textshortener(txt):
+    cnt = 0
+    list = []
+    for i in txt:
+        cnt += 1
+        if i == " ":
+            list.append(cnt - 1)
+
+    lastspace = list[int(len(list) / 2)]
+
+    return txt[:lastspace] + "..."
+
 @register.simple_tag()
 def listloop(userAuth):
     cnt = 1
     mod = 1
     txt = ""
+    randomlyselectedprod = randint(1, 69)
+
+    prodratingtxt = ""
+    for r in range(getProdRating(randomlyselectedprod)):
+        prodratingtxt += "<i class='fa fa-star' aria-hidden='true'></i>"
+
+    print("This is the length of the desc: ", len(getProdDesc(randomlyselectedprod)))
+
+    if len(getProdDesc(randomlyselectedprod)) > 550:
+        proddesc = textshortener(getProdDesc(randomlyselectedprod))
+        txt += """<div class="startwrap" style="border-radius: 3px"><div class="itemoftheday"><div class="itempart1"><p>Uitgelichte Product</p></div><div class="itempart2"><p>{0}</p></div></div>
+            <div class="leftstart"><img src="{1}" id="zoom_05"></div>
+            <div class="rightstart"><h1>{2}</h1><p style="padding-bottom: 50px;">{3}</p><a href="/product/{4}"><p id="leesmeer"><i class="fa fa-angle-double-right" aria-hidden="true"></i>Lees meer</p></a></div></div>""".format(prodratingtxt, getProdImage(randomlyselectedprod), getProdName(randomlyselectedprod), proddesc, randomlyselectedprod)
+    else:
+        txt += """<div class="startwrap" style="border-radius: 3px"><div class="itemoftheday"><div class="itempart1"><p>Uitgelichte Product</p></div><div class="itempart2"><p>{0}</p></div></div>
+            <div class="leftstart"><img src="{1}" id="zoom_05"></div>
+            <div class="rightstart"><h1>{2}</h1><p>{3}</p></div></div>""".format(prodratingtxt, getProdImage(randomlyselectedprod), getProdName(randomlyselectedprod), getProdDesc(randomlyselectedprod))
+
+    # txt += """<div class="startwrap" style="border-radius: 3px"><div class="itemoftheday"><div class="itempart1"><p>Uitgelichte Product</p></div><div class="itempart2"><p>{0}</p></div></div>
+    # <div class="leftstart"><img src="{1}" id="zoom_05"></div>
+    # <div class="rightstart"><h1>{2}</h1><p>{3}</p></div></div>""".format(prodratingtxt, getProdImage(randomlyselectedprod), getProdName(randomlyselectedprod), proddesc)
+
     for i in range(4):
         txt += "<ul class='list'>"
         for x in range(3):
-            txt = txt + "<li><div class='productwrap'><a href='" + prodUrlTag(cnt) + "'><img src='" + prodImageTag(cnt) + "' id='zoom_05' data-zoom-image='https://i.pinimg.com/736x/86/ff/e2/86ffe2b49daf0feed78a1c336753696d--black-panther-comic-digital-comics.jpg'></a><p class='author'>" + prodAuthorTag(cnt) + "</p><p class='name'>" + prodTitleTag(cnt) + "</p><p><i class='fa fa-star' aria-hidden='true'></i><i class='fa fa-star' aria-hidden='true'></i><i class='fa fa-star' aria-hidden='true'></i><i class='fa fa-star' aria-hidden='true'></i><i class='fa fa-star' aria-hidden='true'></i></p><p class='price'>€ " + str(prodPriceTag(cnt)) + "</p>" \
-                       "<button name='addToCartItemBoxButton' value='" + str(cnt) + "'class='addtocart'><i class='fa fa-plus' aria-hidden='true'></i><i class='fa fa-shopping-cart' aria-hidden='true'></i></button>"
-            if userAuth:
-                txt = txt + "<button name='moveToWishListButton' value='" + str(cnt) +"' class='wishlist'><i class='fa fa-heart' aria-hidden='true'></i></button>"
-            txt = txt + "<p class='stock'>Voorraad: " + str(prodStockTag(cnt)) + "</p></div></li>"
             cnt += 10
             if cnt >= 60:
                 mod += 1
                 cnt = mod
+
+            prodratingtxt = ""
+            for r in range(getProdRating(cnt)):
+                prodratingtxt += "<i class='fa fa-star' aria-hidden='true'></i>"
+
+            txt = txt + "<li><div class='productwrap'><a href='" + prodUrlTag(cnt) + "'><img src='" + prodImageTag(cnt) + "' id='zoom_05'></a><p class='author'>" + prodAuthorTag(cnt) + "</p><p class='name'>" + prodTitleTag(cnt) + "</p><p>{0}</p><p class='price'>€ ".format(prodratingtxt) + str(prodPriceTag(cnt)) + "</p><button name='addToCartItemBoxButton' value='" + str(cnt) + "'class='addtocart'><i class='fa fa-plus' aria-hidden='true'></i><i class='fa fa-shopping-cart' aria-hidden='true'></i></button>"
+            if userAuth:
+                txt = txt + "<button name='moveToWishListButton' value='" + str(cnt) +"' class='wishlist'><i class='fa fa-heart' aria-hidden='true'></i></button>"
+            txt = txt + "<p class='stock'>Voorraad: " + str(prodStockTag(cnt)) + "</p></div></li>"
+
         txt += "</ul>"
     return txt
 
