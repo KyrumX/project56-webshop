@@ -25,33 +25,13 @@ def removeComma(message):
     return message.replace(",", "")
 
 def removeBrackets(message):
-    message = message.replace("{", "")
-    message = message.replace("}", "")
-    message = message.replace("[", "")
-    message = message.replace("]", "")
-    message = message.replace("(", "")
-    message = message.replace(")", "")
+    punctuation = ["{", "}", "[", "]", "(", ")"]
+    for p in punctuation:
+        message = message.replace(p, "")
     return message
 
 def removeMiscellaneous(message):
-    message = message.replace("~", "")
-    message = message.replace("@", "")
-    message = message.replace("#", "")
-    message = message.replace("$", "")
-    message = message.replace("%", "")
-    message = message.replace("^", "")
-    message = message.replace("&", "")
-    message = message.replace("*", "")
-    message = message.replace("-", "")
-    message = message.replace("_", "")
-    message = message.replace("+", "")
-    message = message.replace("=", "")
-    message = message.replace(";", "")
-    message = message.replace(":", "")
-    message = message.replace("'", "")
-    message = message.replace("<", "")
-    message = message.replace(">", "")
-    message = message.replace("/", "")
-    message = message.replace("|", "")
-    message = message.replace("`", "")
+    punctuation = ["~", "@", "#", "$", "%", "^", "&", "*", "-", "_", "+", "=", ";", ":", "'", "<", ">", "/", "|", "`", "lt", "gt"]
+    for p in punctuation:
+        message = message.replace(p, "")
     return message

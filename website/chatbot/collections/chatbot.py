@@ -1,5 +1,3 @@
-import operator
-
 from chatbot.collections.advancedmessages import hasOrderPlaced, generate_order_question, getLastOrderData, \
     generate_order_overview
 from chatbot.collections.cleanmessage import clean
@@ -62,7 +60,6 @@ def get_question_category(usermessage, case, request):
 
 def select_category(categories, usermessage, case, request):
     selected_category = max(categories.keys(), key=(lambda k: categories[k]))
-    print(selected_category)
     if categories[selected_category] == 0:
         return [NOT_FOUND, "0"]
     elif selected_category == 'international':
