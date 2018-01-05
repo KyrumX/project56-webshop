@@ -4,7 +4,7 @@ DEFAULT_AFTER = "Mijn excsuses, dan heb ik u niet goed begrepen. Stel uw vraag a
 
 INTERNATIONAL_QUESTION = "Heeft u een vraag over de levering van onze producten internationaal?"
 DELIVERY_QUESTION = "Heeft u een vraag over de levering van uw bestelling?"
-STATUS_QUESTION = "Heeft u een vraag over de status van uw bestelling?"
+STATUS_QUESTION = "Heeft u een vraag over de mogelijke statussen van bestellingen?"
 PRODUCT_QUESTION = "Heeft u een vraag over een specifiek product?"
 RETURN_QUESTION = "Wilt u een product retour sturen?"
 PAYMENT_QUESTION = "Heeft u een vraag over de betalingsmogelijkheden?"
@@ -47,6 +47,15 @@ PAYMENT_RESPONSE = "Bij het plaatsen van uw bestelling kunt u alleen gebruik mak
 CONTACT_RESPONSE = "Als u een vraag heeft kun u deze proberen aan mij te stellen. Weet ik het antwoord niet? Neem dan" \
                    " contact op met onze klantenservice via ons <a href='/contact/'>contactform</a>."
 
-THANKS_RESPONSE = "Ik hoop dat uw vragen zijn beantwoord. Is dit niet het geval? Neem dan contact op met onze" \
+###Reacties m.b.t. bestellingen###
+FIRST_ORDER_RESPONSE = "Heeft uw vraag betrekking tot een geplaatste bestelling?"
+NO_ORDER_RESPONSE = "U heeft nog geen bestelling bij ons geplaatst met dit account. Heeft uw vraag betrekking op een" \
+                    " bestelling die geplaatst is zonder in te loggen? Neem dan contact op met onze" \
+                    " klantenservice via ons <a href='/contact/'>contactform</a>."
+NOT_LOGGED_IN = "U bent op dit moment niet ingelogd op een account. Heeft uw vraag betrekking op een" \
+                    " bestelling die geplaatst is zonder in te loggen? Neem dan contact op met onze" \
+                    " klantenservice via ons <a href='/contact/'>contactform</a>."
+
+THANKS_RESPONSE = "Ik hoop dat uw vragen zijn beantwoord. Is dit niet het gevaol? Neem dan contact op met onze" \
                   " klantenservice via ons <a href='/contact/'>contactform</a>. <br/>" \
                   "Nog een fijne dag!"
