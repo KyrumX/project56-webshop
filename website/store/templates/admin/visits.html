@@ -4,12 +4,12 @@
 {% load static %}
 {% block content %}
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-    <script type="text/javascript">google.load("visualization", "1", {packages:["corechart"]});</script>
+    <script type="text/javascript">google.load("visualization", "2", {packages:["corechart"]});</script>
 	{% if user.is_authenticated %}
 		{% if user.is_staff %}
 		<div class="middle">
             <p>De 10 best verkopende producten van {% getMonth month %} {{ year }}.</p>
-            {{ visitschart.as_html }}
+            {{ chart.as_html }}
         </div>
 		{% else %}
 		<div class="middle" style="background-color: #ebe9e9; border: none;">

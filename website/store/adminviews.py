@@ -7,7 +7,7 @@ from graphos.sources.model import ModelDataSource
 from store.collections.adminforms import AdminRegistrationForm, ProductsRegistrationForm
 from django.http import HttpResponse
 from django.contrib.auth.models import User
-from .models import OrderDetails, Dates
+from .models import OrderDetails, Dates, UserVisits
 
 #Admin index - comicfire.com/admin/
 from django.views import View
@@ -104,7 +104,6 @@ class ProductGraphSelection(View):
 
 class ProductGraphMonth(View):
     def get(self, request, year, month):
-
         if Orders.objects.filter(orderDate__year__icontains=int(year), orderDate__month=int(month)).exists():
             ordersInPeriod = Orders.objects.filter(orderDate__year__icontains=int(year), orderDate__month=int(month))
             orders = OrderDetails.objects.all().filter(orderNum__in=ordersInPeriod) \
@@ -123,6 +122,11 @@ class ProductGraphMonth(View):
 
             for e in dataR:
                 data.append(e)
+                print(e)
+                print("HIIII")
+
+            for e in data:
+                print(e)
 
             data_source = SimpleDataSource(data)
             chart = gchart.BarChart(data_source, options={'title': "Producten / Aantal verkocht"})
@@ -137,26 +141,81 @@ class ProductGraphMonth(View):
         })
 
 class Visits(View):
-    def get(self, request):
-        queryset = Dates.objects.filter(date__year__icontains=int(2017), date__month=int(12))
-        print(queryset)
-        dataR = []
+    def get(self, request, from_month=1, to_month=2, from_year=2017, to_year=2018):
+        now = datetime.datetime.now()
+        if from_year < 2018:
+            from_year = 2018
+        elif to_year > now.year or to_year >= now.year and to_month > now.month:
+            to_year = now.year
+            to_month = now.month
 
-        for e in queryset:
-            dataR.append([str(e['date']), e['customerID']])
+        thevisits = []
 
-        data = [
-            ['date', 'customerID'],
-        ]
+        for i in range(1, 13):
+            if Dates.objects.filter(date__range=["2018-01-01", "2019-01-31"], date__month=i).exists():
+                dateobject = Dates.objects.filter(date__range=["2018-01-01", "2019-01-31"], date__month=i)
+                for e in dateobject:
+                    thevisits.append([str(e.date), dateobject.count()])
 
-        for e in dataR:
-            data.append(e)
+        for i in thevisits:
+            print(i)
 
-        data_source = SimpleDataSource(data)
-        chart = gchart.LineChart(data_source)
+        firstmonth = Dates.objects.filter(date__year__icontains=2018, date__month=1)
 
-        return render(request, 'admin/visits.html', {
-            'visitschart': chart,
-            'year': int(1),
-            'month': int(1),
+        secondmonth = Dates.objects.filter(date__year__icontains=2018, date__month=2)
+        print("secondmonth: ", secondmonth)
+
+        datelist = []
+
+        cnt = 0
+        for e in firstmonth:
+            cnt += 1
+            datelist.append(e.date)
+
+        cnt2 = 0
+        for e in secondmonth:
+            cnt2 += 1
+            print("incoming")
+            print(e.date)
+
+        year = 2017
+        month = 11
+        print("we up in here")
+        if Orders.objects.filter(orderDate__year__icontains=int(year), orderDate__month=int(month)).exists():
+            ordersInPeriod = Orders.objects.filter(orderDate__year__icontains=int(year), orderDate__month=int(month))
+            print(ordersInPeriod)
+            orders = OrderDetails.objects.all().filter(orderNum__in=ordersInPeriod) \
+                .values('productNum') \
+                .annotate(amount=Sum('amount')) \
+                .order_by('-amount')[:10]
+
+            dataR = []
+
+            for e in orders:
+                dataR.append([str(e['productNum']), e['amount']])
+
+            data = [
+                ['Visits', 'Totaal'],
+                ['01-01-2018', cnt],
+                ['01-02-2018', cnt2],
+            ]
+
+            #for e in dataR:
+             #   data.append(e)
+              #  print(e)
+               # print("HIIII")
+
+            #for e in data:
+             #   print(e)
+
+            data_source = SimpleDataSource(data)
+            chart = gchart.LineChart(data_source, options={'title': "Visits"})
+
+            return render(request, 'admin/productdatamonth.html', {
+                'chart' : chart,
+                'year' : int(year),
+                'month' : int(month),
+            })
+        return render(request, 'admin/productdataselection.html', {
+            'warning' : "De combinatie van jaar en maand is niet geldig. Selecteer er één uit de onderstaande lijst."
         })
