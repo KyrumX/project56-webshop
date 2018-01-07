@@ -189,7 +189,7 @@ class EditUserForm(forms.Form):
     number = forms.CharField(required=False, max_length=10)
     city = forms.CharField(required=False, max_length=25)
     postalcode = forms.CharField(required=False, max_length=10, min_length=6)
-    isBlocked = forms.BooleanField()
+    isBlocked = forms.BooleanField(required=False)
 
     class Meta:
         model = Customers
