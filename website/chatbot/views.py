@@ -15,6 +15,6 @@ def GetBotResponse(request):
         print("Hello, I'm logged in")
     else:
         print("Not logged in")
-    response = chatbot.get_type_input(request.GET['message'], request.GET['questioncase'])
+    response = chatbot.get_type_input(request.GET['message'], request.GET['questioncase'], request)
 
     return JsonResponse({'response': response[0], 'case' : response[1]})

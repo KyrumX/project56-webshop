@@ -3,6 +3,7 @@ $(document).ready(function() {
             $("#chatbotform").submit(function(e){
                 e.preventDefault(e);
                 var usermessage = $('input[name="usermessage"]').val();
+                usermessage = usermessage.replace(/</g, "&lt;").replace(/>/g, "&gt;");
                 var questioncase = $('input[name="case"]').val();
                 $('#chatbottable').find('tbody:last-child').append(
                     "<tr><td></td><td class='usertd'><p style='float: left;'>"
