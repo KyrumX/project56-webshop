@@ -1,6 +1,6 @@
 DEFAULT = "<br/>Heeft u verder nog vragen?"
 DEFAULT_BEFORE = "Oké, laat maar horen! Of uhm.. typen? In ieder gevalen probeer vooral steekwoorden te gebruiken."
-DEFAULT_AFTER = "Mijn excsuses, dan heb ik u niet goed begrepen. Stel uw vraag alstublieft opnieuw. Gebruik vooral steekwoorden."
+DEFAULT_AFTER = "Mijn excuses, dan heb ik u niet goed begrepen. Stel uw vraag alstublieft opnieuw. Gebruik vooral steekwoorden."
 
 INTERNATIONAL_QUESTION = "Heeft u een vraag over de levering van onze producten internationaal?"
 DELIVERY_QUESTION = "Heeft u een vraag over de levering van uw bestelling?"
