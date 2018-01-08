@@ -143,22 +143,29 @@ class ProductGraphMonth(View):
 class Visits(View):
     def get(self, request, from_month=1, to_month=2, from_year=2017, to_year=2018):
         now = datetime.datetime.now()
-        if from_year < 2018:
-            from_year = 2018
-        elif to_year > now.year or to_year >= now.year and to_month > now.month:
-            to_year = now.year
-            to_month = now.month
+        thisyear = now.year
+        thismonth = now.month
+		
+        daysinamonth = {1 : 31, 2 : 28, 3 : 31, 4 : 30, 5 : 31, 6 : 30, 7 : 31, 8 : 31, 9 : 30, 10 : 31, 11 : 30, 12 : 31}
+		
+        #if from_year < 2018:
+         #   from_year = 2018
+        #elif to_year > now.year or to_year >= now.year and to_month > now.month:
+         #   to_year = now.year
+         #   to_month = now.month
 
-        thevisits = []
-
-        for i in range(1, 13):
-            if Dates.objects.filter(date__range=["2018-01-01", "2019-01-31"], date__month=i).exists():
-                dateobject = Dates.objects.filter(date__range=["2018-01-01", "2019-01-31"], date__month=i)
-                for e in dateobject:
-                    thevisits.append([str(e.date), dateobject.count()])
-
-        for i in thevisits:
-            print(i)
+        thevisits = [['Visits', 'Totaal']]
+	
+        if Dates.objects.filter(date__year__icontains=thisyear, date__month__icontains=thismonth).exists():
+            for i in range(1, daysinamonth[thismonth]):
+                if i > now.day:
+                    dateobject = Dates.objects.filter(date__year__icontains=thisyear, date__month__icontains=thismonth, date__day__icontains=i)
+                    thevisits.append(["{0}-{1}-{2}".format(i, thismonth, thisyear), None])
+                else:
+                    dateobject = Dates.objects.filter(date__year__icontains=thisyear, date__month__icontains=thismonth, date__day__icontains=i)
+                    thevisits.append(["{0}-{1}-{2}".format(i, thismonth, thisyear), dateobject.count()])
+		
+        thevisits.append(["01-02-2018", None])
 
         firstmonth = Dates.objects.filter(date__year__icontains=2018, date__month=1)
 
@@ -178,43 +185,22 @@ class Visits(View):
             print("incoming")
             print(e.date)
 
-        year = 2017
-        month = 11
-        print("we up in here")
-        if Orders.objects.filter(orderDate__year__icontains=int(year), orderDate__month=int(month)).exists():
-            ordersInPeriod = Orders.objects.filter(orderDate__year__icontains=int(year), orderDate__month=int(month))
-            print(ordersInPeriod)
-            orders = OrderDetails.objects.all().filter(orderNum__in=ordersInPeriod) \
-                .values('productNum') \
-                .annotate(amount=Sum('amount')) \
-                .order_by('-amount')[:10]
-
-            dataR = []
-
-            for e in orders:
-                dataR.append([str(e['productNum']), e['amount']])
-
             data = [
-                ['Visits', 'Totaal'],
+                ['Visits', 'Aantal'],
                 ['01-01-2018', cnt],
                 ['01-02-2018', cnt2],
             ]
 
-            #for e in dataR:
-             #   data.append(e)
-              #  print(e)
-               # print("HIIII")
 
-            #for e in data:
-             #   print(e)
-
-            data_source = SimpleDataSource(data)
+            data_source = SimpleDataSource(thevisits)
             chart = gchart.LineChart(data_source, options={'title': "Visits"})
+			
+            month_tostr = { 1 : "Januari", 2 : "Februari", 3 : "Maart", 4 : "April", 5 : "Mei", 6 : "Juni", 7 : "Juli", 8 : "Augustus", 9: "September", 10 : "Oktober", 11 : "November", 12 : "December"}
 
-            return render(request, 'admin/productdatamonth.html', {
+            return render(request, 'admin/visits.html', {
                 'chart' : chart,
-                'year' : int(year),
-                'month' : int(month),
+                'year' : now.year,
+                'month' : month_tostr[now.month],
             })
         return render(request, 'admin/productdataselection.html', {
             'warning' : "De combinatie van jaar en maand is niet geldig. Selecteer er één uit de onderstaande lijst."
