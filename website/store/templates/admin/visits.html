@@ -8,7 +8,9 @@
 	{% if user.is_authenticated %}
 		{% if user.is_staff %}
             <p id="editp">Totaal aantal bezoekers in {{ month }} {{ year }}.</p>
+			<div class="chart">
             {{ chart.as_html }}
+			</div>
 		{% else %}
 				<div class="welcome">
 				<p>Helaas bent u niet bevoegd.</p>
