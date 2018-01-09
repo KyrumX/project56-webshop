@@ -72,7 +72,7 @@ def createuser(request):
         form = AdminRegistrationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('/admin/')
+            return redirect('admin/usercreated.html')
     else:
         form = AdminRegistrationForm()
     return render(request, 'admin/createuser.html', {'form' :  form})

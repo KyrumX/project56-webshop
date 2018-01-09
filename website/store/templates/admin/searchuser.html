@@ -5,12 +5,7 @@
 	{% if user.is_authenticated %}
 		{% if user.is_staff %}
 		<div class="middle">
-      {% userFound query as usersFoundBool %}
-      {% if usersFoundBool %}
-      {% autoescape off %}{% displayUsers query %}{% endautoescape %}
-      {% else %}
-      <div>Oeps, niets gevonden!</div>
-      {% endif %}
+          {% autoescape off %}{% displayUsers query %}{% endautoescape %}
 		{% else %}
 		<div class="middle" style="background-color: #ebe9e9; border: none;">
 				<div class="welcome">

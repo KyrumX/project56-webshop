@@ -39,7 +39,6 @@ def language_validator(language):
     if language not in list:
         raise ValidationError(_('Taal is ongeldig'))
 
-#TODO: Pls halp
 def string_validator(input):
     for i in input:
         if str(input[i]).isdigit():
