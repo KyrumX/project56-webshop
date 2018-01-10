@@ -51,7 +51,7 @@ class AdminRegistrationForm(UserCreationForm):
         user.is_staff = self.cleaned_data['isstaff']
 
         #Every new User in the Auth table also requires a Customer entity
-        newEntryCustomer = Customers(customerID=user.id, email=user.email, name=user.first_name, surname=user.last_name, telephone='nvt', isRegistered=True)
+        newEntryCustomer = Customers(customerID=user.id, email=user.email, name=user.first_name, surname=user.last_name, telephone='nvt', isRegistered=True, isBlocked=False)
         newEntryCustomer.save()
 
         #Every Customer requires an Address entity

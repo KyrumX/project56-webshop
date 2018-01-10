@@ -23,12 +23,7 @@
 	{% if user.is_authenticated %}
 		{% if user.is_staff %}
 		<div class="middle">
-      {% productFound query as productsFoundBool %}
-      {% if productsFoundBool %}
       {% autoescape off %}{% displayProducts query %}{% endautoescape %}
-      {% else %}
-      <div>Oeps, niets gevonden!</div>
-      {% endif %}
 		{% else %}
 		<div class="middle" style="background-color: #ebe9e9; border: none;">
 				<div class="welcome">

@@ -43,6 +43,8 @@ def displayUsers(query):
 					</div>
 				</form>""".format(value)
     rowcount = 0
+    if users == None:
+        return searchhtml
     resulthtml = "<div class='table1'><table><tr><th>ID</th><th>Naam</th><th>Achternaam</th><th>E-mail</th><th>Geregistreerd</th><th style='text-align: center;'>Geblokkeerd</th><th style='text-align: center;'>Edit</th></tr>"
     counthtml = ""
     for e in users:
@@ -80,6 +82,8 @@ def displayProducts(query):
 					</div>
 				</form>""".format(value)
     rowcount = 0
+    if products == None:
+        return searchhtml
     resulthtml = "<div class='table1'><table><tr><th>ID</th><th>Naam</th><th>Prijs</th><th style='text-align: center;'>Edit</th></tr>"
     counthtml = ""
     for e in products:
