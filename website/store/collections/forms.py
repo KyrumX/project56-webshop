@@ -251,7 +251,7 @@ class CheckoutForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super(CheckoutForm, self).__init__(*args, **kwargs)
-        self.fields['card_name'].label = "naam op de kaart:"
+        self.fields['card_name'].label = "Naam op de kaart:"
         self.fields['card_number'].label = "Kaartnummer:"
         self.fields['card_number'].help_text = "De cijfers op de voorzijde van uw kaart."
         self.fields['card_edm'].label = "Verval datum (mm-jj):"

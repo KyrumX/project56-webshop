@@ -63,17 +63,33 @@ def listloop(userAuth):
     for i in range(4):
         txt += "<ul class='list'>"
         for x in range(3):
-            txt = txt + "<li><div class='productwrap'><a href='" + prodUrlTag(cnt) + "'><img src='" + prodImageTag(cnt) + "' id='zoom_05' data-zoom-image='https://i.pinimg.com/736x/86/ff/e2/86ffe2b49daf0feed78a1c336753696d--black-panther-comic-digital-comics.jpg'></a><p class='author'>" + prodAuthorTag(cnt) + "</p><p class='name'>" + prodTitleTag(cnt) + "</p><p><i class='fa fa-star' aria-hidden='true'></i><i class='fa fa-star' aria-hidden='true'></i><i class='fa fa-star' aria-hidden='true'></i><i class='fa fa-star' aria-hidden='true'></i><i class='fa fa-star' aria-hidden='true'></i></p><p class='price'>€ " + str(prodPriceTag(cnt)) + "</p>" \
-                       "<button name='addToCartItemBoxButton' value='" + str(cnt) + "'class='addtocart'><i class='fa fa-plus' aria-hidden='true'></i><i class='fa fa-shopping-cart' aria-hidden='true'></i></button>"
+            stock = checkstock(True, cnt)
+            button = checkstock(False, cnt)
+            txt = txt + "<li><div class='productwrap'><a href='" + prodUrlTag(cnt) + "'><img src='" + prodImageTag(cnt) + "' id='zoom_05' data-zoom-image='https://i.pinimg.com/736x/86/ff/e2/86ffe2b49daf0feed78a1c336753696d--black-panther-comic-digital-comics.jpg'></a><p class='author'>" + prodAuthorTag(cnt) + "</p><p class='name'>" + prodTitleTag(cnt) + "</p><p><i class='fa fa-star' aria-hidden='true'></i><i class='fa fa-star' aria-hidden='true'></i><i class='fa fa-star' aria-hidden='true'></i><i class='fa fa-star' aria-hidden='true'></i><i class='fa fa-star' aria-hidden='true'></i></p><p class='price'>€ " + str(prodPriceTag(cnt)) + "</p>" + button
             if userAuth:
                 txt = txt + "<button name='moveToWishListButton' value='" + str(cnt) +"' class='wishlist'><i class='fa fa-heart' aria-hidden='true'></i></button>"
-            txt = txt + "<p class='stock'>Voorraad: " + str(prodStockTag(cnt)) + "</p></div></li>"
+            txt = txt + stock
             cnt += 10
             if cnt >= 60:
                 mod += 1
                 cnt = mod
         txt += "</ul>"
     return txt
+
+def checkstock(numbercheck, prodnumber):
+    if numbercheck:
+        print("in numbercheck")
+        if prodStockTag(prodnumber) <= 0:
+            print("uitverkocht")
+            return "<p class='stock' style='color: #d45f5f;'>Uitverkocht!</p>"
+        else:
+            print("in stock: ", str(prodStockTag(prodnumber)))
+            return "<p class='stock'>Voorraad: " + str(prodStockTag(prodnumber)) + "</p>"
+    else:
+        if prodStockTag(prodnumber) <= 0:
+            return "<button name='addToCartItemBoxButton' id='outofstock' type=button class='addtocart tooltip'><i class='fa fa-ban' aria-hidden='true'></i><span class='tooltiptext'>Dit product is momenteel helaas uitverkocht.</span></button>"
+        else:
+            return "<button name='addToCartItemBoxButton' value='" + str(prodnumber) + "'class='addtocart'><i class='fa fa-plus' aria-hidden='true'></i><i class='fa fa-shopping-cart' aria-hidden='true'></i></button>"
 
 @register.simple_tag()
 def searchList(query, userAuth, filter=""):
@@ -168,6 +184,13 @@ def incrementVisit(is_staff, cID=-1):
     lel = UserVisits.objects.get(customerID=cID)
     date = Dates(customerID=lel)
     date.save()
+    return ""
 
 def visitchart():
     return getVisitsChart()
+
+def testingOrder():
+    order = OrderDetails.objects.all().filter(orderNum=Orders(orderNum=orderEntry.orderNum))  # Returnt een Array van alle Items die besteld zijn
+    for i in order:
+        print("Dit is Productnum: ", str(i.productNum))
+        print("Dit is Amount", str(i.amount))
