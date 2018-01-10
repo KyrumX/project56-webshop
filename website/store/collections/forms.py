@@ -281,14 +281,14 @@ class AccountForm(forms.ModelForm):
         return self.cleaned_data['postalcode']
 
     def clean_city(self):
-        AddressIn = self.cleaned_data['address']
-        string_validator(AddressIn)
-        return self.cleaned_data['address']
+        cityIn = self.cleaned_data['city']
+        string_validator(cityIn)
+        return self.cleaned_data['city']
 
     def clean_address(self):
-        postalCodeIn = self.cleaned_data['postalcode']
-        string_validator(postalCodeIn)
-        return self.cleaned_data['postalcode']
+        addressIn = self.cleaned_data['address']
+        string_validator(addressIn)
+        return self.cleaned_data['address']
 
     class Meta:
         model = Address
@@ -325,7 +325,6 @@ class CustomerInfoForm(forms.Form):
         telephoneIn = self.cleaned_data['telephone']
         telephone_validator(telephoneIn)
         return self.cleaned_data['telephone']
-
 
 
     def __init__(self, *args, **kwargs):

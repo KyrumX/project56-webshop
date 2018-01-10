@@ -41,5 +41,5 @@ def language_validator(language):
 
 def string_validator(input):
     for i in input:
-        if str(input[i]).isdigit():
+        if str(i).isdigit():
             raise ValidationError(_('Mogen geen cijfers in voorkomen.'))
