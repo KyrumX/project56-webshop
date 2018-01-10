@@ -1,22 +1,15 @@
-from django import template
-<<<<<<< HEAD
-from ..models import Products, ProductDetails, UserVisits, Dates, OrderDetails, Orders
-=======
-from django.db.models import Q
-
-from store.collections.filter import filterObjects
-from ..models import Products, ProductDetails
->>>>>>> origin/FixSelim
-import urllib.request, json
-from ..database.getData import getProdImage, getProdName, getProdPublish, getProdPrice, getProdAuthor, getProdStock, getVisitsChart
-from ..database.getData import getProdName, getProdNum, getProdPrice, getProdStock, getProdGenre, getProdType, getProdAuthor, getProdDesc, getProdImage, getProdLanguage, getProdPublish, getProdRating, getProdTotalPages, getProdData
-from ..database.verifyData import verifyProdNum
-<<<<<<< HEAD
-from ..database.getData import getSearchResults
-import datetime
-=======
+import json
+import urllib.request
 from random import randint
->>>>>>> origin/FixSelim
+
+from django import template
+
+from ..database.getData import getProdName, getProdPrice, getProdStock, getProdAuthor, getProdDesc, getProdImage, \
+    getProdPublish, getProdRating
+from ..database.getData import getVisitsChart
+from ..models import ProductDetails
+from ..models import UserVisits, Dates, OrderDetails, Orders
+
 register = template.Library()
 
 @register.assignment_tag
@@ -111,15 +104,12 @@ def listloop(userAuth):
     for i in range(4):
         txt += "<ul class='list'>"
         for x in range(3):
-<<<<<<< HEAD
             stock = checkstock(True, cnt)
             button = checkstock(False, cnt)
             txt = txt + "<li><div class='productwrap'><a href='" + prodUrlTag(cnt) + "'><img src='" + prodImageTag(cnt) + "' id='zoom_05' data-zoom-image='https://i.pinimg.com/736x/86/ff/e2/86ffe2b49daf0feed78a1c336753696d--black-panther-comic-digital-comics.jpg'></a><p class='author'>" + prodAuthorTag(cnt) + "</p><p class='name'>" + prodTitleTag(cnt) + "</p><p><i class='fa fa-star' aria-hidden='true'></i><i class='fa fa-star' aria-hidden='true'></i><i class='fa fa-star' aria-hidden='true'></i><i class='fa fa-star' aria-hidden='true'></i><i class='fa fa-star' aria-hidden='true'></i></p><p class='price'>€ " + str(prodPriceTag(cnt)) + "</p>" + button
             if userAuth:
                 txt = txt + "<button name='moveToWishListButton' value='" + str(cnt) +"' class='wishlist'><i class='fa fa-heart' aria-hidden='true'></i></button>"
             txt = txt + stock
-=======
->>>>>>> origin/FixSelim
             cnt += 10
             if cnt >= 60:
                 mod += 1
