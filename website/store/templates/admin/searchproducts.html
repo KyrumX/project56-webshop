@@ -2,6 +2,7 @@
 {% load admin.adminusertags %}
 {% load static %}
 {% block content %}
+<<<<<<< HEAD:website/store/templates/admin/productdataselection.html
 	<div class="middle" style="background-color: #ebe9e9; border: none;">
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script type="text/javascript">google.load("visualization", "1", {packages:["corechart"]});</script>
@@ -15,9 +16,33 @@
 				<a href="/admin/data/products/2017/11/">November 2017</a>
 				<a href="/admin/data/products/2017/12/">December 2017</a>
 			</div>
+=======
+
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+	{% if user.is_authenticated %}
+		{% if user.is_staff %}
+		<div class="middle">
+      {% autoescape off %}{% displayProducts query %}{% endautoescape %}
+>>>>>>> origin/FixSelim:website/store/templates/admin/searchproducts.html
 		{% else %}
 				<div class="welcome">
-				<p>Helaas bent u niet bevoegd.</p>
+				  <p>Helaas bent u niet bevoegd.</p>
 				</div>
 		{% endif %}
 	{% else %}

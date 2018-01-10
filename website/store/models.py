@@ -16,6 +16,7 @@ class Customers(models.Model):
     surname = models.CharField(max_length=50)
     telephone = models.CharField(max_length=12)
     isRegistered = models.BooleanField()
+    isBlocked = models.BooleanField(default=False)
 
 class Address(models.Model):
     class Meta:

@@ -6,6 +6,7 @@ from django.forms import ModelForm
 from django.db.models import Max
 from ..validators.formvalidators import *
 from ..models import Customers, Address, Products
+from ..database.AccountOps import getUserId, isUserBlocked
 
 from django.forms.fields import DateField
 
@@ -28,26 +29,53 @@ class ContactForm(forms.Form):
         self.fields['content'].label = "Toelichting"
 
 
-class LogginginForm(forms.Form):
+class LogginginForm(AuthenticationForm):
     username = forms.CharField(required=True, label="E-mail")
     password = forms.CharField(required=True, label="Wachtwoord", widget=forms.PasswordInput(render_value=False))
 
     def __init__(self, *args, **kwargs):
-        super(LogginginForm, self).__init__(*args, **kwargs)
+        super().__init__(self, *args, **kwargs)
         self.fields['password'].label = "Wachtwoord:"
         self.fields['password'].widget.attrs.update({'placeholder': '**********'})
         self.fields['username'].widget.attrs.update({'placeholder': 'deadpool@comicfire.com'})
 
-    #Geef een error wanneer inloggegevens niet overeen komen
-    def clean(self):
-        username = self.cleaned_data['username']
-        password = self.cleaned_data['password']
-        try:
-            User.objects.get(username=username, password=password)
-        except User.DoesNotExist:
-            raise forms.ValidationError("Het email en wachtwoord komen niet overeen")
-        return self.cleaned_data
+    def confirm_login_allowed(self, user):
+        if isUserBlocked(user.id):
+            raise forms.ValidationError(
+                self.error_messages['blocked'],
+                code='blocked',
+            )
 
+    error_messages = {
+        'invalid_login': (
+            "De combinatie van e-mail en wachtwoord is niet correct. "
+            "Let erop dat zowel e-mail als het wachtwoord hoofdletter gevoelig is."
+        ),
+        'blocked': (
+            "Dit account is geblokkeerd. "
+            "Als u denkt dat dit een fout is, neem dan contact op via de contact pagina."
+        ),
+    }
+
+    # Geef een error wanneer inloggegevens niet overeen komen
+    # def clean(self):
+    #     print("Running...")
+    #     username = self.cleaned_data['username']
+    #     password = self.cleaned_data['password']
+    #     try:
+    #         User.objects.get(username=username, password=password)
+    #     except User.DoesNotExist:
+    #         raise forms.ValidationError("Het email en wachtwoord komen niet overeen")
+    #     return self.cleaned_data
+
+    # def clean_username(self):
+    #     print("HELLOOOOOOOOOOOOOOOOOOOOOOOOOOO")
+    #     username = self.cleaned_data['username']
+    #     print(isUserBlocked(getUserId(username)))
+    #     if isUserBlocked(getUserId(username)):
+    #         forms.ValidationError("ERROR")
+    #     else:
+    #         return self.cleaned_data
 
 #Regestratie form, we geven een django UserCreationForm mee als attribuut die we dan kunnen aanpassen
 class RegistrationForm(UserCreationForm):
@@ -187,6 +215,16 @@ class CustomerDetails(forms.Form):
         telephone_validator(CustomertelephoneIn)
         return self.cleaned_data['customer_phone']
 
+    def clean_customer_city(self):
+        CustomerCityIn = self.cleaned_data['customer_city']
+        string_validator(CustomerCityIn)
+        return self.cleaned_data['customer_city']
+
+    def clean_customer_address(self):
+        CustomerAddressIn = self.cleaned_data['customer_address']
+        string_validator(CustomerAddressIn)
+        return self.cleaned_data['customer_address']
+
 
     def __init__(self, *args, **kwargs):
         super(CustomerDetails, self).__init__(*args, **kwargs)
@@ -198,47 +236,6 @@ class CustomerDetails(forms.Form):
         self.fields['customer_adressnum'].label = "Huisnummer en eventule toevoeging:"
         self.fields['customer_city'].label = "Stad:"
         self.fields['customer_postalcode'].label = "Postcode:"
-
-class ProductDetails(forms.Form):
-    products_prodName = forms.CharField(required=True, max_length=200)
-    products_prodPrice = forms.DecimalField(required=True, max_digits=5, decimal_places=2, min_value=1)
-    products_prodStock = forms.IntegerField(required=True, max_value=5000, min_value=1)
-    products_genre = forms.CharField(required=True, max_length=15)
-    products_type = forms.CharField(required=False, max_length=15)
-    products_publisher = forms.CharField(required=True, max_length=30)
-    products_totalPages = forms.IntegerField(required=True, max_value=2000, min_value=1)
-    products_language = forms.CharField(required=False, max_length=25)
-    products_rating = forms.IntegerField(required=False, max_value=5, min_value=1)
-    products_author = forms.CharField(required=True, max_length=30)
-    products_desc = forms.CharField(required=True, max_length=2000)
-    products_imageLink = forms.CharField(required=True, max_length=300)
-    products_pubDatum = forms.DateField(required=True)
-
-    def __init__(self, *args, **kwargs):
-        super(ProductDetails, self).__init__(*args, **kwargs)
-        self.fields['products_prodName'].label = "Titel:"
-        self.fields['products_prodPrice'].label = "Prijs:"
-        self.fields['products_prodStock'].label = "Quantiteit:"
-        self.fields['products_genre'].label = "Genre:"
-        self.fields['products_type'].label = "Type:"
-        self.fields['products_publisher'].label = "Uitgever:"
-        self.fields['products_totalPages'].label = "Bladzijden:"
-        self.fields['products_language'].label = "Taal:"
-        self.fields['products_rating'].label = "Score:"
-        self.fields['products_author'].label = "Schrijver:"
-        self.fields['products_desc'].label = "Beschrijving:"
-        self.fields['products_imageLink'].label = "Foto:"
-        self.fields['products_pubDatum'].label = "Uitgeefdatum:"
-
-    def CheckPrice(self):
-        Price = self.cleaned_data['products_prodPrice']
-        product_validator(Price)
-        return self.cleaned_data['products_prodPrice']
-
-    def CheckQuantity(self):
-        Quantity = self.cleaned_data['products_prodStock']
-        product_validator(Quantity)
-        return self.cleaned_data['products_prodStock']
 
 class CheckoutForm(forms.Form):
 
@@ -283,6 +280,16 @@ class AccountForm(forms.ModelForm):
         postalcode_validator(postalCodeIn)
         return self.cleaned_data['postalcode']
 
+    def clean_city(self):
+        cityIn = self.cleaned_data['city']
+        string_validator(cityIn)
+        return self.cleaned_data['city']
+
+    def clean_address(self):
+        addressIn = self.cleaned_data['address']
+        string_validator(addressIn)
+        return self.cleaned_data['address']
+
     class Meta:
         model = Address
         fields=(
@@ -320,7 +327,6 @@ class CustomerInfoForm(forms.Form):
         return self.cleaned_data['telephone']
 
 
-
     def __init__(self, *args, **kwargs):
         super(CustomerInfoForm, self).__init__(*args, **kwargs)
         self.fields['name'].label = "Voornaam:"
@@ -341,51 +347,3 @@ class PasswordForm(PasswordChangeForm):
         self.error_messages = {
             'password_mismatch': ("Oeps! De twee opgegeven wachtwoorden kwamen niet overeen! Probeer het opnieuw!"),
         }
-
-class EditUserForm(forms.Form):
-    name = forms.CharField(required=False, max_length=50)
-    surname = forms.CharField(required=False, max_length=50)
-    telephone = forms.CharField(required=False)
-    address = forms.CharField(required=False, max_length=100)
-    number = forms.CharField(required=False, max_length=10)
-    city = forms.CharField(required=False, max_length=25)
-    postalcode = forms.CharField(required=False)
-
-    class Meta:
-        model = Customers
-        fields = (
-            'name',
-            'surname',
-            'telephone',
-            'address',
-            'number',
-            'city',
-            'postalcode',
-        )
-
-    def clean_telephone(self):
-        telephoneIn = self.cleaned_data['telephone']
-        telephone_validator(telephoneIn)
-        return self.cleaned_data['telephone']
-
-    def clean_postalcode(self):
-        postalCodeIn = self.cleaned_data['postalcode']
-        postalcode_validator(postalCodeIn)
-        return self.cleaned_data['postalcode']
-
-    def __init__(self, *args, **kwargs):
-        super(EditUserForm, self).__init__(*args, **kwargs)
-        self.fields['name'].label = "Voornaam:"
-        self.fields['name'].widget.attrs.update({'placeholder': 'Clark'})
-        self.fields['surname'].label = "Achternaam:"
-        self.fields['surname'].widget.attrs.update({'placeholder': 'Kent'})
-        self.fields['telephone'].label = "Telefoonnummer:"
-        self.fields['telephone'].widget.attrs.update({'placeholder': '0611648394'})
-        self.fields['address'].label = "Adres:"
-        self.fields['address'].widget.attrs.update({'placeholder': 'Clinton Street'})
-        self.fields['number'].label = "Huisnummer:"
-        self.fields['number'].widget.attrs.update({'placeholder': '344'})
-        self.fields['city'].label = "Stad:"
-        self.fields['city'].widget.attrs.update({'placeholder': 'Smallville'})
-        self.fields['postalcode'].label = "Postcode:"
-        self.fields['postalcode'].widget.attrs.update({'placeholder': '3069 GG'})

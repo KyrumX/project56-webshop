@@ -8,7 +8,7 @@
         {% userFound userid as usersFoundBool %}
         {% isSameUser request userid as isSame %}
         {% if usersFoundBool %}
-            <p id="editp">Editten van gebruiker {{ userid }}:</p>
+            <p id="editp">Bewerken van gebruiker {{ userid }}:</p>
             <form method="POST" id="form1">
                 {% csrf_token %}
                 {{user_form.as_p}}

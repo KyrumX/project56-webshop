@@ -2,37 +2,14 @@
 {% load admin.adminusertags %}
 {% load static %}
 {% block content %}
-
-    <style>
-        table {
-            font-family: arial, sans-serif;
-            border-collapse: collapse;
-            width: 100%;
-        }
-
-        td, th {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px;
-        }
-
-        tr:nth-child(even) {
-            background-color: #dddddd;
-        }
-    </style>
 	{% if user.is_authenticated %}
 		{% if user.is_staff %}
 		<div class="middle">
-				{% userFound query as usersFoundBool %}
-				{% if usersFoundBool %}
-				{% autoescape off %}{% displayResults query %}{% endautoescape %}
-				{% else %}
-				<div>Oeps niets gevonden!</div>
-				{% endif %}
+          {% autoescape off %}{% displayUsers query %}{% endautoescape %}
 		{% else %}
 		<div class="middle" style="background-color: #ebe9e9; border: none;">
 				<div class="welcome">
-				<p>Helaas bent u niet bevoegd.</p>
+				  <p>Helaas bent u niet bevoegd.</p>
 				</div>
 		{% endif %}
 	{% else %}

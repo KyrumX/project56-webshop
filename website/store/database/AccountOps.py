@@ -38,6 +38,11 @@ def editUser(request, userid):
     updateUser.name = request.POST.get('name', '')
     updateUser.surname = request.POST.get('surname', '')
     updateUser.telephone = request.POST.get('telephone', '')
+    if request.POST.get('isBlocked') == 'on':
+        blockedStatus = True
+    else:
+        blockedStatus = False
+    updateUser.isBlocked = blockedStatus
     updateAddress.address= request.POST.get('address', '')
     updateAddress.number= request.POST.get('number', '')
     updateAddress.city= request.POST.get('city', '')
@@ -73,3 +78,10 @@ def deleteUser(request):
 
     if checkIfAuthUserExist(userId):
         User.objects.filter(id=userId).delete()
+
+def getUserId(email):
+    return User.objects.get(email=email).id
+
+def isUserBlocked(userId):
+    customer = Customers.objects.get(customerID=userId)
+    return customer.isBlocked

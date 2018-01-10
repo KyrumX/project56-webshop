@@ -1,8 +1,21 @@
 {% load custom_tags %}
+{% load static %}
 <div class="header">
+<script src="//cdnjs.cloudflare.com/ajax/libs/Snowstorm/20131208/snowstorm-min.js"></script>
+<script>
+snowStorm.targetElement = 'logo';
+snowStorm.animationInterval = 20; //milliseconds per frame, the higher the less CPU load
+snowStorm.flakesMaxActive = 20; //maximum number of active snow flakes, the lower the less CPU/GPU is needed to draw them
+snowStorm.freezeOnBlur = true; //recommended: stops the snow effect when the user switches to another tab or window
+snowStorm.followMouse = false;
+snowStorm.vMaxX = 1;
+snowStorm.vMaxY = 1;
+snowStorm.snowStick = false;
+snowStorm.useMeltEffect = true;
+</script>
     {% if user.is_authenticated %}
     <div class="logowrap commoncolor">
-        <div class="logo">
+        <div id="logo">
             {% load static %}
             <a href="/">
             <img src="{% static 'images/comicfirelogo3.png' %}">

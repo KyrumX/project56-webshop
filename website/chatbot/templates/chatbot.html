@@ -1,0 +1,42 @@
+{% extends 'frames/base.html' %}
+{% block content %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'chatbot.css' %}" />
+<script type="text/javascript" src="{% static 'js/chatbot.js' %}"></script>
+<div class="content">
+    <div class="bars sidecolors">
+        {% include 'includes/nieuwproduct.html' %}
+    </div>
+    <div class="aboutmid">
+        <div class="qrs">
+            <div class="aboutsection commontextbox">
+                <div class="sorton commoncolor">
+                    <h1> Chatty de chatbot </h1>
+                </div>
+                <div id="chatbotwrap">
+                    <div id="chatbotdiv">
+                        <table id="chatbottable">
+                            <tr>
+                                <td class="bottd">
+                                    Goededag. Stel gerust uw vraag. Probeer bij het stellen van vragen zoveel mogelijk gebruik te maken van steekwoorden.
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr><td>&nbsp;</td><td></td></tr><tr><td>&nbsp;</td><td></td></tr><tr><td>&nbsp;</td><td></td></tr>
+                        </table>
+                    </div>
+                </div>
+                <div id="chatbotinputdiv">
+                        <form id="chatbotform">
+                            <input type="hidden" name="case" value="0">
+                            <input name="usermessage" autocomplete="off" type="text" id="chatbar" placeholder="Voer uw vraag in en druk daarna op enter" />
+                        </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="right sidecolors">
+        {% include 'includes/aanbieding.html' %}
+    </div>
+</div>
+{% endblock%}
