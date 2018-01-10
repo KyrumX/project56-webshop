@@ -42,8 +42,22 @@ def displayCartItem(e, userAuth, isLast, isWishList, isOnly=False):
            print("falls in the lastli")
            html += """<div class='textplace lastli' style='""" + color + """'><ul><li style='width: 100%;'><p class='title'>""" + e.prodNum.prodName + """</p></li><li style='width: 50%;'><p class='pricepart'>Prijs: €""" + str(e.amount * e.prodNum.prodPrice) + """</p></li><li style='width: 50%;'><p class='amountpart'>Aantal: """ + amounttxt + """</p></li><li style='width: 40%;'><button name='removeFromCartButton' value='""" + str(e.prodNum) + """' class='remove'><i class='fa fa-trash' aria-hidden='true'></i><p>Verwijderen</p></button></li><li style='width: 60%;'><button name='moveToWishListButton' value='""" + str(e.prodNum) + """' class='movetowishlist'><i class='fa fa-heart' aria-hidden='true'></i><p>Toevoegen verlanglijstje</p></button></li></ul>"""
     else:
-        if isLast == 'middle':
-            html += "<div class='textplace middleli' style='background-color: #ded4a9;background-image: url('http://localhost:8000/static/images/comicloud2.png');vertical-align: top;background-size: cover;'><ul><li style='width: 100%;'><p class='title'>" + e.prodNum.prodName + "</p></li><li style='width: 50%;'><p>Prijs: €" + str(e.amount * e.prodNum.prodPrice) + "</p></li><li style='width: 50%;'><p>Aantal: " + amounttxt + "</p></li>" + "<li style='width: 100%;'><button name='removeFromCartButton' value='" + str(e.prodNum) + "' class='remove'><i class='fa fa-trash' aria-hidden='true'></i><p>Verwijderen</p></button></li></ul>"
+        print("is last is ", isLast)
+        if isOnly:
+            print("firstttttt and only")
+            html += """<div class='textplace lastli' style='""" + color + """'><ul><li style='width: 100%;'><p class='title'>""" + e.prodNum.prodName + """</p></li><li style='width: 50%;'><p class='pricepart'>Prijs: €""" + str(
+                e.amount * e.prodNum.prodPrice) + """</p></li><li style='width: 50%;'><p class='amountpart'>Aantal: """ + amounttxt + """</p></li><li style='width: 100%;'><button name='removeFromCartButton' value='""" + str(
+                e.prodNum) + """' class='remove'><i class='fa fa-trash' aria-hidden='true'></i><p>Verwijderen</p></button></li></ul>"""
+        elif isLast == 'first' and not isOnly:
+            print("firstttt")
+            html += """<div class='textplace first' style='""" + color + """'><ul><li style='width: 100%;'><p class='title'>""" + e.prodNum.prodName + """</p></li><li style='width: 50%;'><p class='pricepart'>Prijs: €""" + str(
+                e.amount * e.prodNum.prodPrice) + """</p></li><li style='width: 50%;'><p class='amountpart'>Aantal: """ + amounttxt + """</p></li><li style='width: 100%;'><button name='removeFromCartButton' value='""" + str(
+                e.prodNum) + """' class='remove'><i class='fa fa-trash' aria-hidden='true'></i><p>Verwijderen</p></button></li></ul>"""
+        elif isLast == 'middle':
+           html += """<div class='textplace middleli' style='""" + color + """'><ul><li style='width: 100%;'><p class='title'>""" + e.prodNum.prodName + """</p></li><li style='width: 50%;'><p class='pricepart'>Prijs: €""" + str(e.amount * e.prodNum.prodPrice) + """</p></li><li style='width: 50%;'><p class='amountpart'>Aantal: """ + amounttxt + """</p></li><li style='width: 100%;'><button name='removeFromCartButton' value='""" + str(e.prodNum) + """' class='remove'><i class='fa fa-trash' aria-hidden='true'></i><p>Verwijderen</p></button></li></ul>"""
+        else:
+           print("falls in the lastli")
+           html += """<div class='textplace lastli' style='""" + color + """'><ul><li style='width: 100%;'><p class='title'>""" + e.prodNum.prodName + """</p></li><li style='width: 50%;'><p class='pricepart'>Prijs: €""" + str(e.amount * e.prodNum.prodPrice) + """</p></li><li style='width: 50%;'><p class='amountpart'>Aantal: """ + amounttxt + """</p></li><li style='width: 100%;'><button name='removeFromCartButton' value='""" + str(e.prodNum) + """' class='remove'><i class='fa fa-trash' aria-hidden='true'></i><p>Verwijderen</p></button></li></ul>"""
     html += "</div></li>"
     html += "</ul>"
     return html
