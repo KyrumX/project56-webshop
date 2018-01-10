@@ -215,14 +215,14 @@ class EditUserForm(forms.Form):
         return self.cleaned_data['postalcode']
 
     def clean_city(self):
+        CityIn = self.cleaned_data['city']
+        string_validator(CityIn)
+        return self.cleaned_data['city']
+
+    def clean_address(self):
         AddressIn = self.cleaned_data['address']
         string_validator(AddressIn)
         return self.cleaned_data['address']
-
-    def clean_address(self):
-        postalCodeIn = self.cleaned_data['postalcode']
-        string_validator(postalCodeIn)
-        return self.cleaned_data['postalcode']
 
 
     def __init__(self, *args, **kwargs):
