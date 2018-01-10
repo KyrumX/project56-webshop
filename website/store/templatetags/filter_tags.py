@@ -11,7 +11,7 @@ def languageFilter(relevantItems, selectedFilters):
         html +=  "<div class='barwrap'>" \
                  "<div class='leftbar commoncolor'>" \
                  "<p>Taal<i class='fa fa-sort-desc' aria-hidden='true' id='sortdown'></i></p></div>" \
-                 "<div class='bartext'>"
+                 "<div class='bartext'><div class='insidebar'>"
         for e in relevantItems:
             if e == 'Engels':
                 if 'English' in selectedFilters:
@@ -25,7 +25,7 @@ def languageFilter(relevantItems, selectedFilters):
                 else:
                     html += "<input type='checkbox' onchange='combineForms()' name='language' value='Dutch' id='dutch'>"
                 html += "<label for='dutch'></label><p>Nederlands</p><br>"
-        html += "</div></div>"
+        html += "</div></div></div>"
         return html
     return ""
 
@@ -36,7 +36,7 @@ def typeFilter(relevantItems, selectedFilters):
         html += "<div class='barwrap'><div class='leftbar commoncolor'>" \
                 "<p>Type Boek<i class='fa fa-sort-desc' aria-hidden='true' id='sortdown'></i></p>" \
                 "</div>" \
-                "<div class='bartext'>"
+                "<div class='bartext'><div class='insidebar'>"
         for e in relevantItems:
             if e == 'Manga':
                 if 'manga' in selectedFilters:
@@ -50,7 +50,7 @@ def typeFilter(relevantItems, selectedFilters):
                 else:
                     html += "<input type='checkbox' onchange='combineForms()' name='type' value='comic' id='comic'>"
                 html += "<label for='comic'></label><p>Comic</p><br>"
-        html += "</div></div>"
+        html += "</div></div></div>"
         return html
     return ""
 
@@ -61,14 +61,14 @@ def publisherFilter(relevantItems, selectedFilters):
         html += "<div class='barwrap'><div class='leftbar commoncolor'>" \
                 "<p>Uitgever<i class='fa fa-sort-desc' aria-hidden='true' id='sortdown'></i></p>" \
                 "</div>" \
-                "<div class='bartext'>"
+                "<div class='bartext'><div class='insidebar'>"
         for e in relevantItems:
             if e in selectedFilters:
                 html += "<input type='checkbox' onchange='combineForms()' value='" + e + "' name='publisher' id='" + e +"' checked>"
             else:
                 html += "<input type='checkbox' onchange='combineForms()' value='" + e + "' name='publisher' id='" + e +"'>"
             html += "<label for='" + e + "'></label><p>"+ e +"</p><br>"
-        html += "</div></div>"
+        html += "</div></div></div>"
         return html
     return ""
 
@@ -98,6 +98,10 @@ def orderbyForm(order, size):
 
 @register.simple_tag()
 def searchList(results, userAuth):
+    if not results:
+        txt = """<b><p id='geenproduct'>Helaas hebben we geen product kunnen vinden voor uw zoekopdracht!</p></b><img src="/static/images/sadbatmanisbestbatman.png" id='sadbatman'>"""
+        return txt
+
     # Structuur url: localhost:8000/search/Hulk/{smallfilter bvb 'asc'}/{sidefilter aka 'Dutch'}/
     # Voorbeeld beide filters url: localhost:8000/search/Hulk/priceasc/marvel/
 
@@ -136,6 +140,10 @@ def searchList(results, userAuth):
 
 @register.simple_tag()
 def getAllProducts(objects, userAuth):
+    if not objects:
+        txt = """<b><p id='geenproduct'>Helaas hebben we geen product kunnen vinden voor uw zoekopdracht!</p></b><img src="/static/images/sadbatmanisbestbatman.png" id='sadbatman'>"""
+        return txt
+
     txt = ""
     counter = 0
     for e in objects:
