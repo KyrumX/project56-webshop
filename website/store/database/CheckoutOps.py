@@ -1,6 +1,6 @@
 from django.db.models import Max
 
-from ..models import Orders, OrderDetails, ShoppingCart, Customers, Address
+from ..models import Orders, OrderDetails, ShoppingCart, Customers, Address, Products
 from django.utils import timezone
 from .CartOps import clearCart
 from django.template.loader import render_to_string
@@ -29,6 +29,18 @@ def createOrder(request):
     order = OrderDetails.objects.all().filter(orderNum=Orders(orderNum=orderEntry.orderNum)) #Returnt een Array van alle Items die besteld zijn
     html_content = render_to_string('mail/order_complete_email.html', { "order" : order })
     text_content = render_to_string('mail/order_complete_email.txt')
+
+    for i in order:
+        print("________________")
+        print("Dit is Productnum: ", i.productNum.prodNum)
+        print("Dit is Amount", str(i.amount))
+
+        prod = Products.objects.get(prodNum=str(i.productNum))
+        print("Current Stock: ", prod.prodStock)
+        prod.prodStock = prod.prodStock - i.amount
+        prod.save()
+        print("New Stock: ", Products.objects.get(prodNum=str(i.productNum)).prodStock)
+
 
     email = EmailMultiAlternatives("Orderbevestiging", text_content, 'noreply@comicfire.com', [c])
     email.attach_alternative(html_content, "text/html")

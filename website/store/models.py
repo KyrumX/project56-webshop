@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import  post_save
 from django.dispatch import receiver
+import datetime
 
 # Create your models here.
 
@@ -98,4 +99,15 @@ class ShoppingCart(models.Model):
     class Meta:
         unique_together = ('session_key', 'prodNum')
 
+class UserVisits(models.Model):
+    class Meta:
+        verbose_name_plural = "User Visits"
+    customerID = models.IntegerField(default=0)
+    is_staff = models.BooleanField()
+    visits = models.IntegerField()
 
+class Dates(models.Model):
+    class Meta:
+        verbose_name_plural = "Dates"
+    customerID = models.ForeignKey(UserVisits, db_column='customerID')
+    date = models.DateField(default=datetime.date.today)

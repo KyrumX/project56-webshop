@@ -2,6 +2,21 @@
 {% load admin.adminusertags %}
 {% load static %}
 {% block content %}
+<<<<<<< HEAD:website/store/templates/admin/productdataselection.html
+	<div class="middle" style="background-color: #ebe9e9; border: none;">
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">google.load("visualization", "1", {packages:["corechart"]});</script>
+	{% if user.is_authenticated %}
+		{% if user.is_staff %}
+            {% if warning != null %}
+                <p>{{ warning }}</p>
+            {% endif %}
+			<p id="editp">Kies van welke maand u de verkoopcijfers wilt zien</p>
+			<div class="links">
+				<a href="/admin/data/products/2017/11/">November 2017</a>
+				<a href="/admin/data/products/2017/12/">December 2017</a>
+			</div>
+=======
 
     <style>
         table {
@@ -24,14 +39,13 @@
 		{% if user.is_staff %}
 		<div class="middle">
       {% autoescape off %}{% displayProducts query %}{% endautoescape %}
+>>>>>>> origin/FixSelim:website/store/templates/admin/searchproducts.html
 		{% else %}
-		<div class="middle" style="background-color: #ebe9e9; border: none;">
 				<div class="welcome">
 				  <p>Helaas bent u niet bevoegd.</p>
 				</div>
 		{% endif %}
 	{% else %}
-	<div class="middle" style="background-color: #ebe9e9; border: none;">
 	<p style="margin-left: 50px;">Redirecting...</p>
 	<script>
 		$(location).attr('href', '/admin/');

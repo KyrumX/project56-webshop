@@ -49,6 +49,11 @@ body {
 	background-color: #4f9373a8;
 }
 
+svg:first-child > rect{
+	fill: #f9f9f9;
+	width: 50px;
+}
+
 .middle .welcome {
 	background-color; #363232
 	width: 80%;
@@ -63,8 +68,7 @@ body {
 }
 
 a {
-	color: #58d79b;
-	
+	color: #d1e8dd;
 }
 
 #editp{
@@ -171,6 +175,51 @@ a {
 	width: 100%;
 }
 
+
+.links{
+	background-color: grey;
+	width: 50%;
+	margin: 40px auto;
+	padding: 30px;
+	border-radius: 5px;
+}
+
+.links a{
+	margin: 20px auto;
+	display: block;
+	text-align: center;
+}
+
+.chart {
+	margin: 0 auto;
+	width: 100vh;
+}
+
+.chart > :first-child {
+	height: 50vh !important;
+	width: 100% !important;
+}
+
+.main .content .chart > :first-child > :first-child > :first-child{
+	/* height: 50vh !important; */
+	position: relative !important;
+	width: 100% !important;
+	margin: 0 auto !important;
+	text-align: center !important;
+	position: relative !important;
+	left: 0 !important;
+	right: 0 !important;
+	display: block !important;
+}
+
+.chart > :first-child > :first-child > :first-child svg{
+	display: inline-block;
+	text-align: center;
+	margin: 0 auto;
+	width: 100%;
+}
+
+
 .middle{
 	display: table-cell;
 	position: relative;
@@ -182,6 +231,31 @@ a {
 	/* padding-bottom: 10vh; */
 	border-left: 0.1vh solid #c7c5c5;
 	border-right: 0.1vh solid #c7c5c5;
+}
+
+svg{
+	display: block;
+	text-align: center;
+	font-size: 10vh;
+	/* left: 5%; */
+	/* right: 5%; */
+	/* position: absolute; */
+	/* max-width: 60vh; */
+	overflow: scroll !important;
+	/* margin-left: 10vh; */
+}
+
+rect {
+	/* width: 100%; */
+}
+
+g {
+	max-width: 1vh !important;
+	font-size: 3vh;
+}
+
+svg text{
+	font-size: 1.6vh;
 }
 
 .middle input[type=text], .middle input[type=email], .middle input[type=password], .middle input[type=number]{
@@ -517,7 +591,7 @@ ul li{
 	float: left;
 	display: table;
 	height: 100%;
-	width: 16.66%;
+	width: 16.7%;
 	text-align: center;
 	vertical-align: middle;
 }
