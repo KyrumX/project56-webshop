@@ -95,11 +95,7 @@ def listloop(userAuth):
     else:
         txt += """<div class="startwrap" style="border-radius: 3px"><div class="itemoftheday"><div class="itempart1"><p>Uitgelichte Product</p></div><div class="itempart2"><p>{0}</p></div></div>
             <div class="leftstart"><a href="{1}"><img src="{2}"></a></div>
-            <div class="rightstart"><h1>{3}</h1><p>{4}</p></div></div>""".format(prodratingtxt,  prodUrlTag(randomlyselectedprod), getProdImage(randomlyselectedprod), getProdName(randomlyselectedprod), getProdDesc(randomlyselectedprod))
-
-    # txt += """<div class="startwrap" style="border-radius: 3px"><div class="itemoftheday"><div class="itempart1"><p>Uitgelichte Product</p></div><div class="itempart2"><p>{0}</p></div></div>
-    # <div class="leftstart"><img src="{1}" id="zoom_05"></div>
-    # <div class="rightstart"><h1>{2}</h1><p>{3}</p></div></div>""".format(prodratingtxt, getProdImage(randomlyselectedprod), getProdName(randomlyselectedprod), proddesc)
+            <div class="rightstart"><a href="{3}"><h1>{4}</h1></a><p>{5}</p></div></div>""".format(prodratingtxt,  prodUrlTag(randomlyselectedprod), getProdImage(randomlyselectedprod), prodUrlTag(randomlyselectedprod), getProdName(randomlyselectedprod), getProdDesc(randomlyselectedprod))
 
     for i in range(4):
         txt += "<ul class='list'>"

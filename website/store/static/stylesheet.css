@@ -1036,6 +1036,11 @@ input[type=submit], .logindiv button{
 	vertical-align: middle;
 }
 
+.rightstart a{
+	text-decoration: underline;
+	color: white;
+}
+
 .rightstart ul{
 	list-style-type: none;
 	padding: 0;
