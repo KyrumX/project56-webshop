@@ -13,7 +13,7 @@ The following instruction specify how to run this project on different platforms
 
 #### Production
 
-##### Windows / Local
+The following instructions are for a production mode of operation. This means no errors like routing errors are shown, instead a 404 page is returned. <br/><br/>
 
 **Setup** <br/>
 _Please not that the versions provided are the ones used for testing, no other version, like Django 2.0, have been tested._ <br/>
@@ -25,6 +25,9 @@ In order to run the latest version you require the following: <br/><br/>
 
 _An internet connection and database connection are required for optimal use._
 
+
+##### Windows / Local
+
 **Running**
 1. Clone the master branch from this repository;
 2. Extract the files to prefered location;
@@ -33,5 +36,9 @@ _An internet connection and database connection are required for optimal use._
 5. Open a Google Chrome and go to the following link (default): `127.0.0.1:8000`
 
 
+##### Ubuntu (external host)
+1. Follow the Windows instruction up to step 4.
+2. In the console, run the following command: `sudo python3 manage.py 0.0.0.0:port --insecure`
+3. Either open a local browser and go to the ip address associated with your server or user another computer to go to that address.
 
 
