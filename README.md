@@ -28,17 +28,22 @@ _An internet connection and database connection are required for optimal use._
 
 ##### Windows / Local
 
-**Running**
 1. Clone the master branch from this repository;
 2. Extract the files to prefered location;
 3. Open a console in the first website folder, the one with the manage.py file;
-4. Run the following command: `python manage.py runserver --insecure`
-5. Open a Google Chrome and go to the following link (default): `127.0.0.1:8000`
+4. Run the following command: `python manage.py runserver --insecure`;
+5. Open a Google Chrome and go to the following link (default): `127.0.0.1:8000`.
 
 
 ##### Ubuntu (external host)
-1. Follow the Windows instruction up to step 4.
-2. In the console, run the following command: `sudo python3 manage.py 0.0.0.0:port --insecure`
+1. Follow the Windows instruction up to step 4;
+2. In the console, run the following command: `sudo python3 manage.py 0.0.0.0:port --insecure`;
 3. Either open a local browser and go to the ip address associated with your server or user another computer to go to that address.
 
+#### Debug mode / development mode
+The following instructions are for a development mode of operation. This means errors, such as routing errors, are returned when these occur, instead of 404 pages being returned. <br/><br/>
 
+1. Follow the instructions for your OS up to step 4;
+2. Change your current directory to `website\website` and open the `settings.py` file;
+3. Find the `DEBUG = False` line and change it to `DEBUG = True`.
+4. Proceed from step 4 for Windows instructions or step 2 for Ubuntu instructions.
