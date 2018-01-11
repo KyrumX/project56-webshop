@@ -18,11 +18,12 @@
 					<i class="fa fa-star" aria-hidden="true"></i>
 				{% endfor %}
 			</p>
+         {% isInStock prodNum as lel %}
+         {% if lel %}
             <p class="stock">In stock</p>
-            <p></p>
-            <p></p>
-            <p></p>
-            <p></p>
+         {% else %}
+            <p class="stock" style="color: #d45f5f;">Uitverkocht</p>
+         {% endif %}
          </div>
          <div class="descsectionwrap">
             <div class="descsection">
@@ -41,18 +42,29 @@
 			   {% else %}
 			   <li style="width: 100%;">
 			   {% endif %}
+               {% if lel %}
 			   <form role="form" action="" method="post" name="addToCart">
                    {% csrf_token %}
                    <button type="submit" name="addToCartButton" class="addtocartButton"><i class="fa fa-plus" aria-hidden="true"></i><i class="fa fa-shopping-cart" aria-hidden="true"></i><p>Toevoegen winkelwagentje</p></button>
                </form>
+                {% endif %}
 			   </li>
                {% if user.is_authenticated %}
+                   {% if lel %}
     		   <li>
 			   <form role="form" action="" method="post" name="addToWishList">
                    {% csrf_token %}
                    <button type="submit" name="addtowishlistButton" class="addtowishlistButton"><i class="fa fa-heart" aria-hidden="true"></i><p>Toevoegen verlanglijstje</p></button>
 			   </form>
 			   </li>
+                       {% else %}
+                       <li style="width: 100%;">
+			   <form role="form" action="" method="post" name="addToWishList">
+                   {% csrf_token %}
+                   <button type="submit" name="addtowishlistButton" class="addtowishlistButton"><i class="fa fa-heart" aria-hidden="true"></i><p>Toevoegen verlanglijstje</p></button>
+			   </form>
+			   </li>
+                       {% endif %}
                {% else %}
                {% endif %}
 			   </ul>
@@ -81,8 +93,8 @@
          </div>
       </div>
       <div class="suggesteditems">
-         <div class="suggesteditemsbar">
-            <h1>Voorgestelde Producten</h1>
+         <div class="suggesteditemsbar" style="border-bottom-left-radius:0px; border-bottom-right-radius:0px;">
+            <h1>Suggested Products</h1>
          </div>
          <ul class="ulsugg">
             {% autoescape off %}{% suggesteditems prodName prodType %}{% endautoescape %}
