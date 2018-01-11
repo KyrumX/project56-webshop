@@ -4109,5 +4109,21 @@ ul.ulsugg {}
 }
 
 .tooltip:hover .tooltiptext {
-    visibility: visible;
-    opacity: 1;
+	visibility: visible;
+	opacity: 1;
+}
+
+.error404p {
+	display: block;
+	text-align:center;
+    vertical-align: middle;
+	color: black;
+}
+
+.error404h1 {
+    display: block;
+	text-align:center;
+    vertical-align: middle;
+	color: darkgrey;
+    font-size: 250%;
+}
