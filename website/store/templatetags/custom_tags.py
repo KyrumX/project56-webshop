@@ -8,7 +8,8 @@ from ..database.getData import getProdName, getProdPrice, getProdStock, getProdA
     getProdPublish, getProdRating
 from ..database.getData import getVisitsChart
 from ..models import ProductDetails
-from ..models import UserVisits, Dates, OrderDetails, Orders
+from ..models import UserVisits, Dates, OrderDetails, Orders, Products
+from django.db.models import Max
 
 register = template.Library()
 
@@ -25,6 +26,28 @@ def any_function():
 
 def getRows(getal):
     return (int(getal / 3))
+
+def getMaxid():
+    maxid = Products.objects.aggregate(Max('prodNum'))
+    id = maxid.get('prodNum__max')
+    return id
+
+@register.simple_tag()
+def topProdNameTag():
+    return getProdName(getMaxid())
+
+@register.simple_tag()
+def topProdPublTag():
+    return getProdPublish(getMaxid())
+
+@register.simple_tag()
+def topProdUrlTag():
+    url = "/product/" + str(getMaxid())
+    return url
+
+@register.simple_tag()
+def topProdImageTag():
+    return getProdImage(getMaxid())
 
 @register.simple_tag()
 def prodName(prodNum):
