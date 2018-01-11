@@ -192,11 +192,8 @@ class Visits(View):
 		
         daysinamonth = {1 : 31, 2 : 28, 3 : 31, 4 : 30, 5 : 31, 6 : 30, 7 : 31, 8 : 31, 9 : 30, 10 : 31, 11 : 30, 12 : 31}
 		
-        #if from_year < 2018:
-         #   from_year = 2018
-        #elif to_year > now.year or to_year >= now.year and to_month > now.month:
-         #   to_year = now.year
-         #   to_month = now.month
+        chart = None
+        month_tostr = None
 
         thevisits = [['Visits', 'Totaal']]
 	
@@ -226,14 +223,6 @@ class Visits(View):
         cnt2 = 0
         for e in secondmonth:
             cnt2 += 1
-            print("incoming")
-            print(e.date)
-
-            data = [
-                ['Visits', 'Aantal'],
-                ['01-01-2018', cnt],
-                ['01-02-2018', cnt2],
-            ]
 
 
             data_source = SimpleDataSource(thevisits)
@@ -241,11 +230,10 @@ class Visits(View):
 			
             month_tostr = { 1 : "januari", 2 : "februari", 3 : "maart", 4 : "april", 5 : "mei", 6 : "juni", 7 : "juli", 8 : "augustus", 9: "september", 10 : "oktober", 11 : "november", 12 : "december"}
 
-            return render(request, 'admin/visits.html', {
-                'chart' : chart,
-                'year' : now.year,
-                'month' : month_tostr[now.month],
-            })
-        return render(request, 'admin/productdataselection.html', {
-            'warning' : "De combinatie van jaar en maand is niet geldig. Selecteer er één uit de onderstaande lijst."
+
+        return render(request, 'admin/visits.html', {
+            'chart': chart,
+            'year': now.year,
+            'month': month_tostr[now.month],
         })
+
