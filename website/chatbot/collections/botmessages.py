@@ -55,7 +55,10 @@ NO_ORDER_RESPONSE = "U heeft nog geen bestelling bij ons geplaatst met dit accou
 NOT_LOGGED_IN = "U bent op dit moment niet ingelogd op een account. Heeft uw vraag betrekking op een" \
                     " bestelling die geplaatst is zonder in te loggen? Neem dan contact op met onze" \
                     " klantenservice via ons <a href='/contact/'>contactform</a>."
+CANT_ANSWER_ORDER = "Ik kan helaas alleen kijken naar uw laatste bestelling." \
+                    " Als u een vraag heeft over een oudere bestelling, neem dan contact op met onze" \
+                    " klantenservice via ons <a href='/contact/'>contactform</a>."
 
-THANKS_RESPONSE = "Ik hoop dat uw vragen zijn beantwoord. Is dit niet het gevaol? Neem dan contact op met onze" \
+THANKS_RESPONSE = "Ik hoop dat uw vragen zijn beantwoord. Is dit niet het geval? Neem dan contact op met onze" \
                   " klantenservice via ons <a href='/contact/'>contactform</a>. <br/>" \
                   "Nog een fijne dag!"

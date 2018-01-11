@@ -239,7 +239,7 @@ class Visits(View):
             data_source = SimpleDataSource(thevisits)
             chart = gchart.LineChart(data_source, options={'title': "Visits"})
 			
-            month_tostr = { 1 : "Januari", 2 : "Februari", 3 : "Maart", 4 : "April", 5 : "Mei", 6 : "Juni", 7 : "Juli", 8 : "Augustus", 9: "September", 10 : "Oktober", 11 : "November", 12 : "December"}
+            month_tostr = { 1 : "januari", 2 : "februari", 3 : "maart", 4 : "april", 5 : "mei", 6 : "juni", 7 : "juli", 8 : "augustus", 9: "september", 10 : "oktober", 11 : "november", 12 : "december"}
 
             return render(request, 'admin/visits.html', {
                 'chart' : chart,
