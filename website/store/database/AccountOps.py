@@ -115,8 +115,8 @@ def adminresetpw(request):
 
     template = get_template('mail/newpassword.txt') #Fetch de email template
     context = {
-        'contact_name': User.first_name,
-        'contact_email': User.email,
+        'contact_name': user.first_name,
+        'contact_email': user.email,
         'contact_content': newpw,
     }
 
@@ -126,7 +126,7 @@ def adminresetpw(request):
         "Uw nieuwe wachtwoord",
         content,
         'noreply@comicfire.com',
-        [User.first_name]
+        [user.email]
     )
     email.send() #Stuur de email
 
