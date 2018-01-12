@@ -110,6 +110,7 @@ def adminresetpw(request):
     c_id = int(request.POST['resetpwuser'])
     print("Changing pw for user: ", c_id)
     user = User.objects.get(id=c_id)
+
     newpw = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
 
     print("Old password: ", user.password)
@@ -129,14 +130,14 @@ def adminresetpw(request):
     #
     # mail_subject = 'Uw nieuwe wachtwoord.'
     # to_email = user.email
-    # email = EmailMessage(mail_subject, message, to=[to_email])
+    # email = EmailMessage("Test", "test", to=[user.email])
     # email.send()
 
-    send_mail(
-        'Uw nieuwe wachtwoord.',
-        """Beste lid, <br> Hierbij uw nieuwe wachtwoord: {}""".format(newpw),
-        'admin@comicfire.com',
-        [user.email],
-        fail_silently=False,
-    )
+    # send_mail(
+    #     'Uw nieuwe wachtwoord.',
+    #     "Beste lid, <br> Hierbij uw nieuwe wachtwoord: {}".format(str(newpw)),
+    #     'admin@comicfire.com',
+    #     [user.email],
+    #     fail_silently=False,
+    # )
 
