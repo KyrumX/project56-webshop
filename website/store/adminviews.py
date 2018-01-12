@@ -93,6 +93,11 @@ class EditUser(View):
             return render(request, 'admin/userdeleted.html', {
                 'userid': userid,
             })
+        if 'resetpwuser' in request.POST:
+            adminresetpw(request)
+            return render(request, 'admin/passwordresetted.html', {
+                'userid': userid,
+            })
         if 'edituser' in request.POST:
             user_form = EditUserForm(request.POST)
             if user_form.is_valid():
@@ -136,7 +141,7 @@ def createproduct(request):
         form = ProductsRegistrationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('/admin/')
+            return render(request, 'admin/productcreated.html')
     else:
         form = ProductsRegistrationForm()
     return render(request, 'admin/createproduct.html', {'form' :  form})

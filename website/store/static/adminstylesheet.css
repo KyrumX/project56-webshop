@@ -19,6 +19,7 @@ body {
 	position: relative;
 	height: 66vh;
 	width: 100%;
+	z-index: 5000;
 }
 
 .commoncolor{
@@ -83,11 +84,49 @@ a {
 	/* margin: 0 auto; */
 }
 
+#editp i{
+	position: absolute;
+	left: 12%;
+	font-size: 7vh;
+	color: #4f9373;
+}
+
+
 #form2 {
 	border-top: solid 1px #0000002b;
 	border-bottom: solid 1px #0000002b;
 	padding: 10px;
 	margin-bottom: 50px;
+}
+
+#form3{
+	border-top: solid 1px #0000002b;
+	border-bottom: solid 1px #0000002b;
+	padding: 10px;
+	margin-bottom: 50px;
+
+}
+
+#form3 > :nth-child(9) > label {
+	font-size: 16px;
+	display: table-cell;
+	width: 70%;
+	vertical-align: bottom;
+}
+
+#form3 > :nth-child(9) {
+	font-size: 50px;
+	display: table;
+	width: 40%;
+	margin: 0 auto;
+}
+
+#id_isBlocked{
+	vertical-align: bottom;
+	margin-right: 55px;
+	display: table-cell;
+	vertical-align: bottom;
+	margin-bottom: 2px;
 }
 
 .edit {
@@ -175,15 +214,25 @@ a {
 	border-radius: 0px;
 }
 
+.resetpw{
+	position: absolute;
+	left: 0;
+	width: 30%;
+	background-color: #605c5c;
+}
+
+.remove {
+	width: 30%;
+    background-color: #e65d5d;
+}
 .edit button{
 	position: absolute;
 	bottom: 0;
 	right: 0;
 	margin-top:  50px;
-	background-color: #e65d5d;
+
 	border: none;
 	height: 5.5vh;
-	width: 100%;
 	/* border-bottom-left-radius: 5px; */
 	/* border-bottom-right-radius: 5px; */
 	color: white;
@@ -254,7 +303,8 @@ a {
 	display: table-cell;
 	position: relative;
 	background-color: #f9f9f9;
-	height: 100%;
+	max-height: 100%;
+	overflow: hidden;
 	width: 70%;
 	margin: auto;
 	padding-top: 5vh;

@@ -17,6 +17,15 @@
                             {{checkoutform}}
                             <input type="submit" id="checkoutsubmit" name="checkoutsubmitbutton" value="Bevestigen">
                         </form>
+						<script>
+							var label = $('label[for="' + 'id_card_edy' + '"]');
+							var label2 = $('label[for="' + 'id_card_CVC' + '"]');
+							var label3 = $('label[for="' + 'id_card_edm' + '"]');
+							
+							$(label).attr('id', 'dash');
+							$(label2).attr('id', 'cvc');
+							$(label3).attr('id', 'edm');
+						</script>
 				            </div>
                 </div>
             </div>

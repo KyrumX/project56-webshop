@@ -1,5 +1,25 @@
 from ..models import Address, Customers, Orders
 from django.contrib.auth.models import User
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.encoding import force_bytes, force_text
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+import random, string
+from ..collections.mails import *
+from django.template.loader import render_to_string
+
+
+from django.utils.encoding import force_bytes, force_text
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from ..collections.mails import *
+from ..collections.forms import *
+from ..collections.posts import *
+from ..database.CheckoutOps import *
+from ..database.AccountOps import *
+from django.template.loader import render_to_string
+from ..collections.tools import *
+from django.core.mail import send_mail
+
+
 
 
 def saveAddress(request):
@@ -85,3 +105,38 @@ def getUserId(email):
 def isUserBlocked(userId):
     customer = Customers.objects.get(customerID=userId)
     return customer.isBlocked
+
+def adminresetpw(request):
+    c_id = int(request.POST['resetpwuser'])
+    print("Changing pw for user: ", c_id)
+    user = User.objects.get(id=c_id)
+    newpw = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
+
+    print("Old password: ", user.password)
+
+    user.set_password(newpw)
+
+    user.save()
+
+    print("This is the new set password: ", newpw)
+
+    # message = render_to_string('mail/acc_active_email.html', {
+    #     'user': user,
+    #     'domain': 'Comicfire.com',
+    #     'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+    #     'pwd': newpw,
+    # })
+    #
+    # mail_subject = 'Uw nieuwe wachtwoord.'
+    # to_email = user.email
+    # email = EmailMessage(mail_subject, message, to=[to_email])
+    # email.send()
+
+    send_mail(
+        'Uw nieuwe wachtwoord.',
+        """Beste lid, <br> Hierbij uw nieuwe wachtwoord: {}""".format(newpw),
+        'admin@comicfire.com',
+        [user.email],
+        fail_silently=False,
+    )
+

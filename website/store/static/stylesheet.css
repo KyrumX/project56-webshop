@@ -1396,6 +1396,18 @@ input[type=submit], .logindiv button{
 	padding-top: 40px;
 }
 
+.fillin #id_card_CVC{
+	display: inline-block;
+	/* margin-top: 0px; */
+	width: 17% !important;
+	margin-left: 3%;
+	/* float: right; */
+	/* vertical-align: bottom; */
+	/* right: 0px; */
+	/* float: right; */
+}
+
+
 .fillin input[type=text], .fillin input[type=email],
 .fillin input[type=number]{
 	width: 100%;
@@ -1425,6 +1437,24 @@ input[type=submit], .logindiv button{
 
 label{
 	font-family: "Open Sans",Arial,Helvetica,sans-serif
+}
+
+#dash {
+	float: right;
+	line-height: 45px;
+	padding-left: 10px;
+}
+
+
+#cvc {
+	padding-top: 150px;
+	margin-top: 150px;
+	position: relative;
+	line-height: 120px;
+}
+
+#edm {
+	line-height:40px;
 }
 
 .fillin form label{
@@ -1459,7 +1489,7 @@ label{
 	/* background: #ffffff; */
 	border: 1px solid rgb(209, 226, 233);
 	color: #777;
-	/* margin-bottom: 30px; */
+	margin-bottom: 30px;
 	margin-top: 5px;
 } */
 
@@ -1981,7 +2011,7 @@ table{
 	background: -moz-linear-gradient(top,  #f2f2f2,  #f0f0f0);
 }
 
-.cartwrap {list-style-type: none;list-style-position: inside;padding: 0;margin: 0;-webkit-padding-start: 0;-webkit-padding-end: 0;-webkit-margin-before: 0;-webkit-margin-after: 0;display: block;width: 100%;border-bottom: solid 0.3vh #4b4b4d;/* border-width: 3px; */}
+.cartwrap {list-style-type: none;list-style-position: inside;padding: 0;margin: 0;-webkit-padding-start: 0;-webkit-padding-end: 0;-webkit-margin-before: 0;-webkit-margin-after: 0;display: block;width: 100%;/* border-bottom: solid 0.3vh #4b4b4d; *//* border-width: 3px; */}
 
 .aboutwrap ul li:nth-child(odd){
 	/* background-color: #d98c8c; */
@@ -2268,27 +2298,34 @@ table{
 	/* top: 70px; */
 	width: 80%;
 	margin: 0 auto;
-	/* border-bottom: solid 0.1vh #0000004f; */
+	border-bottom: solid 0.1vh #0000004f;
 	padding-bottom: 5%;
 }
 
 .first {
 	background-color: #ded4a9;
-	background-image: url("http://localhost:8000/static/images/comicloud2.png");
+	background-image: url("/static/images/clouds2.png");
 	vertical-align: top;
-	background-size: cover;
+	background-size: auto;
+	background-repeat-y: no-repeat;
+}
+
+.first .title{
+	background-color: #c6af92d4 !important;
+	color: white !important;
 }
 
 .middleli {
 	background-color: #ded4a9;
-	background-image: url("http://localhost:8000/static/images/comicloud2.png");
+	/* background-image: url("http://localhost:8000/static/images/chatbg.png"); */
 	vertical-align: top;
-	background-size: cover;
+	background-repeat-x: no-repeat;
+	background-size: contain;
 }
 
 .lastli {
 	background-color: #ded4a9;
-	background-image: url("http://localhost:8000/static/images/comicskyline2.png");
+	background-image: url("/static/images/comicskyline2.png");
 	vertical-align: top;
 	background-size: cover;
 }
