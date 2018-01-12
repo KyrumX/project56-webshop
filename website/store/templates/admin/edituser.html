@@ -15,11 +15,11 @@
                 <input type="submit" id="editusersubmit" name="edituser">
             </form>
             {% if not isSame %}
-{#                <form method="POST">#}
-{#                    {% csrf_token %}#}
-{#                    <button type="submit" name="resetpwuser" value="{{userid}}" class="resetpw">#}
-{#                        <i class="fa fa-refresh" aria-hidden="true"></i>Reset wachtwoord</button>#}
-{#                </form>#}
+                <form method="POST">
+                    {% csrf_token %}
+                    <button type="submit" name="resetpwuser" value="{{userid}}" class="resetpw">
+                        <i class="fa fa-refresh" aria-hidden="true"></i>Reset wachtwoord</button>
+                </form>
                 <form method="POST">
                     {% csrf_token %}
                     <button type="submit" name="deleteuser" value='{{userid}}' class="remove">
