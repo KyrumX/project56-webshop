@@ -1,25 +1,9 @@
-from ..models import Address, Customers, Orders
+import random
+import string
+
 from django.contrib.auth.models import User
-from django.contrib.sites.shortcuts import get_current_site
-from django.utils.encoding import force_bytes, force_text
-from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
-import random, string
-from ..collections.mails import *
-from django.template.loader import render_to_string
 
-
-from django.utils.encoding import force_bytes, force_text
-from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
-from ..collections.mails import *
-from ..collections.forms import *
-from ..collections.posts import *
-from ..database.CheckoutOps import *
-from ..database.AccountOps import *
-from django.template.loader import render_to_string
-from ..collections.tools import *
-from django.core.mail import send_mail
-
-
+from store.models import Address, Customers, Orders
 
 
 def saveAddress(request):
