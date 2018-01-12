@@ -2,23 +2,30 @@
 {% load admin.adminusertags %}
 {% load static %}
 {% block content %}
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-<script type="text/javascript">google.load("visualization", "1", {packages:["corechart"]});</script>
-{% if user.is_authenticated %}
-{% if user.is_staff %}
-<div class="middle">
-    {% if warning != null %}
-    <p>{{ warning }}</p>
-    {% endif %}
-    <p>Verkoop statistieken:</p>
-    * <a href="/admin/data/products/2017/11/">November 2017</a>
-    * <a href="/admin/data/products/2017/12/">December 2017</a>
-</div>
-{% else %}
-<div class="middle" style="background-color: #ebe9e9; border: none;">
-<div class="welcome">
-    <p>Helaas bent u niet bevoegd.</p>
-</div>
-{% endif %}
-{% endif %}
+	<div class="middle" style="background-color: #ebe9e9; border: none;">
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">google.load("visualization", "1", {packages:["corechart"]});</script>
+	{% if user.is_authenticated %}
+		{% if user.is_staff %}
+            {% if warning != null %}
+                <p id="editp" style="width: 55%; margin: 0 auto; border-radius: 3px; border: solid 1px #00000017;">{{ warning }}</p>
+            {% endif %}
+			<p id="editp" style="width: 55%; margin: 0 auto; border-radius: 3px; border: solid 1px #00000017;">Kies van welke maand u de verkoopcijfers wilt zien</p>
+			<div class="links">
+				<a href="/admin/data/products/2017/11/">November 2017</a>
+				<a href="/admin/data/products/2017/12/">December 2017</a>
+				<a href="/admin/data/products/2018/1/">Januari 2018</a>
+			</div>
+		{% else %}
+				<div class="welcome">
+				<p>Helaas bent u niet bevoegd.</p>
+				</div>
+		{% endif %}
+	{% else %}
+	<p style="margin-left: 50px;">Redirecting...</p>
+	<script>
+		$(location).attr('href', '/admin/');
+	</script>
+	{% endif %}
+    </div>
 {% endblock %}

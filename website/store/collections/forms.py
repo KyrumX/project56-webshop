@@ -237,6 +237,15 @@ class CustomerDetails(forms.Form):
         self.fields['customer_city'].label = "Stad:"
         self.fields['customer_postalcode'].label = "Postcode:"
 
+		
+class ReadOnlyText(forms.TextInput):
+  input_type = 'text'
+
+  def render(self, name, value, attrs=None):
+     if value is None: 
+         value = ''
+     return value		
+
 class CheckoutForm(forms.Form):
 
     card_name = forms.CharField(required=True)
@@ -245,15 +254,17 @@ class CheckoutForm(forms.Form):
     card_edy = forms.IntegerField(required=True, max_value=2030, min_value=2017)
     card_CVC = forms.IntegerField(required=True)
 
-
     def __init__(self, *args, **kwargs):
+        if 'label_suffix' not in kwargs:
+            kwargs['label_suffix'] = ''
         super(CheckoutForm, self).__init__(*args, **kwargs)
-        self.fields['card_name'].label = "naam op de kaart:"
+        self.fields['card_name'].label = "Naam op de kaart:"
         self.fields['card_number'].label = "Kaartnummer:"
-        self.fields['card_number'].help_text = "De cijfers op de voorzijde van uw kaart."
-        self.fields['card_edm'].label = "Verval datum (mm-jj):"
+        #self.fields['card_number'].help_text = "De cijfers op de voorzijde van uw kaart."
         self.fields['card_edy'].label = ""
+        self.fields['card_edm'].label = "Verval datum (mm-jj):"
         self.fields['card_CVC'].label = "CVC/CID:"
+        self.fields['card_edy'].label = "-"
 
     #Nakijken van kaart gegevens
     def clean_card_number(self):

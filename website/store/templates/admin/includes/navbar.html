@@ -1,40 +1,18 @@
-<div class="navwrap">
-    <div class="navbar">
-        <ul>
-            {% if user.is_authenticated %}
-            {% if user.is_staff %}
-            <a href="/admin/">
-                <li>
-                    <p><i class="fa fa-home" aria-hidden="true"></i>Home</p>
-                </li>
-            </a>
-            <a href="/admin/searchusers/">
-                <li>
-                    <p><i class="fa fa-users" aria-hidden="true"></i>Klanten</p>
-                </li>
-            </a>
-            <a href="/admin/searchproducts/">
-                <li>
-                    <p><i class="fa fa-gift" aria-hidden="true"></i>Producten</p>
-                </li>
-            </a>
-            <a href="/admin/createuser">
-                <li>
-                    <p><i class="fa fa-user-plus" aria-hidden="true"></i>Nieuw account</p>
-                </li>
-            </a>
-            <a href="/admin/createproduct">
-                <li>
-                    <p><i class="fa fa-star" aria-hidden="true"></i>Nieuw product</p>
-                </li>
-            </a>
-            <a href="/admin/data/products/">
-                <li>
-                    <p><i class="fa fa-bar-chart" aria-hidden="true"></i>Statistieken</p>
-                </li>
-            </a>
-            {% endif %}
-            {% endif %}
-        </ul>
-    </div>
+<div class="navwrap"><div class="navbar">
+	<ul>
+	{% if user.is_authenticated %}
+		{% if user.is_staff %}
+        <a href="/admin/"><li><p><i class="fa fa-home" aria-hidden="true"></i>Home</p></li></a>
+        <a href="/admin/searchusers/"><li><p><i class="fa fa-users" aria-hidden="true"></i>Klanten</p></li></a>
+        <a href="/admin/searchproducts/"><li><p><i class="fa fa-users" aria-hidden="true"></i>Producten</p></li></a>
+        <a href="/admin/createuser"><li><p><i class="fa fa-history" aria-hidden="true"></i>Nieuw account</p></li></a>
+		<a href="/admin/createproduct"><li><p><i class="fa fa-star" aria-hidden="true"></i>Nieuw product</p></li></a>
+        <a href="/admin/data/products/"><li><p><i class="fa fa-fire" aria-hidden="true"></i>Verkoopcijfers</p></li></a>
+        <a href="/admin/data/visits/"><li><p><i class="fa fa-line-chart" aria-hidden="true"></i>Bezoekers</p></li></a>
+		{% endif %}
+	{% else %}
+	{% endif %}
+    </ul>
 </div>
+</div>
+

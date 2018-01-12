@@ -18,11 +18,35 @@
                 {% else %}
                     {% cartItems request.session.session_key as cartItems %}
                     {% for e in cartItems %}
+						{% if forloop.counter == 1 and cartItems.count == 1%}
+						
+						 <form role='form' method='post' name='itemForm' value="{{e.prodNum}}">
+                           {% csrf_token %}
+                           <input type="hidden" name="cartItemProdNum" value="{{e.prodNum}}">
+                           {% autoescape off %}{% displayCartItem e user.is_authenticated "first" False True %}{% endautoescape %}
+                         </form>
+
+                       {% elif forloop.counter == 1 and cartItems.count != 1%}
+                          <form role='form' method='post' name='itemForm' value="{{e.prodNum}}">
+                           {% csrf_token %}
+                           <input type="hidden" name="cartItemProdNum" value="{{e.prodNum}}">
+                           {% autoescape off %}{% displayCartItem e user.is_authenticated "first" False %}{% endautoescape %}
+                          </form>
+					   {% elif forloop.counter == cartItems.count%}
+					   
+					   <form role='form' method='post' name='itemForm' value="{{e.prodNum}}">
+                           {% csrf_token %}
+                           <input type="hidden" name="cartItemProdNum" value="{{e.prodNum}}">
+                           {% autoescape off %}{% displayCartItem e user.is_authenticated "last" False %}{% endautoescape %}
+                       </form>
+					   {% else %}
+					   
                        <form role='form' method='post' name='itemForm' value="{{e.prodNum}}">
                            {% csrf_token %}
                            <input type="hidden" name="cartItemProdNum" value="{{e.prodNum}}">
-                           {% autoescape off %}{% displayCartItem e user.is_authenticated %}{% endautoescape %}
+                           {% autoescape off %}{% displayCartItem e user.is_authenticated "middle" False %}{% endautoescape %}
                        </form>
+					   {% endif %}
                     {% endfor %}
                 {% endif %}
                 <script>

@@ -1,3 +1,4 @@
+    {% load custom_tags %}
 {% load static %}
 <div class="header">
 <script src="//cdnjs.cloudflare.com/ajax/libs/Snowstorm/20131208/snowstorm-min.js"></script>
@@ -34,6 +35,7 @@ snowStorm.useMeltEffect = true;
         </div>
     </div>
 	{% if not user.is_staff %}
+	{% incrementVisit true user.id %}
 <div class="usersection">
     <ul>
         <li><div class="user">
@@ -47,6 +49,7 @@ snowStorm.useMeltEffect = true;
 		</a>
     </ul></div>
 	{% else %}
+	{% incrementVisit false user.id %}
 	<div class="usersection">
     <ul>
         <li><div class="user">
@@ -61,6 +64,7 @@ snowStorm.useMeltEffect = true;
     </ul></div>
 	{% endif %}
     {% else %}
+	{% incrementVisit false %}
     <div class="logowrap commoncolor">
         <div class="logo">
             {% load static %}

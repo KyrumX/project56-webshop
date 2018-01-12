@@ -19,6 +19,7 @@ body {
 	position: relative;
 	height: 66vh;
 	width: 100%;
+	z-index: 5000;
 }
 
 .commoncolor{
@@ -49,6 +50,11 @@ body {
 	background-color: #4f9373a8;
 }
 
+svg:first-child > rect{
+	fill: #f9f9f9;
+	width: 50px;
+}
+
 .middle .welcome {
 	background-color; #363232
 	width: 80%;
@@ -63,8 +69,7 @@ body {
 }
 
 a {
-	color: #58d79b;
-	
+	color: #d1e8dd;
 }
 
 #editp{
@@ -74,6 +79,54 @@ a {
 	color: #3c3535;
 	font-size: 3vh;
 	font-weight: 600;
+	/* width: 55%; */
+	text-align: center;
+	/* margin: 0 auto; */
+}
+
+#editp i{
+	position: absolute;
+	left: 12%;
+	font-size: 7vh;
+	color: #4f9373;
+}
+
+
+#form2 {
+	border-top: solid 1px #0000002b;
+	border-bottom: solid 1px #0000002b;
+	padding: 10px;
+	margin-bottom: 50px;
+}
+
+#form3{
+	border-top: solid 1px #0000002b;
+	border-bottom: solid 1px #0000002b;
+	padding: 10px;
+	margin-bottom: 50px;
+
+}
+
+#form3 > :nth-child(9) > label {
+	font-size: 16px;
+	display: table-cell;
+	width: 70%;
+	vertical-align: bottom;
+}
+
+#form3 > :nth-child(9) {
+	font-size: 50px;
+	display: table;
+	width: 40%;
+	margin: 0 auto;
+}
+
+#id_isBlocked{
+	vertical-align: bottom;
+	margin-right: 55px;
+	display: table-cell;
+	vertical-align: bottom;
+	margin-bottom: 2px;
 }
 
 .edit {
@@ -141,21 +194,46 @@ a {
 
 }
 
+#form1 > :nth-child(7) {
+	font-size: 50px;
+	display: table;
+	width: 40%;
+	margin: 0 auto;
+}
+
+#form1 > :nth-child(7) > label {
+	font-size: 16px;
+	display: table-cell;
+	width: 70%;
+	vertical-align: bottom;
+}
+
 .edit #opslaan{
 	background-color: #4f9373;
 	height: 7vh;
 	border-radius: 0px;
+	width: 100%;
 }
 
+.resetpw{
+	position: absolute;
+	left: 0;
+	width: 30%;
+	background-color: #605c5c;
+}
+
+.remove {
+	width: 30%;
+    background-color: #e65d5d;
+}
 .edit button{
 	position: absolute;
 	bottom: 0;
 	right: 0;
 	margin-top:  50px;
-	background-color: #e65d5d;
+
 	border: none;
 	height: 5.5vh;
-	width: 100%;
 	/* border-bottom-left-radius: 5px; */
 	/* border-bottom-right-radius: 5px; */
 	color: white;
@@ -171,11 +249,63 @@ a {
 	width: 100%;
 }
 
+
+.links{
+	background-color: #5b5c5fd1;
+	width: 20%;
+	margin: 40px auto;
+	padding: 20px;
+	border-radius: 5px;
+	border-bottom: solid 6px #0000003d;
+}
+
+.links a{
+	margin: 20px auto;
+	display: block;
+	text-align: center;
+}
+
+.links i{
+	vertical-align: top;
+	margin-right: 10px;
+}
+
+.chart {
+	margin: 0 auto;
+	width: 100vh;
+}
+
+.chart > :first-child {
+	height: 50vh !important;
+	width: 100% !important;
+}
+
+.main .content .chart > :first-child > :first-child > :first-child{
+	/* height: 50vh !important; */
+	position: relative !important;
+	width: 100% !important;
+	margin: 0 auto !important;
+	text-align: center !important;
+	position: relative !important;
+	left: 0 !important;
+	right: 0 !important;
+	display: block !important;
+}
+
+.chart > :first-child > :first-child > :first-child svg{
+	display: inline-block;
+	text-align: center;
+	margin: 0 auto;
+	width: 100%;
+}
+
+
 .middle{
 	display: table-cell;
 	position: relative;
 	background-color: #f9f9f9;
-	height: 100%;
+	max-height: 100%;
+	overflow: hidden;
 	width: 70%;
 	margin: auto;
 	padding-top: 5vh;
@@ -184,12 +314,37 @@ a {
 	border-right: 0.1vh solid #c7c5c5;
 }
 
+svg{
+	display: block;
+	text-align: center;
+	font-size: 10vh;
+	/* left: 5%; */
+	/* right: 5%; */
+	/* position: absolute; */
+	/* max-width: 60vh; */
+	overflow: scroll !important;
+	/* margin-left: 10vh; */
+}
+
+rect {
+	/* width: 100%; */
+}
+
+g {
+	max-width: 1vh !important;
+	font-size: 3vh;
+}
+
+svg text{
+	font-size: 1.6vh;
+}
+
 .middle input[type=text], .middle input[type=email], .middle input[type=password], .middle input[type=number]{
 	height: 5vh;
 	width: 80%;
 	float:left;
 	display: table-cell;
-	/* margin-left: 3%; */
+	margin-left: 3%;
 }
 
 .middle .searchplace{
@@ -201,13 +356,14 @@ a {
 
 .middle .searchplace button{
 	background-color: #4f9373;
-	float: left;
-	width: 10%;
+	float: right;
+	padding: 10px;
+	width: 14%;
 	color: white;
 	border: none;
 	border-radius: 3px;
 	cursor: pointer;
-	margin-left: 3%;
+	margin-right: 1%;
 	vertical-align: middle;
 	height: 5.5vh;
 	display: table-cell;
@@ -517,12 +673,16 @@ ul li{
 	float: left;
 	display: table;
 	height: 100%;
-	width: 16.66%;
+	width: 14.285%;
 	text-align: center;
 	vertical-align: middle;
 }
 
 ul li:hover{
+	background-color: rgb(66, 66, 66);
+}
+
+ul li:active{
 	background-color: rgb(66, 66, 66);
 }
 
@@ -669,6 +829,7 @@ input[type=text]::placeholder, input[type=password]::placeholder {
 	background: #fafafa;
 	background: -webkit-gradient(linear, left top, left bottom, from(#fbfbfb), to(#fafafa));
 	background: -moz-linear-gradient(top,  #fbfbfb,  #fafafa);
+	text-align: center;
 }
 
 .table1 table td img{
@@ -711,7 +872,7 @@ input[type=text]::placeholder, input[type=password]::placeholder {
 .table1 table tr:hover td {
 	background: #f2f2f2;
 	background: -webkit-gradient(linear, left top, left bottom, from(#f2f2f2), to(#f0f0f0));
-	background: -moz-linear-gradient(top,  #f2f2f2,  #f0f0f0);	
+	background: -moz-linear-gradient(top,  #f2f2f2,  #f0f0f0);
 }
 
 canvas{
@@ -730,4 +891,17 @@ canvas{
 
 .errorlist li{
 	width: 100%;
+}
+
+#ismede {
+	display: table-cell;
+	width: 70%;
+}
+
+#id_isstaff{
+	vertical-align: bottom;
+	margin-right: 55px;
+	display: table-cell;
+	vertical-align: bottom;
+	margin-bottom: 2px;
 }

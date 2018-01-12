@@ -5,7 +5,7 @@ RETURN_CATEGORIES = ['retourneren', 'retour', 'terugsturen']
 PRODUCT_CATEGORIES = ['product', 'voorraad', 'wanneer']
 PAYMENT_CATEGORIES = ['ideal', 'paypal', 'creditcard', 'visa', 'mastercard', 'betalen', 'betalingsmogelijkheden']
 CONTACT_CATEGORIES = ['contact', 'klantenservice', 'service', 'help', 'hulp']
-ORDER_CATEGORIES = ['order', 'bestelling', 'geplaatst', 'ordernummer', 'status']
+ORDER_CATEGORIES = ['order', 'bestelling', 'geplaatst', 'ordernummer', 'status', 'laatste']
 
 POSITIVE_ANSWERS = ['ja', 'jawel', 'positief', 'affirm', 'correct', 'klopt', 'juist']
 NEGATIVE_ANSWERS = ['nee', 'niet', 'negatief']

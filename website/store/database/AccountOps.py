@@ -1,5 +1,15 @@
-from ..models import Address, Customers, Orders
+from secrets import choice
+import string
+
 from django.contrib.auth.models import User
+from django.core.mail import EmailMessage
+from django.core.mail import send_mail
+from django.template.loader import render_to_string, get_template
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
+
+from store.collections.mails import send_resetpassword_mail
+from store.models import Address, Customers, Orders
 
 
 def saveAddress(request):
@@ -85,3 +95,17 @@ def getUserId(email):
 def isUserBlocked(userId):
     customer = Customers.objects.get(customerID=userId)
     return customer.isBlocked
+
+def adminresetpw(request):
+    c_id = int(request.POST['resetpwuser'])
+    user = User.objects.get(id=c_id)
+
+    newpw = ""
+    for char in range(0, 10):
+        print(char)
+        newpw += choice(string.ascii_letters + string.digits)
+
+    user.set_password(newpw)
+    user.save()
+    send_resetpassword_mail(user, newpw)
+

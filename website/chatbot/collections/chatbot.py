@@ -93,6 +93,8 @@ def get_question_response(usermessage, case, request):
                 return [THANKS_RESPONSE, "1"]
             else:
                 return get_question_category(usermessage, case, request)
+    elif case == 201:
+        return [CANT_ANSWER_ORDER + DEFAULT, "-1"]
     else:
         return [DEFAULT_AFTER, "0"]
 

@@ -9,7 +9,7 @@
         {% isSameProduct request item as isSame %}
         {% if productsFoundBool %}
             <p id="editp">Bewerken van product {{ item }}:</p>
-            <form method="POST" id="form1">
+            <form method="POST" id="form2">
                 {% csrf_token %}
                 {{product_form.as_p}}
                 <input type="submit" id="editproductsubmit" name="editproduct">

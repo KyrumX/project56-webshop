@@ -9,12 +9,17 @@
         {% isSameUser request userid as isSame %}
         {% if usersFoundBool %}
             <p id="editp">Bewerken van gebruiker {{ userid }}:</p>
-            <form method="POST" id="form1">
+            <form method="POST" id="form3">
                 {% csrf_token %}
                 {{user_form.as_p}}
                 <input type="submit" id="editusersubmit" name="edituser">
             </form>
             {% if not isSame %}
+                <form method="POST">
+                    {% csrf_token %}
+                    <button type="submit" name="resetpwuser" value="{{userid}}" class="resetpw">
+                        <i class="fa fa-refresh" aria-hidden="true"></i>Reset wachtwoord</button>
+                </form>
                 <form method="POST">
                     {% csrf_token %}
                     <button type="submit" name="deleteuser" value='{{userid}}' class="remove">

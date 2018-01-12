@@ -1,13 +1,16 @@
-from django import template
-from django.db.models import Q
-
-from store.collections.filter import filterObjects
-from ..models import Products, ProductDetails
-import urllib.request, json
-from ..database.getData import getProdImage, getProdName, getProdPublish, getProdPrice, getProdAuthor, getProdStock
-from ..database.getData import getProdName, getProdNum, getProdPrice, getProdStock, getProdGenre, getProdType, getProdAuthor, getProdDesc, getProdImage, getProdLanguage, getProdPublish, getProdRating, getProdTotalPages, getProdData
-from ..database.verifyData import verifyProdNum
+import json
+import urllib.request
 from random import randint
+
+from django import template
+
+from ..database.getData import getProdName, getProdPrice, getProdStock, getProdAuthor, getProdDesc, getProdImage, \
+    getProdPublish, getProdRating
+from ..database.getData import getVisitsChart
+from ..models import ProductDetails
+from ..models import UserVisits, Dates, OrderDetails, Orders, Products
+from django.db.models import Max
+
 register = template.Library()
 
 @register.assignment_tag
@@ -23,6 +26,28 @@ def any_function():
 
 def getRows(getal):
     return (int(getal / 3))
+
+def getMaxid():
+    maxid = Products.objects.aggregate(Max('prodNum'))
+    id = maxid.get('prodNum__max')
+    return id
+
+@register.simple_tag()
+def topProdNameTag():
+    return getProdName(getMaxid())
+
+@register.simple_tag()
+def topProdPublTag():
+    return getProdPublish(getMaxid())
+
+@register.simple_tag()
+def topProdUrlTag():
+    url = "/product/" + str(getMaxid())
+    return url
+
+@register.simple_tag()
+def topProdImageTag():
+    return getProdImage(getMaxid())
 
 @register.simple_tag()
 def prodName(prodNum):
@@ -88,36 +113,61 @@ def listloop(userAuth):
     if len(getProdDesc(randomlyselectedprod)) > 550:
         proddesc = textshortener(getProdDesc(randomlyselectedprod))
         txt += """<div class="startwrap" style="border-radius: 3px"><div class="itemoftheday"><div class="itempart1"><p>Uitgelichte Product</p></div><div class="itempart2"><p>{0}</p></div></div>
-            <div class="leftstart"><img src="{1}" id="zoom_05"></div>
-            <div class="rightstart"><h1>{2}</h1><p style="padding-bottom: 50px;">{3}</p><a href="/product/{4}"><p id="leesmeer"><i class="fa fa-angle-double-right" aria-hidden="true"></i>Lees meer</p></a></div></div>""".format(prodratingtxt, getProdImage(randomlyselectedprod), getProdName(randomlyselectedprod), proddesc, randomlyselectedprod)
+            <div class="leftstart"><a href="{1}"><img src="{2}"></a></div>
+            <div class="rightstart"><h1>{3}</h1><p style="padding-bottom: 50px;">{4}</p><a href="/product/{5}"><p id="leesmeer"><i class="fa fa-angle-double-right" aria-hidden="true"></i>Lees meer</p></a></div></div>""".format(prodratingtxt,  prodUrlTag(randomlyselectedprod), getProdImage(randomlyselectedprod), getProdName(randomlyselectedprod), proddesc, randomlyselectedprod)
     else:
         txt += """<div class="startwrap" style="border-radius: 3px"><div class="itemoftheday"><div class="itempart1"><p>Uitgelichte Product</p></div><div class="itempart2"><p>{0}</p></div></div>
-            <div class="leftstart"><img src="{1}" id="zoom_05"></div>
-            <div class="rightstart"><h1>{2}</h1><p>{3}</p></div></div>""".format(prodratingtxt, getProdImage(randomlyselectedprod), getProdName(randomlyselectedprod), getProdDesc(randomlyselectedprod))
-
-    # txt += """<div class="startwrap" style="border-radius: 3px"><div class="itemoftheday"><div class="itempart1"><p>Uitgelichte Product</p></div><div class="itempart2"><p>{0}</p></div></div>
-    # <div class="leftstart"><img src="{1}" id="zoom_05"></div>
-    # <div class="rightstart"><h1>{2}</h1><p>{3}</p></div></div>""".format(prodratingtxt, getProdImage(randomlyselectedprod), getProdName(randomlyselectedprod), proddesc)
+            <div class="leftstart"><a href="{1}"><img src="{2}"></a></div>
+            <div class="rightstart"><a href="{3}"><h1>{4}</h1></a><p>{5}</p></div></div>""".format(prodratingtxt,  prodUrlTag(randomlyselectedprod), getProdImage(randomlyselectedprod), prodUrlTag(randomlyselectedprod), getProdName(randomlyselectedprod), getProdDesc(randomlyselectedprod))
 
     for i in range(4):
         txt += "<ul class='list'>"
         for x in range(3):
-            cnt += 10
-            if cnt >= 60:
-                mod += 1
-                cnt = mod
+            stock = checkstock(True, cnt)
+            button = checkstock(False, cnt)
+
+            # txt = txt + "<li><div class='productwrap'><a href='" + prodUrlTag(cnt) + "'><img src='" + prodImageTag(cnt) + "' id='zoom_05' data-zoom-image='https://i.pinimg.com/736x/86/ff/e2/86ffe2b49daf0feed78a1c336753696d--black-panther-comic-digital-comics.jpg'></a><p class='author'>" + prodAuthorTag(cnt) + "</p><p class='name'>" + prodTitleTag(cnt) + "</p><p><i class='fa fa-star' aria-hidden='true'></i><i class='fa fa-star' aria-hidden='true'></i><i class='fa fa-star' aria-hidden='true'></i><i class='fa fa-star' aria-hidden='true'></i><i class='fa fa-star' aria-hidden='true'></i></p><p class='price'>€ " + str(prodPriceTag(cnt)) + "</p>" + button
+            # if userAuth:
+            #     txt = txt + "<button name='moveToWishListButton' value='" + str(cnt) +"' class='wishlist'><i class='fa fa-heart' aria-hidden='true'></i></button>"
+            # txt = txt + stock
 
             prodratingtxt = ""
             for r in range(getProdRating(cnt)):
                 prodratingtxt += "<i class='fa fa-star' aria-hidden='true'></i>"
 
-            txt = txt + "<li><div class='productwrap'><a href='" + prodUrlTag(cnt) + "'><img src='" + prodImageTag(cnt) + "' id='zoom_05'></a><p class='author'>" + prodAuthorTag(cnt) + "</p><p class='name'>" + prodTitleTag(cnt) + "</p><p>{0}</p><p class='price'>€ ".format(prodratingtxt) + str(prodPriceTag(cnt)) + "</p><button name='addToCartItemBoxButton' value='" + str(cnt) + "'class='addtocart'><i class='fa fa-plus' aria-hidden='true'></i><i class='fa fa-shopping-cart' aria-hidden='true'></i></button>"
+            txt = txt + "<li><div class='productwrap'><a href='" + prodUrlTag(cnt) + "'><img src='" + prodImageTag(cnt) + "' id='zoom_05'></a><p class='author'>" + prodAuthorTag(cnt) + "</p><p class='name'>" + prodTitleTag(cnt) + "</p><p>{0}</p><p class='price'>€ ".format(prodratingtxt) + str(prodPriceTag(cnt)) + "</p>" + button
             if userAuth:
                 txt = txt + "<button name='moveToWishListButton' value='" + str(cnt) +"' class='wishlist'><i class='fa fa-heart' aria-hidden='true'></i></button>"
-            txt = txt + "<p class='stock'>Voorraad: " + str(prodStockTag(cnt)) + "</p></div></li>"
+            txt = txt + stock
+
+            cnt += 10
+            if cnt >= 60:
+                mod += 1
+                cnt = mod
 
         txt += "</ul>"
     return txt
+
+def checkstock(numbercheck, prodnumber):
+    if numbercheck:
+        print("in numbercheck")
+        if prodStockTag(prodnumber) <= 0:
+            print("uitverkocht")
+            return "<p class='stock' style='color: #d45f5f;'>Uitverkocht!</p>"
+        else:
+            print("in stock: ", str(prodStockTag(prodnumber)))
+            return "<p class='stock'>Voorraad: " + str(prodStockTag(prodnumber)) + "</p>"
+    else:
+        if prodStockTag(prodnumber) <= 0:
+            return "<button name='addToCartItemBoxButton' id='outofstock' type=button class='addtocart tooltip'><i class='fa fa-ban' aria-hidden='true'></i><span class='tooltiptext'>Dit product is momenteel helaas uitverkocht.</span></button>"
+        else:
+            return "<button name='addToCartItemBoxButton' value='" + str(prodnumber) + "'class='addtocart'><i class='fa fa-plus' aria-hidden='true'></i><i class='fa fa-shopping-cart' aria-hidden='true'></i></button>"
+
+@register.simple_tag()
+def isInStock(prodnumber):
+    if prodStockTag(prodnumber) <= 0:
+        return False
+    return True
 
 @register.simple_tag()
 def suggesteditems(prod, type):
@@ -179,4 +229,42 @@ def getOrder(order):
 @register.simple_tag()
 def getOrderNum(order):
     string = str(order.first().orderNum.orderNum)
+    return string
+
+@register.simple_tag()
+def incrementVisit(is_staff, cID=-1):
+    all = UserVisits.objects.all().filter(customerID=cID)
+    print("cID = ", cID)
+    print(all)
+    if not all:
+        print("none found")
+        if is_staff == "false":
+            print("Nothing found. Adding to db")
+            uservisit = UserVisits(customerID=cID, visits=1, is_staff=False)
+            uservisit.save()
+        else:
+            print("User is Staff. Adding to db")
+            uservisit = UserVisits(customerID=cID, visits=1, is_staff=True) 
+            uservisit.save()
+    else:
+        print("Already found. Incrementing...")
+        c = UserVisits.objects.all().filter(customerID=cID)
+
+        for e in c:
+            #amountvisits = e.visits + 1
+            UserVisits.objects.filter(customerID=cID).update(visits = e.visits + 1)
+        #UserVisits.objects.filter(customerID=cID).update(visits = visits)
+    lel = UserVisits.objects.get(customerID=cID)
+    date = Dates(customerID=lel)
+    date.save()
+    return ""
+
+def visitchart():
+    return getVisitsChart()
+
+def testingOrder():
+    order = OrderDetails.objects.all().filter(orderNum=Orders(orderNum=orderEntry.orderNum))  # Returnt een Array van alle Items die besteld zijn
+    for i in order:
+        print("Dit is Productnum: ", str(i.productNum))
+        print("Dit is Amount", str(i.amount))
     return string

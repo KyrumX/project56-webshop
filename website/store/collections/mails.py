@@ -52,3 +52,22 @@ def contactRequestCustomerMail(contact_name, contact_email, contact_content):
     email.send()
 
 ###Eind van mails van contact###
+
+###Password reset door admin
+def send_resetpassword_mail(user, newpw):
+    template = get_template('mail/newpassword.txt')  # Fetch de email template
+    context = {
+        'contact_name': user.first_name,
+        'contact_email': user.email,
+        'contact_content': newpw,
+    }
+
+    content = template.render(context)  # Render de email
+
+    email = EmailMessage(
+        "Uw nieuwe wachtwoord",
+        content,
+        'noreply@comicfire.com',
+        [user.email]
+    )
+    email.send()  # Stuur de email
