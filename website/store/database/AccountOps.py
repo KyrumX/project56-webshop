@@ -8,6 +8,7 @@ from django.template.loader import render_to_string, get_template
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 
+from store.collections.mails import send_resetpassword_mail
 from store.models import Address, Customers, Orders
 
 
@@ -97,7 +98,6 @@ def isUserBlocked(userId):
 
 def adminresetpw(request):
     c_id = int(request.POST['resetpwuser'])
-    print("Changing pw for user: ", c_id)
     user = User.objects.get(id=c_id)
 
     newpw = ""
@@ -105,28 +105,7 @@ def adminresetpw(request):
         print(char)
         newpw += choice(string.ascii_letters + string.digits)
 
-    print("Old password: ", user.password)
-
     user.set_password(newpw)
-
     user.save()
-
-    print("This is the new set password: ", newpw)
-
-    template = get_template('mail/newpassword.txt') #Fetch de email template
-    context = {
-        'contact_name': user.first_name,
-        'contact_email': user.email,
-        'contact_content': newpw,
-    }
-
-    content = template.render(context) #Render de email
-
-    email = EmailMessage(
-        "Uw nieuwe wachtwoord",
-        content,
-        'noreply@comicfire.com',
-        [user.email]
-    )
-    email.send() #Stuur de email
+    send_resetpassword_mail(user, newpw)
 
