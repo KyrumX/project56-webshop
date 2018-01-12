@@ -1,4 +1,4 @@
-import random
+from secrets import choice
 import string
 
 from django.contrib.auth.models import User
@@ -95,7 +95,10 @@ def adminresetpw(request):
     print("Changing pw for user: ", c_id)
     user = User.objects.get(id=c_id)
 
-    newpw = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
+    newpw = ""
+    for char in range(0, 10):
+        print(char)
+        newpw += choice(string.ascii_letters + string.digits)
 
     print("Old password: ", user.password)
 
