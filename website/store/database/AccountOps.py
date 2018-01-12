@@ -2,6 +2,11 @@ from secrets import choice
 import string
 
 from django.contrib.auth.models import User
+from django.core.mail import EmailMessage
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
 
 from store.models import Address, Customers, Orders
 
@@ -108,23 +113,23 @@ def adminresetpw(request):
 
     print("This is the new set password: ", newpw)
 
-    # message = render_to_string('mail/acc_active_email.html', {
-    #     'user': user,
-    #     'domain': 'Comicfire.com',
-    #     'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-    #     'pwd': newpw,
-    # })
-    #
-    # mail_subject = 'Uw nieuwe wachtwoord.'
-    # to_email = user.email
-    # email = EmailMessage("Test", "test", to=[user.email])
-    # email.send()
+    message = render_to_string('mail/acc_active_email.html', {
+        'user': user,
+        'domain': 'Comicfire.com',
+        'uid': urlsafe_base64_encode(force_bytes(user.pk)),
+        'pwd': newpw,
+    })
 
-    # send_mail(
-    #     'Uw nieuwe wachtwoord.',
-    #     "Beste lid, <br> Hierbij uw nieuwe wachtwoord: {}".format(str(newpw)),
-    #     'admin@comicfire.com',
-    #     [user.email],
-    #     fail_silently=False,
-    # )
+    mail_subject = 'Uw nieuwe wachtwoord.'
+    to_email = user.email
+    email = EmailMessage("Test", "test", to=[user.email])
+    email.send()
+
+    send_mail(
+        'Uw nieuwe wachtwoord.',
+        "Beste lid, <br> Hierbij uw nieuwe wachtwoord: {}".format(str(newpw)),
+        'admin@comicfire.com',
+        [user.email],
+        fail_silently=False,
+    )
 
