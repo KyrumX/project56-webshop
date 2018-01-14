@@ -111,3 +111,13 @@ class Dates(models.Model):
         verbose_name_plural = "Dates"
     customerID = models.ForeignKey(UserVisits, db_column='customerID')
     date = models.DateField(default=datetime.date.today)
+
+class Reviews(models.Model):
+    class Meta:
+        verbose_name_plural = "Product Reviews"
+        unique_together = ('prodNum', 'customerID')
+    reviewID = models.IntegerField(primary_key=True)
+    customerID = models.ForeignKey(UserVisits, db_column='customerID')
+    prodNum = models.ForeignKey(Products, db_column='prodNum')
+    review = models.CharField(max_length=1500)
+    rating = models.IntegerField()
