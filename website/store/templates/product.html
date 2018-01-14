@@ -105,8 +105,10 @@
          </div>
          <div class="reviewswrap">
              <form method="post">
+                 {% csrf_token %}
+                 {{ reviewform.as_p }}
         <input type="text">
-    <button>Submit</button>
+    <button name="addReview">Submit</button>
     </form>
 
     </div>

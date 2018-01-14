@@ -146,6 +146,7 @@ def betaling(request):
 
 
 def product(request, item):
+
     if request.method == 'POST':
         if 'searchtext' in request.POST:
             return searchPost(request)
@@ -157,6 +158,15 @@ def product(request, item):
         elif "addtowishlistButton" in request.POST:
             addToWishList(request, item)
             return redirect('/verlanglijst/')
+        elif "addReview" in request.POST:
+            reviewform = ReviewsForm(request.POST)
+            if reviewform.is_valid():
+                reviewform.save()
+    else:
+        reviewform = ReviewsForm()
+
+
+
 
     if not verifyProdNum(item):
         return render(request, 'productnietgevonden.html')
@@ -176,6 +186,7 @@ def product(request, item):
     prodImage = getProdImage(productNumber)
     prodDate = getProdData(productNumber)
     return render(request, 'product.html', {
+        'reviewform' : reviewform,
         'prodNum' : productNumber,
         'prodName' : prodName,
         'prodPrice' : prodPrice,
@@ -190,6 +201,7 @@ def product(request, item):
         'prodDesc' : prodDesc,
         'prodImage' : prodImage,
         'prodDate' : prodDate,
+
     })
 
 

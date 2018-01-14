@@ -5,7 +5,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, Pass
 from django.forms import ModelForm
 from django.db.models import Max
 from ..validators.formvalidators import *
-from ..models import Customers, Address, Products
+from ..models import Customers, Address, Products, Reviews
 from ..database.AccountOps import getUserId, isUserBlocked
 
 from django.forms.fields import DateField
@@ -358,3 +358,20 @@ class PasswordForm(PasswordChangeForm):
         self.error_messages = {
             'password_mismatch': ("Oeps! De twee opgegeven wachtwoorden kwamen niet overeen! Probeer het opnieuw!"),
         }
+
+
+class ReviewsForm(forms.Form):
+    review = forms.CharField(max_length=1500)
+    rating = forms.IntegerField()
+
+    class Meta:
+        model = Reviews
+        fields = (
+            'review',
+            'rating',
+        )
+
+
+    def __init__(self, *args, **kwargs):
+        super(ReviewsForm, self).__init__(*args, **kwargs)
+        self.fields['review'].label = "reactie:"
