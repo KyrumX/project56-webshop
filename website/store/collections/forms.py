@@ -362,7 +362,7 @@ class PasswordForm(PasswordChangeForm):
 
 class ReviewsForm(forms.Form):
     review = forms.CharField(max_length=1500)
-    rating = forms.IntegerField()
+    rating = forms.IntegerField(min_value=1, max_value=5)
 
     class Meta:
         model = Reviews
