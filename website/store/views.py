@@ -1,9 +1,12 @@
 from django.core.exceptions import PermissionDenied
 from django.contrib.sites.shortcuts import get_current_site
+from django.db.models import Min
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 
+from store.collections.aggregation import get_min_price_prodDetails, get_max_price_prodDetails
 from store.collections.filter import isCategoryRelevant, orderResults, filterObjects
+from store.collections.typechecker import is_type_float
 from store.models import ProductDetails
 from store.tokens import account_activation_token
 from .collections.mails import *
@@ -212,17 +215,6 @@ def search(request, query):
         if 'publisher' in request.GET:
             filters['publisher'] = request.GET.getlist('publisher')
             args['publishers'] = request.GET.getlist('publisher')
-        if 'pmax' in request.GET and 'pmin' in request.GET:
-            filters['pmin'] = request.GET['pmin']
-            filters['pmax'] = request.GET['pmax']
-            args['pmin'] = request.GET['pmin']
-            args['pmax'] = request.GET['pmax']
-            if (request.GET['pmax'] == ''):
-                filters['pmax'] = 100
-                args['pmax'] = 100
-            if (request.GET['pmin'] == ''):
-                filters['pmin'] = 0
-                args['pmin'] = 0
     if request.method == 'POST':
         if 'addToCartItemBoxButton' in request.POST:
             if not request.session.exists(request.session.session_key):
@@ -242,10 +234,40 @@ def search(request, query):
     args['query'] = query
     args['order'] = order
     searchResults = getDBResults(query)
+
+    if request.method == "GET":
+        if 'pmax' in request.GET and 'pmin' in request.GET:
+            pmax = request.GET['pmax']
+            pmin = request.GET['pmin']
+
+            if is_type_float(pmin):
+                filters['pmin'] = pmin
+                args['pmin'] = pmin
+            else:
+                minprice = get_min_price_prodDetails(searchResults)
+                filters['pmin'] = minprice
+                args['pmin'] = minprice
+
+            if is_type_float(pmax):
+                filters['pmax'] = pmax
+                args['pmax'] = pmax
+            else:
+                maxprice = get_max_price_prodDetails(searchResults)
+                filters['pmax'] = maxprice
+                args['pmax'] = maxprice
+
+            if (request.GET['pmax'] == ''):
+                filters['pmax'] = 100
+                args['pmax'] = 100
+            if (request.GET['pmin'] == ''):
+                filters['pmin'] = 0
+                args['pmin'] = 0
+
     args['languageFilterItems'] = isCategoryRelevant(searchResults, 'language')
     args['typeFilterItems'] = isCategoryRelevant(searchResults, 'type')
     args['publisherFilterItems'] = isCategoryRelevant(searchResults, 'publisher')
     filtered = filterObjects(searchResults, filters)
+
     args['size'] = len(filtered)
     args['objects'] = orderResults(filtered, order)
 
@@ -299,6 +321,36 @@ def productsAll(request):
 
     args['order'] = order
     objects = ProductDetails.objects.all()
+
+    if request.method == "GET":
+        if 'pmax' in request.GET and 'pmin' in request.GET:
+            pmax = request.GET['pmax']
+            pmin = request.GET['pmin']
+
+            if is_type_float(pmin):
+                filters['pmin'] = pmin
+                args['pmin'] = pmin
+            else:
+                minprice = get_min_price_prodDetails(objects)
+                filters['pmin'] = minprice
+                args['pmin'] = minprice
+
+            if is_type_float(pmax):
+                filters['pmax'] = pmax
+                args['pmax'] = pmax
+            else:
+                maxprice = get_max_price_prodDetails(objects)
+                filters['pmax'] = maxprice
+                args['pmax'] = maxprice
+
+            if (request.GET['pmax'] == ''):
+                filters['pmax'] = 100
+                args['pmax'] = 100
+            if (request.GET['pmin'] == ''):
+                filters['pmin'] = 0
+                args['pmin'] = 0
+
+
     args['languageFilterItems'] = isCategoryRelevant(objects, 'language')
     args['typeFilterItems'] = isCategoryRelevant(objects, 'type')
     args['publisherFilterItems'] = isCategoryRelevant(objects, 'publisher')
