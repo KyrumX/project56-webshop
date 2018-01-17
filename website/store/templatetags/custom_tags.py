@@ -291,7 +291,7 @@ def latestReviews(prodnum):
             rating += "<i class='fa fa-star' aria-hidden='true'></i>"
 
         print("This is customer ID: ", i.customerID)
-        html += "<ul class='rec'><li>{0} {1} op {2}</li><li>{3}</li><li>{4}</li></ul>".format(i.customerID.name, i.customerID.surname, dateformat, rating, i.review)
+        html += "<ul class='rec'><ul class='recen'><li>{0} {1} op {2}</li><li>{3}</li><li>{4}</li></ul></ul>".format(i.customerID.name, i.customerID.surname, dateformat, rating, i.review)
     html += "</ul>"
 
     return html
