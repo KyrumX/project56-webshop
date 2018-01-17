@@ -59,6 +59,7 @@
 			   </form>
 			   </li>
                        {% else %}
+		       <p style="text-align: center;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color: #534949; margin-right: 10px;"></i>Wij streven er naar om dit product zo snel mogelijk weer op voorraad te krijgen!</p>
                        <li style="width: 100%;">
 			   <form role="form" action="" method="post" name="addToWishList">
                    {% csrf_token %}
@@ -67,8 +68,10 @@
 			   </li>
                        {% endif %}
                {% else %}
+		       {% if not lel %}
                    <p style="text-align: center;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color: #534949; margin-right: 10px;"></i>Wij streven er naar om dit product zo snel mogelijk weer op voorraad te krijgen!</p>{% endif %}
-			   </ul>
+			{% endif %}   
+		       </ul>
                </div>
             </div>
             <div class="deliveryinfo">
