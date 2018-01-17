@@ -23,7 +23,7 @@ class Address(models.Model):
         verbose_name_plural = "Customer addresses"
         unique_together = ('customerID', 'address')
 
-    customerID = models.ForeignKey(Customers, db_column='customerID')
+    customerID = models.ForeignKey(Customers, db_column='customerID', on_delete=models.CASCADE)
     address = models.CharField(max_length=100)
     number = models.CharField(max_length=10)
     city = models.CharField(max_length=25)
@@ -45,7 +45,7 @@ class ProductDetails(models.Model):
     class Meta:
         verbose_name_plural = "Product details"
 
-    prodNum = models.ForeignKey(Products, db_column='prodNum')
+    prodNum = models.ForeignKey(Products, db_column='prodNum', on_delete=models.CASCADE)
     genre = models.CharField(max_length=50)
     type = models.CharField(max_length=50, default="Comic")
     publisher = models.CharField(max_length=50)
@@ -64,15 +64,15 @@ class WishList(models.Model):
     class Meta:
         unique_together = ('custId', 'productNum')
 
-    custId = models.ForeignKey(Customers, db_column='custId')
-    productNum = models.ForeignKey(Products, db_column='productNum')
+    custId = models.ForeignKey(Customers, db_column='custId', on_delete=models.CASCADE)
+    productNum = models.ForeignKey(Products, db_column='productNum', on_delete=models.CASCADE)
 
 class Orders(models.Model):
     class Meta:
         verbose_name_plural = "Orders"
 
     orderNum = models.IntegerField(primary_key=True)
-    customerID = models.ForeignKey(Customers, db_column='customerID')
+    customerID = models.ForeignKey(Customers, db_column='customerID', on_delete=models.CASCADE)
     orderDate = models.DateField()
     orderStatus = models.CharField(max_length=15)
 
@@ -84,8 +84,8 @@ class OrderDetails(models.Model):
         unique_together = ('orderNum', 'productNum')
         verbose_name_plural = "Order details"
 
-    orderNum = models.ForeignKey(Orders, db_column='orderNum')
-    productNum = models.ForeignKey(Products, db_column='productNum')
+    orderNum = models.ForeignKey(Orders, db_column='orderNum', on_delete=models.CASCADE)
+    productNum = models.ForeignKey(Products, db_column='productNum', on_delete=models.CASCADE)
     amount = models.IntegerField()
 
     def __str__(self):
@@ -93,7 +93,7 @@ class OrderDetails(models.Model):
 
 class ShoppingCart(models.Model):
     session_key = models.CharField(max_length=40)
-    prodNum = models.ForeignKey(Products, db_column='prodNum')
+    prodNum = models.ForeignKey(Products, db_column='prodNum', on_delete=models.CASCADE)
     amount = models.IntegerField()
 
     class Meta:
@@ -109,15 +109,15 @@ class UserVisits(models.Model):
 class Dates(models.Model):
     class Meta:
         verbose_name_plural = "Dates"
-    customerID = models.ForeignKey(UserVisits, db_column='customerID')
+    customerID = models.ForeignKey(UserVisits, db_column='customerID', on_delete=models.CASCADE)
     date = models.DateField(default=datetime.date.today)
 
 class Reviews(models.Model):
     class Meta:
         verbose_name_plural = "Product Reviews"
         unique_together = ('prodNum', 'customerID')
-    reviewID = models.IntegerField(primary_key=True)
-    customerID = models.ForeignKey(UserVisits, db_column='customerID')
-    prodNum = models.ForeignKey(Products, db_column='prodNum')
+    customerID = models.ForeignKey(Customers, db_column='customerID', on_delete=models.CASCADE)
+    prodNum = models.ForeignKey(Products, db_column='productNum', on_delete=models.CASCADE)
     review = models.CharField(max_length=1500)
     rating = models.IntegerField()
+    date = models.DateField(default=datetime.date.today)

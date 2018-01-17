@@ -361,17 +361,8 @@ class PasswordForm(PasswordChangeForm):
 
 
 class ReviewsForm(forms.Form):
-    review = forms.CharField(max_length=1500)
-    rating = forms.IntegerField(min_value=1, max_value=5)
+    # rating = forms.IntegerField(min_value=1, max_value=5)
+    review = forms.CharField(label="", widget=forms.Textarea(attrs={'width':"100%", 'cols' : "80", 'rows': "20", 'placeholder': 'Deel je mening over dit product!'}), max_length=1500)
 
-    class Meta:
-        model = Reviews
-        fields = (
-            'review',
-            'rating',
-        )
+    #ezpz
 
-
-    def __init__(self, *args, **kwargs):
-        super(ReviewsForm, self).__init__(*args, **kwargs)
-        self.fields['review'].label = "reactie:"

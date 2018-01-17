@@ -101,16 +101,39 @@
          </ul>
           <div class="reviews">
          <div class="suggesteditemsbar" style="border-bottom-left-radius:0px; border-bottom-right-radius:0px;">
-            <h1>Gebruikers Recensies</h1>
+            <h1>Recensie plaatsen</h1>
          </div>
          <div class="reviewswrap">
+             <div class="contact">
+                 <img style="border: none;" src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Placeholder_couple_superhero.png">
              <form method="post">
+                 <p id="ratingtitle">Uw beoordeling:</p>
+                 <fieldset class="rating">
+                <input type="radio" id="star5" name="rating" value="5" /><label class = "full" for="star5" title="Geweldig - 5 sterren"></label>
+                <input type="radio" id="star4" name="rating" value="4" /><label class = "full" for="star4" title="Best wel goed - 4 sterren"></label>
+                <input type="radio" id="star3" name="rating" value="3" /><label class = "full" for="star3" title="Meh - 3 sterren"></label>
+                <input type="radio" id="star2" name="rating" value="2" /><label class = "full" for="star2" title="Liever niet - 2 sterren"></label>
+                <input type="radio" id="star1" name="rating" value="1" /><label class = "full" for="star1" title="Ongelovelijk slecht - 1 ster"></label>
+                </fieldset>
+                 <br>
+                 <input type="hidden" name="userid" value="{{ user.id }}">
+                 <input type="hidden" name="prodNum" value="{{ prodNum }}">
+                 <p id="reviewtitle">Uw recensie:</p>
                  {% csrf_token %}
                  {{ reviewform.as_p }}
 {#        <input type="text">#}
-    <button name="addReview">Submit</button>
+    <button id="reviewbutton" name="addReview">Delen</button>
     </form>
 
+    </div>
+         </div>
+      </div>
+          <div class="reviews" style="margin-top: 5%;">
+         <div class="suggesteditemsbar" style="border-bottom-left-radius:0px; border-bottom-right-radius:0px;">
+            <h1>Gebruikers Recensies</h1>
+         </div>
+         <div class="reviewswrap">
+            {% autoescape off %}{% latestReviews prodNum %}{% endautoescape %}
     </div>
       </div>
       </div>
