@@ -2911,6 +2911,10 @@ button{
 	background-color: #a2a29d82;
 }
 
+.tooltip:focus {
+	outline: none;
+}
+
 .price {
 	margin: 5 0 0 0;
 }
@@ -4262,6 +4266,10 @@ ul.ulsugg {}
 .tooltip:hover .tooltiptext {
 	visibility: visible;
 	opacity: 1;
+}
+
+.tooltip:active{
+	background-color: #4f2d92;
 }
 
 .error404p {
