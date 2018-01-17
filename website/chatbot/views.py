@@ -1,5 +1,7 @@
 from django.http import JsonResponse
 from django.shortcuts import render
+
+from store.collections.posts import searchPost
 from .collections import chatbot
 
 # Create your views here.
@@ -9,6 +11,11 @@ from django.views import View
 class ChatboxView(View):
     def get(self, request):
         return render(request, 'chatbot.html', {})
+
+    def post(self, request):
+        if request.method == 'POST':
+            if 'searchtext' in request.POST:
+                return searchPost(request)
 
 def GetBotResponse(request):
     if request.user.is_authenticated:
