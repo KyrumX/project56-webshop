@@ -11,10 +11,10 @@
 	overflow-y: scroll;
 	padding-top: 20px;
 	overflow-x: hidden;
-	url("http: //localhost:8000/static/images/chatbg.png");
-	background-image: url("http://localhost:8000/static/images/chatbg.png");
+	background-image: url("/static/images/chatbg.png");
 	background-size: contain;
 	background-repeat-x: no-repeat;
+	background-repeat-y: no-repeat;
 	background-color: grey;
 }
 
