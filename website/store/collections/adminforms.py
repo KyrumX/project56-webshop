@@ -29,11 +29,11 @@ class AdminRegistrationForm(UserCreationForm):
         super(AdminRegistrationForm, self).__init__(*args, **kwargs)
         self.fields['password1'].label = "Wachtwoord:"
         self.fields['password1'].widget.attrs.update({'placeholder': '**********'})
-        self.fields['password2'].label = "Herhaling wachtwoord:"
+        self.fields['password2'].label = "Herhaal het wachtwoord"
         self.fields['password2'].widget.attrs.update({'placeholder': '**********'})
         self.fields[
             'password1'].help_text = "Je wachtwoord moet 8 karakters of langer zijn. Gebruik niet alleen cijfers."
-        self.fields['password2'].help_text = "Herhaal het wachtwoord"
+        self.fields['password2'].help_text = ""
         self.error_messages = {
             'password_mismatch': ("Oeps! De twee opgegeven wachtwoorden kwamen niet overeen! Probeer het opnieuw!")
         }

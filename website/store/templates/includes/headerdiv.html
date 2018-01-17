@@ -1,4 +1,4 @@
-    {% load custom_tags %}
+{% load custom_tags %}
 {% load static %}
 <div class="header">
 <script src="//cdnjs.cloudflare.com/ajax/libs/Snowstorm/20131208/snowstorm-min.js"></script>
@@ -66,7 +66,7 @@ snowStorm.useMeltEffect = true;
     {% else %}
 	{% incrementVisit false %}
     <div class="logowrap commoncolor">
-        <div class="logo">
+        <div id="logo">
             {% load static %}
             <a href="/">
             <img src="{% static 'images/comicfirelogo3.png' %}">

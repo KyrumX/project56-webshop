@@ -3289,6 +3289,7 @@ button{
 	max-width: 100%;
 	font-family: "Comic Sans",Arial,Helvetica,sans-serif;
 	margin-top: 0px;
+	overflow-x: hidden;
 }
 
 textarea:focus{
@@ -4010,6 +4011,7 @@ border-bottom-right-radius: 3px;
 	padding: 10px;
 	margin-top: 0px;
 	width: 100%;
+	overflow-x: hidden;
 }
 
 .mainrec > :last-child{
