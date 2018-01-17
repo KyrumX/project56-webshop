@@ -3,6 +3,7 @@ import urllib.request
 from random import randint
 
 from django import template
+from django.db.models import Avg
 
 from ..database.getData import getProdName, getProdPrice, getProdStock, getProdAuthor, getProdDesc, getProdImage, \
     getProdPublish, getProdRating
@@ -131,8 +132,9 @@ def listloop(userAuth):
             #     txt = txt + "<button name='moveToWishListButton' value='" + str(cnt) +"' class='wishlist'><i class='fa fa-heart' aria-hidden='true'></i></button>"
             # txt = txt + stock
 
+            rating = getRating(cnt)
             prodratingtxt = ""
-            for r in range(getProdRating(cnt)):
+            for r in rating:
                 prodratingtxt += "<i class='fa fa-star' aria-hidden='true'></i>"
 
             txt = txt + "<li><div class='productwrap'><a href='" + prodUrlTag(cnt) + "'><img src='" + prodImageTag(cnt) + "' id='zoom_05'></a><p class='author'>" + prodAuthorTag(cnt) + "</p><p class='name'>" + prodTitleTag(cnt) + "</p><p>{0}</p><p class='price'>€ ".format(prodratingtxt) + str(prodPriceTag(cnt)) + "</p>" + button
@@ -294,6 +296,18 @@ def latestReviews(prodnum):
 
     return html
 
+@register.simple_tag()
+def getRating(prodnum):
+    reviews = Reviews.objects.all().filter(prodNum=prodnum)
+    rating = ""
+    if reviews.exists():
+        for i in range(int(reviews.aggregate(Avg('rating'))['rating__avg'])):
+            rating += "x"
+        return rating
+    else:
+        for i in range(getProdRating(prodnum)):
+            rating += "x"
+        return rating
 def visitchart():
     return getVisitsChart()
 
