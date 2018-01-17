@@ -14,7 +14,8 @@
             <img src="{{prodImage}}" id="zoom_05" data-zoom-image="https://i.pinimg.com/736x/86/ff/e2/86ffe2b49daf0feed78a1c336753696d--black-panther-comic-digital-comics.jpg">
             <p>{{prodPublisher}}</p>
             <p style="color: #746c6c">
-				{% for x in prodRating %}
+            {% getRating prodNum as rating%}
+				{% for x in rating %}
 					<i class="fa fa-star" aria-hidden="true"></i>
 				{% endfor %}
 			</p>
@@ -66,7 +67,7 @@
 			   </li>
                        {% endif %}
                {% else %}
-               {% endif %}
+                   <p style="text-align: center;"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color: #534949; margin-right: 10px;"></i>Wij streven er naar om dit product zo snel mogelijk weer op voorraad te krijgen!</p>{% endif %}
 			   </ul>
                </div>
             </div>
@@ -99,6 +100,45 @@
          <ul class="ulsugg">
             {% autoescape off %}{% suggesteditems prodName prodType %}{% endautoescape %}
          </ul>
+          {% if user.is_authenticated %}
+          <div class="reviews" style="margin-bottom: 5%;">
+         <div class="suggesteditemsbar" style="border-bottom-left-radius:0px; border-bottom-right-radius:0px;">
+            <h1>Recensie plaatsen</h1>
+         </div>
+         <div class="reviewswrap">
+             <div class="contact">
+                 <img style="border: none;" src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Placeholder_couple_superhero.png">
+             <form method="post">
+                 <p id="ratingtitle">Uw beoordeling:</p>
+                 <fieldset class="rating">
+                <input type="radio" id="star5" name="rating" value="5" /><label class = "full" for="star5" title="Geweldig - 5 sterren"></label>
+                <input type="radio" id="star4" name="rating" value="4" /><label class = "full" for="star4" title="Best wel goed - 4 sterren"></label>
+                <input type="radio" id="star3" name="rating" value="3" /><label class = "full" for="star3" title="Meh - 3 sterren"></label>
+                <input type="radio" id="star2" name="rating" value="2" /><label class = "full" for="star2" title="Liever niet - 2 sterren"></label>
+                <input type="radio" id="star1" name="rating" value="1" /><label class = "full" for="star1" title="Ongelovelijk slecht - 1 ster"></label>
+                </fieldset>
+                 <br>
+                 <input type="hidden" name="userid" value="{{ user.id }}">
+                 <input type="hidden" name="prodNum" value="{{ prodNum }}">
+                 <p id="reviewtitle">Uw recensie:</p>
+                 {% csrf_token %}
+                 {{ reviewform }}
+{#        <input type="text">#}
+    <button id="reviewbutton" name="addReview">Delen</button>
+    </form>
+
+    </div>
+         </div>
+      </div>
+          {% endif %}
+          <div class="reviews" style="margin-top: 1%; margin-bottom: 5%;">
+         <div class="suggesteditemsbar" style="border-bottom-left-radius:0px; border-bottom-right-radius:0px;">
+            <h1>Gebruikers Recensies</h1>
+         </div>
+         <div class="reviewswrap">
+            {% autoescape off %}{% latestReviews prodNum %}{% endautoescape %}
+    </div>
+      </div>
       </div>
    </div>
    <div class="right sidecolors">

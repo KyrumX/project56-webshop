@@ -3284,6 +3284,7 @@ button{
 	background-color: #ffffff;
 	max-width: 100%;
 	font-family: "Comic Sans",Arial,Helvetica,sans-serif;
+	margin-top: 0px;
 }
 
 textarea:focus{
@@ -3439,7 +3440,7 @@ h1{
 
 p{
 	font-family: "Open Sans",Arial,Helvetica,sans-serif;
-	font-size: 13px;
+	/*! font-size: 13px; */
 	line-height: 2.5vh;
 }
 
@@ -3923,6 +3924,114 @@ p{
 	border-radius: 5px;
 }
 
+.reviews {
+	/* height: 150px; */
+	/* background-color: #e2e2e2; */
+	position: relative;
+	/*! width: 85%; */
+	/* height: 384px; */
+	top: 50px;
+	/* border: solid 1px rgba(0, 0, 0, 0.21); */
+	margin: 0 auto;
+	border-radius: 5px;
+	/* overflow: hidden; */
+}
+
+.reviews img{
+	border: none;
+	float: right;
+	position: relative;
+	display: inline-block;
+	right:0;
+}
+
+.reviewswrap {
+
+/*! height: 150px; */
+
+background-color: #e3e2e2;
+
+border: solid 0.1vh rgba(0, 0, 0, 0.24);
+
+border-bottom-left-radius: 3px;
+
+border-bottom-right-radius: 3px;
+}
+
+#reviewbutton{
+  position: relative;
+	width: 100%;
+	height: 5vh;
+	margin-right: 40px;
+	background-color: rgb(243, 217, 149);
+	margin-right: 0px;
+	color: #4f4a4a;
+	border-radius: 3px;
+	border: solid 1px rgba(0, 0, 0, 0.41);
+	/* text-shadow: 0.3px 0.3px rgba(0, 0, 0, 0.7); */
+	margin-top: 20px;
+	padding: 6 45px 7px 45px;
+	text-align: center;
+}
+
+.reviewswrap textarea, .reviewswrap input[type="number"]{
+			-moz-border-radius: 3px;
+			-ms-border-radius: 3px;
+			-o-border-radius: 3px;
+			border-radius: 3px;
+			/*! -webkit-box-shadow: 0 1px 0 #FFF, 0 -2px 5px rgba(0, 0, 0, 0.08) inset; */
+			-moz-box-shadow: 0 1px 0 #fff, 0 -2px 5px rgba(0,0,0,0.08) inset;
+			-ms-box-shadow: 0 1px 0 #fff, 0 -2px 5px rgba(0,0,0,0.08) inset;
+			-o-box-shadow: 0 1px 0 #fff, 0 -2px 5px rgba(0,0,0,0.08) inset;
+			/*! box-shadow: 0 1px 0 #7d8f97, 0 -2px 5px rgba(0, 0, 0, 0.08) inset; */
+			/* 		-webkit-transition: all 10.5s ease;
+		*/ -moz-transition: all 0.5s ease; /*
+		-ms-transition: all 0.5s ease;
+		-o-transition: all 0.5s ease; */
+			/*! background: #ffffff; */
+			border: 1px solid rgba(0, 0, 0, 0.19);
+		 */
+			font: 18px Helvetica, Arial, sans-serif;
+			display: block;
+			width: 100%;
+			margin-top: 0px;
+			/*! height: 35px; */
+			font-size: 18px;
+			/*! margin-left: 10%; */
+			padding-left: 5px;
+}
+
+.reviewswrap textarea{
+	/*! margin-left: 6px; */
+	padding: 10px;
+	margin-top: 0px;
+	width: 100%;
+}
+
+.mainrec > :last-child{
+	border: none;
+}
+
+.mainrec {
+	padding-left: 0;
+}
+
+.rec {
+	list-style-type: none;
+	border-bottom: solid 1px #0003;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	padding-left: 5%;
+}
+
+.rec li{
+  padding-top: 10px;
+}
+
+.rec i{
+	color: grey;
+}
+
 .suggesteditems {
 	/* height: 150px; */
 	/* background-color: #e2e2e2; */
@@ -4169,3 +4278,60 @@ ul.ulsugg {}
 	color: darkgrey;
     font-size: 250%;
 }
+
+@import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
+
+fieldset, label { margin: 0; padding: 0; }
+body{ /*! margin: 20px; */ }
+h1 { font-size: 1.5em; margin: 10px; }
+
+/****** Style Star Rating Widget *****/
+
+.rating {
+  border: none;
+  float: left;
+  margin-left: -6px;
+}
+
+#reviewtitle{
+	/*! margin-left: 10px; */
+	padding-left: 0;
+	display: block;
+/*! float: left; */
+	margin-top: 7%;
+	font-weight: 800;
+}
+
+#ratingtitle, #reviewtitle{
+	font-weight: 600;
+	/*! margin-left: 7px; */
+	margin-bottom: 0px;
+}
+
+.rating > input { display: none; }
+.rating > label:before {
+  margin: 5px;
+  font-size: 1.25em;
+  font-family: FontAwesome;
+  display: inline-block;
+  content: "\f005";
+}
+
+.rating > .half:before {
+  content: "\f089";
+  position: absolute;
+}
+
+.rating > label {
+  color: #aaa;
+ float: right;
+}
+
+.rating > input:checked ~ label,
+.rating:not(:checked) > label:hover,
+.rating:not(:checked) > label:hover ~ label { color: #5A5952;  }
+
+.rating > input:checked + label:hover,
+.rating > input:checked ~ label:hover,
+.rating > label:hover ~ input:checked ~ label,
+.rating > input:checked ~ label:hover ~ label { color: #6E6363;  }

@@ -3,17 +3,18 @@ import urllib.request
 from random import randint
 
 from django import template
+from django.db.models import Avg
 
 from ..database.getData import getProdName, getProdPrice, getProdStock, getProdAuthor, getProdDesc, getProdImage, \
     getProdPublish, getProdRating
 from ..database.getData import getVisitsChart
-from ..models import ProductDetails
+from ..models import ProductDetails, Reviews
 from ..models import UserVisits, Dates, OrderDetails, Orders, Products
 from django.db.models import Max
 
 register = template.Library()
 
-@register.assignment_tag
+@register.simple_tag()
 
 def any_function():
     with urllib.request.urlopen('https://gateway.marvel.com/v1/public/comics?ts=1&format=comic&formatType=comic&noVariants=true&orderBy=-title&limit=1&apikey=144ba3e33cfbf7edd53ed87d7b64c23a&hash=2c814cdb9f5c3d39bbf973ec7fcc6c6b') as url:
@@ -131,8 +132,9 @@ def listloop(userAuth):
             #     txt = txt + "<button name='moveToWishListButton' value='" + str(cnt) +"' class='wishlist'><i class='fa fa-heart' aria-hidden='true'></i></button>"
             # txt = txt + stock
 
+            rating = getRating(cnt)
             prodratingtxt = ""
-            for r in range(getProdRating(cnt)):
+            for r in rating:
                 prodratingtxt += "<i class='fa fa-star' aria-hidden='true'></i>"
 
             txt = txt + "<li><div class='productwrap'><a href='" + prodUrlTag(cnt) + "'><img src='" + prodImageTag(cnt) + "' id='zoom_05'></a><p class='author'>" + prodAuthorTag(cnt) + "</p><p class='name'>" + prodTitleTag(cnt) + "</p><p>{0}</p><p class='price'>€ ".format(prodratingtxt) + str(prodPriceTag(cnt)) + "</p>" + button
@@ -259,6 +261,53 @@ def incrementVisit(is_staff, cID=-1):
     date.save()
     return ""
 
+
+@register.simple_tag()
+def latestReviews(prodnum):
+    reviews = Reviews.objects.all().filter(prodNum=prodnum)
+
+    if not reviews.exists():
+        print("no existo!")
+        return "<p style='text-align:center; padding-top: 1%;'>Er zijn nog geen recensies geschreven voor dit product.</p>"
+
+
+    html = "<ul class='mainrec'>"
+    for i in reviews:
+        rating = ""
+        for x in range(i.rating):
+            num = ""
+            num2 = ""
+            if i.date.day < 10 and i.date.month < 10:
+                num = 0
+                num2 = 0
+            elif i.date.day < 10:
+                num = 0
+            elif i.date.month < 10:
+                num2 = 0
+
+            dateformat = "{0}{1}-{2}{3}-{4}".format(num, i.date.day, num2, i.date.month, i.date.year)
+            print(dateformat)
+
+            rating += "<i class='fa fa-star' aria-hidden='true'></i>"
+
+        print("This is customer ID: ", i.customerID)
+        html += "<ul class='rec'><li>{0} {1} op {2}</li><li>{3}</li><li>{4}</li></ul>".format(i.customerID.name, i.customerID.surname, dateformat, rating, i.review)
+    html += "</ul>"
+
+    return html
+
+@register.simple_tag()
+def getRating(prodnum):
+    reviews = Reviews.objects.all().filter(prodNum=prodnum)
+    rating = ""
+    if reviews.exists():
+        for i in range(int(reviews.aggregate(Avg('rating'))['rating__avg'])):
+            rating += "x"
+        return rating
+    else:
+        for i in range(getProdRating(prodnum)):
+            rating += "x"
+        return rating
 def visitchart():
     return getVisitsChart()
 

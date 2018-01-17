@@ -9,6 +9,10 @@ from store.collections.filter import isCategoryRelevant, orderResults, filterObj
 from store.collections.typechecker import is_type_float
 from store.models import ProductDetails
 from store.tokens import account_activation_token
+
+from .collections.forms import ReviewsForm
+
+from store.models import Reviews
 from .collections.mails import *
 from django.contrib.auth import login, logout, update_session_auth_hash
 from .database.getData import getProdName, getProdPrice, getProdStock, getProdGenre, getProdType, getProdAuthor, getProdDesc, getProdImage, getProdLanguage, getProdPublish, getProdRating, getProdTotalPages, getProdData, getStreet, getHouseNumber, getCity, getPostalcode, getCustomerFName, getCustomerLName, getCustomerPhone, \
@@ -150,6 +154,7 @@ def betaling(request):
 
 def product(request, item):
     if request.method == 'POST':
+        print("Posted: ", request.POST)
         if 'searchtext' in request.POST:
             return searchPost(request)
         elif "addToCartButton" in request.POST:
@@ -160,6 +165,24 @@ def product(request, item):
         elif "addtowishlistButton" in request.POST:
             addToWishList(request, item)
             return redirect('/verlanglijst/')
+        elif "addReview" in request.POST:
+            reviewform = ReviewsForm(request.POST, auto_id=False)
+            if reviewform.is_valid():
+                prodnum = request.POST.get('prodNum')
+                productobj = Products.objects.get(prodNum=prodnum)
+                user = request.POST.get('userid')
+                userobj = Customers.objects.get(customerID=user)
+                if Reviews.objects.all().filter(customerID=userobj, prodNum=productobj).exists():
+                    print("Cancel review")
+                    reviewform = ReviewsForm(auto_id=False)
+                else:
+                    review = request.POST.get('review')
+                    rating = request.POST.get('rating')
+                    reviewobj = Reviews(customerID=userobj, prodNum=productobj, review=review, rating=rating)
+                    reviewobj.save()
+    else:
+        reviewform = ReviewsForm(auto_id=False)
+
 
     if not verifyProdNum(item):
         return render(request, 'productnietgevonden.html')
@@ -179,6 +202,7 @@ def product(request, item):
     prodImage = getProdImage(productNumber)
     prodDate = getProdData(productNumber)
     return render(request, 'product.html', {
+        'reviewform' : reviewform,
         'prodNum' : productNumber,
         'prodName' : prodName,
         'prodPrice' : prodPrice,
@@ -193,6 +217,7 @@ def product(request, item):
         'prodDesc' : prodDesc,
         'prodImage' : prodImage,
         'prodDate' : prodDate,
+
     })
 
 
