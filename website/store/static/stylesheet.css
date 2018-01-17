@@ -2819,7 +2819,7 @@ button{
 	width: 100%;
 	border-radius: 5px;
 	border: solid 1px rgba(0, 0, 0, 0.12);
-	min-height: 430px;
+	min-height: 440px;
 	/* max-height: 120%; */
 	color: #635c5c;
 	text-align: center;
@@ -3952,16 +3952,7 @@ p{
 
 .reviewswrap {
 
-/*! height: 150px; */
-
-background-color: #e3e2e2;
-
-border: solid 0.1vh rgba(0, 0, 0, 0.24);
-
-border-bottom-left-radius: 3px;
-
-border-bottom-right-radius: 3px;
-}
+/*! height: 150px; */background-color: #e3e2e2;border-left: solid 0.1vh rgba(0, 0, 0, 0.24);border-right: solid 0.1vh rgba(0, 0, 0, 0.24);border-bottom: solid 0.1vh rgba(0, 0, 0, 0.24);border-top: solid 0.1vh #000000b5;border-bottom-left-radius: 3px;border-bottom-right-radius: 3px;padding: 0;margin: 0;}
 
 #reviewbutton{
   position: relative;
@@ -4020,18 +4011,46 @@ border-bottom-right-radius: 3px;
 
 .mainrec {
 	padding-left: 0;
+	padding-top: 0px;
+	margin: 0;
+	padding: 0;
+}
+
+.mainrec > :nth-child(even){
+	background-color: #4a4747 !important;
 }
 
 .rec {
 	list-style-type: none;
 	border-bottom: solid 1px #0003;
-	padding-top: 10px;
-	padding-bottom: 10px;
-	padding-left: 5%;
+	padding-top: 20px;
+	padding-bottom: 20px;
+	/* padding-left: 5%; */
+	font-size: 2.3vh;
+	/* width: 100%; */
+	/* width: 41%; */
+	margin: 0 auto;
+	background-color: #504e4e;
+}
+
+.recen{
+	list-style-type: none;
+	width: 40%;
+	margin: 0 auto;
+	padding: 20px;
+	background-color: wheat;
+	border-radius: 6px;
+}
+
+.recen li{
+	/* padding-left: 10%; */
 }
 
 .rec li{
   padding-top: 10px;
+  font-family: "Open Sans",Arial,Helvetica,sans-serif;
+  /* background-color: white; */
+  color: #2b2828;
 }
 
 .rec i{
@@ -4119,7 +4138,10 @@ ul.ulsugg {}
 	min-height: 50px;
 	/* margin: 0 auto; */
 	border-radius: 5px;
+	border: none;
 	position: relative;
+	margin: 0;
+	padding: 0px;
 }
 
 .suggesteditemsbar h1{
@@ -4301,6 +4323,7 @@ h1 { font-size: 1.5em; margin: 10px; }
   border: none;
   float: left;
   margin-left: -6px;
+  padding-top: 2%;
 }
 
 #reviewtitle{
@@ -4315,7 +4338,7 @@ h1 { font-size: 1.5em; margin: 10px; }
 #ratingtitle, #reviewtitle{
 	font-weight: 600;
 	/*! margin-left: 7px; */
-	margin-bottom: 0px;
+	margin-bottom: 4px;
 }
 
 .rating > input { display: none; }
