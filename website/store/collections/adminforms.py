@@ -9,9 +9,9 @@ from store.models import Customers, Address, Products, ProductDetails
 
 
 class AdminRegistrationForm(UserCreationForm):
-    firstname = forms.CharField(required=True, label="Voornaam:", min_length=2)
-    lastname = forms.CharField(required=True, label="Achternaam:", min_length=2)
-    email = forms.EmailField(required=True, label="E-mail:")
+    firstname = forms.CharField(required=True, label="Voornaam:", min_length=2, widget=forms.TextInput(attrs={'placeholder': 'Clark'}))
+    lastname = forms.CharField(required=True, label="Achternaam:", min_length=2, widget=forms.TextInput(attrs={'placeholder': 'Kent'}))
+    email = forms.EmailField(required=True, label="E-mail:", widget=forms.TextInput(attrs={'placeholder': 'superman@comicfire.com'}))
     isstaff = forms.BooleanField(required=False, label='Is medewerker:')
 
 
@@ -28,10 +28,12 @@ class AdminRegistrationForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super(AdminRegistrationForm, self).__init__(*args, **kwargs)
         self.fields['password1'].label = "Wachtwoord:"
-        self.fields['password2'].label = "Herhaling wachtwoord:"
+        self.fields['password1'].widget.attrs.update({'placeholder': '**********'})
+        self.fields['password2'].label = "Herhaal het wachtwoord"
+        self.fields['password2'].widget.attrs.update({'placeholder': '**********'})
         self.fields[
             'password1'].help_text = "Je wachtwoord moet 8 karakters of langer zijn. Gebruik niet alleen cijfers."
-        self.fields['password2'].help_text = "Herhaal het wachtwoord"
+        self.fields['password2'].help_text = ""
         self.error_messages = {
             'password_mismatch': ("Oeps! De twee opgegeven wachtwoorden kwamen niet overeen! Probeer het opnieuw!")
         }
@@ -65,19 +67,19 @@ class AdminRegistrationForm(UserCreationForm):
 
 
 class ProductsRegistrationForm(ModelForm):
-    prodName = forms.CharField(required=True, label="Titel:", max_length=200, min_length=8)
-    prodPrice = forms.DecimalField(required=True, label="Prijs:", min_value=1)
-    prodStock = forms.IntegerField(required=True, label="Quantiteit:", min_value=1)
-    genre = forms.CharField(required=True, label='Genre:', max_length=50, min_length=3)
-    type = forms.CharField(required=True, label='Type:', max_length=50, min_length=3)
-    publisher = forms.CharField(required=True, label='Uitgever:', max_length=50, min_length=7)
-    totalPages = forms.IntegerField(required=True, label='Bladzijden:', min_value=1)
-    language = forms.CharField(required=True, label='Taal:', max_length=25, min_length=3)
-    rating = forms.IntegerField(required=False, label='Score:', min_value=1, max_value=5)
-    author = forms.CharField(required=True, label='Schrijver:', max_length=50, min_length=7)
-    desc = forms.CharField(required=True, label='Beschrijving:', min_length=12)
-    imageLink = forms.CharField(required=False, label='Foto link:', max_length=300, min_length=8)
-    pubDatum = forms.DateField(required=True, label='Uitgeefdatum (Y-M-D):')
+    prodName = forms.CharField(required=True, label="Titel:", max_length=200, min_length=8, widget=forms.TextInput(attrs={'placeholder': 'Fairy Tale'}))
+    prodPrice = forms.DecimalField(required=True, label="Prijs:", min_value=1, widget=forms.TextInput(attrs={'placeholder': '5.00'}))
+    prodStock = forms.IntegerField(required=True, label="Quantiteit:", min_value=1, widget=forms.TextInput(attrs={'placeholder': '10'}))
+    genre = forms.CharField(required=True, label='Genre:', max_length=50, min_length=3, widget=forms.TextInput(attrs={'placeholder': 'Actie, Fantasie, Avontuur'}))
+    type = forms.CharField(required=True, label='Type:', max_length=50, min_length=3, widget=forms.TextInput(attrs={'placeholder': 'Manga'}))
+    publisher = forms.CharField(required=True, label='Uitgever:', max_length=50, min_length=7, widget=forms.TextInput(attrs={'placeholder': 'Del Rey Manga'}))
+    totalPages = forms.IntegerField(required=True, label='Bladzijden:', min_value=1, widget=forms.TextInput(attrs={'placeholder': '208'}))
+    language = forms.CharField(required=True, label='Taal:', max_length=25, min_length=3, widget=forms.TextInput(attrs={'placeholder': 'en-us'}))
+    rating = forms.IntegerField(required=False, label='Score:', min_value=1, max_value=5, widget=forms.TextInput(attrs={'placeholder': '5'}))
+    author = forms.CharField(required=True, label='Schrijver:', max_length=50, min_length=7, widget=forms.TextInput(attrs={'placeholder': 'Hiro Mashima'}))
+    desc = forms.CharField(required=True, label='Beschrijving:', min_length=12, widget=forms.TextInput(attrs={'placeholder': 'Leuke meidiewizard Lucy wil de Fairy Tale...'}))
+    imageLink = forms.CharField(required=False, label='Foto link:', max_length=300, min_length=8, widget=forms.TextInput(attrs={'placeholder': 'https://www.fairytale.com/foto.png'}))
+    pubDatum = forms.DateField(required=True, label='Uitgeefdatum (Y-M-D):', widget=forms.TextInput(attrs={'placeholder': '2008-03-25'}))
 
     class Meta:
         model = Products

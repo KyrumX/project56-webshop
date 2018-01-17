@@ -113,7 +113,7 @@ def listloop(userAuth):
 
     if len(getProdDesc(randomlyselectedprod)) > 550:
         proddesc = textshortener(getProdDesc(randomlyselectedprod))
-        txt += """<div class="startwrap" style="border-radius: 3px"><div class="itemoftheday"><div class="itempart1"><p>Uitgelichte Product</p></div><div class="itempart2"><p>{0}</p></div></div>
+        txt += """<div class="startwrap" style="border-radius: 3px"><div class="itemoftheday"><div class="itempart1"><p>Uitgelicht Product</p></div><div class="itempart2"><p>{0}</p></div></div>
             <div class="leftstart"><a href="{1}"><img src="{2}"></a></div>
             <div class="rightstart"><h1>{3}</h1><p style="padding-bottom: 50px;">{4}</p><a href="/product/{5}"><p id="leesmeer"><i class="fa fa-angle-double-right" aria-hidden="true"></i>Lees meer</p></a></div></div>""".format(prodratingtxt,  prodUrlTag(randomlyselectedprod), getProdImage(randomlyselectedprod), getProdName(randomlyselectedprod), proddesc, randomlyselectedprod)
     else:

@@ -168,7 +168,6 @@ def getAllProducts(objects, userAuth):
             txt = txt + "<i class='fa fa-star' aria-hidden='true'></i>"
         txt = txt + "<p class='price'>€ " + str(e.prodNum.prodPrice) + "</p><button name='addToCartItemBoxButton' value='" + str(e.prodNum.prodNum) + "'class='addtocart'><i class='fa fa-plus' aria-hidden='true'></i><i class='fa fa-shopping-cart' aria-hidden='true'></i></button>"
 
-        txt += "<p class='price'>€ " + str(e.prodNum.prodPrice) + "</p>"
         if e.prodNum.prodStock >= 1:
             txt = txt + "<button name='addToCartItemBoxButton' value='" + str(e.prodNum.prodNum) + "'class='addtocart'><i class='fa fa-plus' aria-hidden='true'></i><i class='fa fa-shopping-cart' aria-hidden='true'></i></button>"
         else:
