@@ -480,6 +480,7 @@ svg text{
 	position: relative;
 	height: 100%;
 	width: 15%;
+	vertical-align: middle;
 }
 
 .header{
