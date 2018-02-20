@@ -5,6 +5,13 @@ function combineForms() {
     var $newForm = $("<form></form>")
         .attr({method: "GET", action : ""});
 
+    $('form[name="searchForm"] :text').each(function () {
+        console.log($(this).val());
+        $newForm.append($("<input type=\"hidden\" />")
+            .attr('name', this.name)
+            .val($(this).val())
+        );
+    });
     $('form[name="filterform"] :text, :checked').each(function () {
         $newForm.append($("<input type=\"hidden\" />")
             .attr('name', this.name)
@@ -17,6 +24,9 @@ function combineForms() {
             .val($(this).val())
         );
     });
+
+    console.log("!!!!!!!!");
+    console.log($newForm);
 
     $newForm
         .appendTo(document.body)

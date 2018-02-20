@@ -52,6 +52,90 @@ class IndexView(View):
 
         return render(request, 'index.html')
 
+class ZoekenView(View):
+    def get(self, request):
+        args = {}
+        filters = {}
+        order = 'relevancy'
+
+        if 'searchtext' in request.GET:
+            query = request.GET.get('searchtext')
+        else:
+            query = ""
+
+        if 'orderby' in request.GET:
+            order = request.GET['orderby']
+        if 'language' in request.GET:
+            filters['language'] = request.GET.getlist('language')
+            args['languages'] = request.GET.getlist('language')
+        if 'score' in request.GET:
+            filters['score'] = request.GET.getlist('score')
+            args['scores'] = request.GET.getlist('score')
+        if 'type' in request.GET:
+            filters['type'] = request.GET.getlist('type')
+            args['types'] = request.GET.getlist('type')
+        if 'publisher' in request.GET:
+            filters['publisher'] = request.GET.getlist('publisher')
+            args['publishers'] = request.GET.getlist('publisher')
+
+        args['query'] = query
+        args['order'] = order
+        searchResults = getDBResults(query)
+
+        if request.method == "GET":
+            if 'pmax' in request.GET and 'pmin' in request.GET:
+                pmax = request.GET['pmax']
+                pmin = request.GET['pmin']
+
+                if is_type_float(pmin):
+                    filters['pmin'] = pmin
+                    args['pmin'] = pmin
+                else:
+                    minprice = get_min_price_prodDetails(searchResults)
+                    filters['pmin'] = minprice
+                    args['pmin'] = minprice
+
+                if is_type_float(pmax):
+                    filters['pmax'] = pmax
+                    args['pmax'] = pmax
+                else:
+                    maxprice = get_max_price_prodDetails(searchResults)
+                    filters['pmax'] = maxprice
+                    args['pmax'] = maxprice
+
+                if (request.GET['pmax'] == ''):
+                    filters['pmax'] = 100
+                    args['pmax'] = 100
+                if (request.GET['pmin'] == ''):
+                    filters['pmin'] = 0
+                    args['pmin'] = 0
+
+        args['languageFilterItems'] = isCategoryRelevant(searchResults, 'language')
+        args['typeFilterItems'] = isCategoryRelevant(searchResults, 'type')
+        args['publisherFilterItems'] = isCategoryRelevant(searchResults, 'publisher')
+        filtered = filterObjects(searchResults, filters)
+
+        args['size'] = len(filtered)
+        args['objects'] = orderResults(filtered, order)
+
+        return render(request, 'searchresults.html', args)
+
+    def post(self, request):
+        if 'addToCartItemBoxButton' in request.POST:
+            if not request.session.exists(request.session.session_key):
+                request.session.create()
+            addToCart(request, int(request.POST.get('addToCartItemBoxButton')))
+            return redirect('/winkelwagentje/')
+        elif "moveToWishListButton" in request.POST:
+            return addToWishListPost(request)
+        elif 'filter' in request.POST:
+            return searchPost(request)
+        elif 'searchtext' in request.POST:
+            return searchPost(request)
+        elif "sidefilter" in request.POST:
+            print("Found sidefilters")
+            return searchPost(request)
+
 
 def emailstyle(request):
     return render(request, 'emailstyle.html')

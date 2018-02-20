@@ -23,10 +23,11 @@ snowStorm.useMeltEffect = true;
         </div>
     </div>
     <div class="headmid">
-        <form name="searchForm" action="" method="post" id="srchform">
-            {% csrf_token %}
-            <input type="text" id="searchbar" name="searchtext" placeholder="Deadpool vs The Punisher">
-            <input type="image" id="srchbutton" name="searchtext" src="https://cdn1.iconfinder.com/data/icons/hawcons/32/698627-icon-111-search-512.png">
+        <form name="searchForm" action="/zoeken" method="get" id="srchform">
+            <input type="text" id="searchbar" name="searchtext" placeholder="Deadpool vs The Punisher" value="{{ request.GET.searchtext }}">
+{#            <input type="image" id="srchbutton" name="searchtext" src="https://cdn1.iconfinder.com/data/icons/hawcons/32/698627-icon-111-search-512.png">#}
+            <input type="submit" id="srchbutton"
+                style="background-image: url('https://cdn1.iconfinder.com/data/icons/hawcons/32/698627-icon-111-search-512.png'); border: solid 0px #000000;" />
         </form>
         <div class="cart">
             <a href="/winkelwagentje/">

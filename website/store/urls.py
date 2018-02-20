@@ -1,9 +1,12 @@
 from django.conf.urls import url
+from django.urls import path
+
 from . import views, adminviews #from currect package import...
 from django.contrib.auth.views import login
 urlpatterns = [
 
     url(r'^$', views.IndexView.as_view(), name='index'),
+    path('zoeken', views.ZoekenView.as_view(), name='zoeken'),
     # url(r'^$', login, {'template_name': 'index.html'}, name='index'),
     url(r'^login/$', views.loginview, name='login'),
     url(r'^register/$', views.register, name="register"),
