@@ -3,7 +3,7 @@ import unittest
 from django.test import TestCase
 
 # Create your tests here.
-from store.collections.tools import TransBool
+from store.collections.tools import TransBool, RepresentInt
 
 
 class ToolsTests(unittest.TestCase):
@@ -33,3 +33,17 @@ class ToolsTests(unittest.TestCase):
         result = TransBool(testinput)
 
         self.assertEqual("Nee", result)
+
+    def test_RepresentInt_IntIsGiven_ReturnsTrue(self):
+        testinput = 5
+
+        result = RepresentInt(testinput)
+
+        self.assertEqual(True, result)
+
+    def test_RepresentInt_OtherTypeIsGiven_ReturnsFalse(self):
+        testinput = "Other type"
+
+        result = RepresentInt(testinput)
+
+        self.assertEqual(False, result)

@@ -3,6 +3,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.db.models import Min
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.views import View
 
 from store.collections.aggregation import get_min_price_prodDetails, get_max_price_prodDetails
 from store.collections.filter import isCategoryRelevant, orderResults, filterObjects
@@ -34,21 +35,22 @@ from .database.CartOps import setAmount
 # Create your views here.
 
 
-def index(request):
-    if request.method == 'POST':
-        if 'searchtext' in request.POST:
-            return searchPost(request)
-        elif 'addToCartItemBoxButton' in request.POST:
-            if not request.session.exists(request.session.session_key):
-                request.session.create()
-            addToCart(request, int(request.POST.get('addToCartItemBoxButton')))
-            return redirect('/winkelwagentje/')
-        elif 'moveToWishListButton' in request.POST:
-            return addToWishListPost(request)
-        elif 'filter' in request.POST:
-            return searchPost(request)
+class IndexView(View):
+    def get(self, request):
+        if request.method == 'POST':
+            if 'searchtext' in request.POST:
+                return searchPost(request)
+            elif 'addToCartItemBoxButton' in request.POST:
+                if not request.session.exists(request.session.session_key):
+                    request.session.create()
+                addToCart(request, int(request.POST.get('addToCartItemBoxButton')))
+                return redirect('/winkelwagentje/')
+            elif 'moveToWishListButton' in request.POST:
+                return addToWishListPost(request)
+            elif 'filter' in request.POST:
+                return searchPost(request)
 
-    return render(request, 'index.html')
+        return render(request, 'index.html')
 
 
 def emailstyle(request):

@@ -3,7 +3,7 @@ from . import views, adminviews #from currect package import...
 from django.contrib.auth.views import login
 urlpatterns = [
 
-    url(r'^$', views.index, name='index'),
+    url(r'^$', views.IndexView.as_view(), name='index'),
     # url(r'^$', login, {'template_name': 'index.html'}, name='index'),
     url(r'^login/$', views.loginview, name='login'),
     url(r'^register/$', views.register, name="register"),
