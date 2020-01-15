@@ -1,11 +1,11 @@
 # Project 5-6: Developing a web application
 
 ### Made by
-Aaron Beetstra **Lead developer**<br/>
-Selim Aydi<br/>
-Ralph Verburg<br/>
-Jasper Wijnhoven<br/>
-Ryan Wilson<br/>
+Aaron **Lead developer**<br/>
+Selim<br/>
+Ralph<br/>
+Jasper<br/>
+Ryan<br/>
 
 ------
 ### How to run
